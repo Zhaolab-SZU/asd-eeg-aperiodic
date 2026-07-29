@@ -1,0 +1,7 @@
+outcome,n,beta_td_minus_asd,se,ci_low,ci_high,p,formula
+rest_exponent,136,0.1402917397858504,0.03053706289807552,0.08044019631198807,0.20014328325971276,4.345241008483693e-06,rest_posterior_exponent ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs
+movie_exponent,136,-0.006411089532407571,0.04655080559484806,-0.09764899194963542,0.08482681288482027,0.8904598007881062,movie_posterior_exponent ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs
+delta_movie_minus_rest,136,-0.14670282931825818,0.05184748032998,-0.24832202345416787,-0.045083635182348494,0.004661972173645256,delta_movie_rest ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs
+cmi_log_ratio,136,-0.07220006796714304,0.025252628674863845,-0.1216943106848396,-0.022705825249446476,0.004248301268927957,cmi_log_ratio ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs
+cmi_pct_change,136,-8.336421843613039,2.8967905501737774,-14.01402699270961,-2.6588166945164664,0.004004422876471913,cmi_pct_change ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs
+movie_isc_mean_z,136,0.06667632645263238,0.02262822979566445,0.022325811019233914,0.11102684188603085,0.003212892246659354,movie_isc_mean_z ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs

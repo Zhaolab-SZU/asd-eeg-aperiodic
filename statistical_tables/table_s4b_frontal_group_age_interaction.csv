@@ -1,0 +1,3 @@
+analysis,region,outcome,term,coef,se,p,ci_low,ci_high,n,formula,fdr_q,fdr_significant
+group_age_interaction,frontal,frontal_exponent,C(group)[T.TD]:age_months,0.0009233807512163484,0.001749305226780955,0.5984993154370892,-0.002537410432558395,0.004384171934991092,138,frontal_exponent ~ C(group) * age_months + C(sex) + IQ_total + usable_epochs + mean_r_squared,0.5984993154370892,False
+group_age_interaction,posterior,posterior_exponent,C(group)[T.TD]:age_months,0.00480029691604902,0.0014434321376739323,0.0011469717605529397,0.0019446390583110844,0.007655954773786956,138,posterior_exponent ~ C(group) * age_months + C(sex) + IQ_total + usable_epochs + mean_r_squared,0.0022939435211058795,True

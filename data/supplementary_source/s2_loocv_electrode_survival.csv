@@ -1,0 +1,5 @@
+electrode,n_folds,n_fdr_significant,survival_percent,n_uncorrected_significant,uncorrected_survival_percent
+E33,138,137,99.27536231884058,138,100.0
+E36,138,133,96.3768115942029,138,100.0
+E37,138,126,91.30434782608695,138,100.0
+E38,138,138,100.0,138,100.0

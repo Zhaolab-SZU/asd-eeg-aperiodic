@@ -1,0 +1,3 @@
+analysis,segment,beta,SE,ci_low,ci_high,raw_p,FDR_q,bootstrap_median_beta,bootstrap_ci_low,bootstrap_ci_high,bootstrap_p,n,note,cohort
+neutral main_overlap,neutral,0.3156239796975752,0.1239154853774571,,,0.0120753164800685,0.0362259494402056,0.2944243426277333,-0.0134020645618806,0.4998095042355746,0.062,133,True,main_overlap
+neutral dual_paradigm_matched_postqc,neutral,0.0635617771059739,0.234792031983329,,,0.7875391806526295,,0.0653513889415219,-0.3761107765655607,0.5806645169189644,0.77,68,False,dual_paradigm_matched_postqc

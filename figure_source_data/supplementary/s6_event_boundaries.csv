@@ -1,0 +1,4 @@
+segment,start_seconds,end_seconds,event_label
+mental,85.0,260.5,mentalizing
+neutral,0.0,601.0,neutral
+pain,69.0,268.5,pain

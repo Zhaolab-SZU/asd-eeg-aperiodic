@@ -1,0 +1,31 @@
+{
+  "package": "fig2_topomap_rebuild",
+  "created": "2026-07-11",
+  "purpose": "Codex plot-only rebuild of Fig. 2A channel-wise TD−ASD topomap",
+  "recompute_statistics": false,
+  "primary_script": "plot_fig2a_topomap.py",
+  "reference_script": "original_plot_fig2a_channelwise_topomap.py",
+  "data_files": [
+    "data/channel_group_effects.csv",
+    "data/channel_mne_topomap_coords.csv",
+    "data/posterior_cluster_callouts.csv",
+    "data/colormap_reference_tmap_cbar_stops.csv",
+    "data/channel_group_effects_upstream_fig2_channel_level.csv",
+    "data/topomap_channel_effects_mne_layout_reference.csv"
+  ],
+  "display_constants": {
+    "vlim_default": 0.15,
+    "vlim_symmetric": true,
+    "colormap_name": "reference_tmap_cbar",
+    "montage": "GSN-HydroCel-64_1.0",
+    "topo_sphere": 0.08,
+    "topo_contour_levels": 7,
+    "topo_res": 256
+  },
+  "upstream_sources": {
+    "channel_group_effects": "figure_source_data/fig2a_channelwise_topomap_source.csv",
+    "fig2_channel_level": "outputs/figure_source_data/fig2_channel_level.csv",
+    "mne_layout_reference": "figure_source_data/topomap_channel_effects_mne_layout.csv",
+    "published_report": "working/final_figures/figure2_spatial_robustness/panel_A_channelwise_effect_topomap_report.json"
+  }
+}

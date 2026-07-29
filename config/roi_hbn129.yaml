@@ -1,0 +1,11 @@
+# HBN 128 导 EGI HydroCel GSN-129（分析用 E1–E128，E129 为参考）
+default_layout: "channels_hbn129"
+
+min_valid_channel_ratio: 0.5
+
+channels_hbn129:
+  homologous_four:
+    - E67
+    - E72
+    - E75
+    - E77

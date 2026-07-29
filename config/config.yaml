@@ -1,0 +1,136 @@
+# =============================================================================
+# ASD resting-state EEG aperiodic study — main configuration
+# =============================================================================
+
+project:
+  name: "asd_eeg_aperiodic_study"
+  random_seed: 42
+
+paths:
+  # ---------------------------------------------------------------------------
+  # PATH PLACEHOLDERS (relative to repository root; raw EEG / HBN BIDS not shipped)
+  # To use local data, either:
+  #   (1) place files under the relative folders below, or
+  #   (2) replace with your own absolute paths LOCALLY (do not commit them), e.g.
+  #         raw_data: "/PATH/TO/YOUR/RAW_EEG"
+  #         bids_root: "/PATH/TO/HBN_BIDS"
+  # See config/README_PATHS.md
+  # ---------------------------------------------------------------------------
+  # 原始 EEG 数据目录（被试文件路径也可在 participants.csv 中指定）
+  raw_data: "data/raw"  # PLACEHOLDER: private raw EEG root (not in this bundle)
+  participants_file: "data/participants/participants.csv"  # PLACEHOLDER: de-identified participant table
+  derivatives_root: "derivatives"  # created at runtime / optional local intermediates
+  outputs_root: "outputs"  # analysis tables & figures
+  logs_dir: "derivatives/logs"  # log directory
+
+eeg:
+  # EGI HydroCel GSN-64 1.0，NetStation .mff
+  system: "EGI HydroCel GSN-64 1.0"
+  default_format: "mff"
+  montage: "GSN-HydroCel-64_1.0"
+  channel_naming: "E"  # E1, E2, ... E64
+  original_sfreq_hz: 500
+  recording_duration_sec: 300  # 5 分钟
+  resting_condition: "eyes_open"  # 睁眼静息
+  original_reference: "Cz"  # 采集参考（VREF / sensor 65）
+  # 剔除参考与非头皮通道（MNE 读入后 VREF 对应 NetStation 的 Cz 参考）
+  exclude_channels:
+    - VREF
+    - Cz
+    - E65
+  keep_channels_eeg: "E1-E64"  # 仅保留 64 个头皮电极
+  sampling_rate_target: 250  # Hz，预处理降采样目标
+
+filter:
+  highpass_hz: 0.5
+  lowpass_hz: 45.0
+  notch_hz: 50.0
+  notch_enabled: true
+
+reference:
+  method: "average"  # average | custom
+
+epochs:
+  duration_sec: 2.0
+  overlap_sec: 0.0
+  min_usable_epochs: 60
+  reject_amplitude_uv: 500.0  # 峰峰值阈值 (µV)；EGI 儿童静息常需 500–1000，150 过严
+
+ica:
+  n_components: 30  # 64 导 EGI 常用 20–40；勿用 0.99（易触发 PCA 单成分错误）
+  method: "fastica"
+  random_state: 42
+  # 人工检查：设为 true 时在 ICA 后暂停等待人工标记（交互模式）
+  manual_review: false
+  # 若已有人工标记的排除成分索引文件，放在 derivatives/preprocessed/ica_labels/
+  ica_labels_dir: "derivatives/preprocessed/ica_labels"  # optional manual ICA exclusion labels
+
+psd:
+  freq_min_hz: 1.0
+  freq_max_hz: 40.0
+  welch:
+    n_fft: 500          # 2 s @ 250 Hz
+    n_overlap: 250
+    window: "hamming"
+    fmin: 1.0
+    fmax: 40.0
+
+specparam:
+  freq_range: [1.0, 40.0]
+  peak_width_limits: [1.0, 8.0]
+  max_n_peaks: 6
+  min_peak_height: 0.1
+  peak_threshold: 2.0
+  aperiodic_mode: "fixed"  # fixed | knee
+  verbose: false
+
+fit_quality:
+  min_r_squared: 0.90
+  exponent_min: 0.0
+  exponent_max: 5.0
+  fit_error_top_percentile: 5.0  # 全样本 fit_error 最高 5% 标记为异常
+  subject_invalid_channel_ratio_max: 0.20
+  knee_min_hz: 1.0
+  knee_max_hz: 40.0
+
+bands:
+  theta: [4.0, 7.0]
+  alpha: [8.0, 13.0]
+  beta: [13.0, 30.0]
+  low_gamma: [30.0, 40.0]
+
+covariates:
+  - age_months
+  - sex
+  - IQ_total
+  - usable_epochs
+
+groups:
+  asd_label: "ASD"
+  td_label: "TD"
+
+sensitivity:
+  freq_ranges:
+    - [1.0, 40.0]
+    - [2.0, 40.0]
+    - [1.0, 35.0]
+    - [2.0, 35.0]
+  min_epochs_thresholds: [30, 60]
+  aperiodic_modes: ["fixed", "knee"]
+
+processing:
+  n_jobs: -1
+  overwrite: false
+
+# ICLabel artifact-control sensitivity (scripts/23_iclabel_artifact_sensitivity.py)
+# Outputs under derivatives/*/iclabel_cleaned/ — does not alter primary pipeline.
+iclabel_sensitivity:
+  random_state: 97
+  variance_explained: 0.99
+  max_components: 30
+  ica_method: "infomax"
+  prefer_mff_for_ica: true
+  ica_highpass_hz: 1.0
+  ica_lowpass_hz: 100.0
+  retained_artifact_flag: 0.30
+  default_thresholds: [0.80, 0.70]

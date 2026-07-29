@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.DS_Store
+.mplconfig/
+.ipynb_checkpoints/
+derivatives/
+outputs/
+data/raw/
+data/participants/
+*.fif
+*.mff
+*.edf
+*.bdf
+.Rhistory
+.venv/
+venv/
+
+# Local staging notes (not for public repo)
+STAGING_NOTES.md

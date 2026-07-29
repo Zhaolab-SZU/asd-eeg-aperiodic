@@ -1,0 +1,3 @@
+model,outcome,term,coef,std_err,pvalue,ci_low,ci_high,n_obs,r_squared,used_mixedlm
+posterior_core_4,posterior_core_4_exponent,"C(group, Treatment(reference='ASD'))[T.TD]",0.1328997063307847,0.0337651824297216,0.0001333728583788,0.0661088380698169,0.1996905745917526,138,0.1612822381792439,
+occipital_roi_13,occipital_roi_13_exponent,"C(group, Treatment(reference='ASD'))[T.TD]",0.1003559985193061,0.0352757769776152,0.0051514950223475,0.0305770249325609,0.1701349721060514,138,0.143709643232835,

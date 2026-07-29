@@ -1,0 +1,167 @@
+cohort,cohort_key,subject_id,status,missing_fields,manuscript_n
+IQ-balanced matched,iq_balanced,S001,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S009,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S010,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S011,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S012,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S013,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S014,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S018,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S019,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S020,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S022,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S025,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S027,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S031,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S032,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S033,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S036,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S039,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S043,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S045,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S047,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S048,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S050,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S054,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S063,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S064,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S065,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S066,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S068,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S070,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S072,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S073,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S077,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S078,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S079,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S080,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S083,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,S087,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T002,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T005,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T007,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T010,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T011,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T012,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T014,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T015,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T016,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T019,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T022,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T023,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T027,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T028,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T029,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T031,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T032,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T033,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T034,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T035,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T036,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T037,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T039,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T047,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T052,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T061,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T070,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T074,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T078,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T080,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T081,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T084,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T087,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T091,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T092,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T093,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T095,included_strict_ols,,76
+IQ-balanced matched,iq_balanced,T099,included_strict_ols,,76
+Matched strict specparam-QC,strict_qc,S001,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S003,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S009,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S010,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S011,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S012,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S013,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S014,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S016,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S018,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S020,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S022,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S025,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S026,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S027,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S031,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S032,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S033,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S036,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S039,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S040,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S041,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S042,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S045,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S048,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S050,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S051,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S054,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S057,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S063,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S064,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S065,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S066,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S068,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S070,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S072,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S073,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S077,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S078,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S079,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S080,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S081,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S083,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,S087,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T002,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T005,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T007,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T008,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T010,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T011,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T012,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T014,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T015,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T016,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T019,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T022,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T023,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T027,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T028,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T029,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T031,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T032,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T034,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T035,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T036,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T037,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T039,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T047,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T048,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T049,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T052,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T055,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T060,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T061,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T064,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T066,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T070,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T072,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T074,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T078,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T080,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T084,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T086,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T087,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T091,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T092,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T093,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T095,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T096,included_strict_ols,,90
+Matched strict specparam-QC,strict_qc,T099,included_strict_ols,,90

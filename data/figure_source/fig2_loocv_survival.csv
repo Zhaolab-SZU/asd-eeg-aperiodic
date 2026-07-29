@@ -1,0 +1,8 @@
+item,survival_n,total_folds,survival_percent,note
+all_four_posterior_electrodes,125,138,90.6,outputs/tables/robustness/posterior_roi_loocv_fdr_summary.csv
+at_least_three_posterior_electrodes,134,138,97.1,outputs/tables/robustness/posterior_roi_loocv_fdr_summary.csv
+at_least_one_posterior_electrode,138,138,100.0,outputs/tables/robustness/posterior_roi_loocv_fdr_summary.csv
+E33,137,138,99.3,outputs/tables/robustness/posterior_roi_loocv_fdr_summary.csv
+E36,133,138,96.4,outputs/tables/robustness/posterior_roi_loocv_fdr_summary.csv
+E37,126,138,91.3,outputs/tables/robustness/posterior_roi_loocv_fdr_summary.csv
+E38,138,138,100.0,outputs/tables/robustness/posterior_roi_loocv_fdr_summary.csv

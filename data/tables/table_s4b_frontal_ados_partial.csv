@@ -1,0 +1,7 @@
+analysis,region,x,y,partial_r,p,n,covariates,fdr_q,fdr_significant
+ados_partial_pearson,frontal,frontal_exponent,ADOS_total,-0.16464365405881298,0.20480544550325117,61,age_months + IQ_total,0.25755937441165583,False
+ados_partial_pearson,frontal,frontal_exponent,ADOS_SA,-0.18414462750987237,0.15542052808989895,61,age_months + IQ_total,0.25755937441165583,False
+ados_partial_pearson,frontal,frontal_exponent,ADOS_RRB,-0.16117758619803324,0.2146328120097132,61,age_months + IQ_total,0.25755937441165583,False
+ados_partial_pearson,posterior,posterior_exponent,ADOS_total,-0.3170125961828859,0.01279961967666747,61,age_months + IQ_total,0.03839885903000241,True
+ados_partial_pearson,posterior,posterior_exponent,ADOS_SA,-0.36636842504502987,0.003685030226544506,61,age_months + IQ_total,0.022110181359267036,True
+ados_partial_pearson,posterior,posterior_exponent,ADOS_RRB,-0.11810050471983341,0.36467655353399825,61,age_months + IQ_total,0.36467655353399825,False

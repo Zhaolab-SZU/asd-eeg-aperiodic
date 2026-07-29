@@ -1,0 +1,2 @@
+mode,selection_rule,discovery_n,validation_n,roi_channels,n_fdr_significant_discovery,discovery_beta,discovery_p,validation_beta,validation_p,fixed_core_validation_beta,fixed_core_validation_p
+single_split_50_50,fallback_abscoef_topk,69,69,"E63,E39,E56,E37",0,0.0693362466527913,0.2760785231769393,0.2031361868591861,0.01947089212624289,0.19563247680401216,0.0010062210770332724

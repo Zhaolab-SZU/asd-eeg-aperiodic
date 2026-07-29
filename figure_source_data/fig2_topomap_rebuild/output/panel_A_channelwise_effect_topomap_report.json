@@ -1,0 +1,39 @@
+{
+  "package_root": "figure_source_data/fig2_topomap_rebuild",
+  "effects_csv": "figure_source_data/fig2_topomap_rebuild/data/channel_group_effects.csv",
+  "plot_config": {
+    "montage_name": "GSN-HydroCel-64_1.0",
+    "topo_sphere": 0.08,
+    "topo_contour_levels": 7,
+    "topo_res": 256,
+    "topo_vlim_default": 0.15,
+    "topo_vlim_symmetric": true,
+    "topo_vlim_note": "Default CLI --vlim 0.15 => color scale [-0.15, +0.15]. Auto mode uses 88th percentile |beta| clipped to [0.12, 0.16]; current published figure uses fixed 0.15.",
+    "colormap_name": "reference_tmap_cbar",
+    "colormap_defined_in_script": true,
+    "image_interp": "cubic",
+    "extrapolate": "head",
+    "panel_label": "A",
+    "colorbar_label": "β (TD − ASD)",
+    "model_formula_reference_only": "aperiodic_exponent ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs",
+    "group_coding": "TD − ASD",
+    "fdr_alpha": 0.05,
+    "dpi_default": 600
+  },
+  "load_mode": "frozen_csv_only_no_recompute",
+  "vlim": 0.15,
+  "colormap": "reference_tmap_cbar",
+  "n_channels": 64,
+  "fdr_channels": [
+    "E33",
+    "E36",
+    "E37",
+    "E38"
+  ],
+  "outputs": {
+    "png": "figure_source_data/fig2_topomap_rebuild/output/panel_A_channelwise_effect_topomap.png",
+    "tiff": "figure_source_data/fig2_topomap_rebuild/output/panel_A_channelwise_effect_topomap.tiff",
+    "pdf": "figure_source_data/fig2_topomap_rebuild/output/panel_A_channelwise_effect_topomap.pdf",
+    "svg": "figure_source_data/fig2_topomap_rebuild/output/panel_A_channelwise_effect_topomap.svg"
+  }
+}

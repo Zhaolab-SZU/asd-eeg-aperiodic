@@ -1,0 +1,8 @@
+analysis,cohort_or_pipeline,beta_TD_minus_ASD,SE,ci_low,ci_high,p,n,note
+primary,primary resting-state spectral n=138,0.1328997063307847,0.0337651824297216,0.0661088380698169,0.1996905745917526,0.0001333728583788,138,outputs/tables/posterior_roi_sensitivity/group_ols_models.csv
+IQ-balanced matched,IQ-balanced matched n=76,0.123,,0.064,0.193,0.0002,76,legacy manuscript-aligned values (figures_submission/v3 manuscript fallback (bp_figures/io.py)); strict recompute n=76 beta=0.143; excluded IDs=none
+strict-QC,matched strict specparam-QC n=90,0.1388351735537232,0.0343115403854279,0.0706029126544338,0.2070674344530126,0.0001151395520859,90,assembled OLS on supp_table_s1 IDs + main_cohort + resting_features_locked
+low-gamma adjusted,primary + log10_low_gamma covariate n=135,0.1021129329166057,0.0351726297000712,0.0325178758176895,0.1717079900155218,0.0043515071474918,135,outputs/tables/artifact_defense/exponent_models_with_hf_covariate.csv
+ICLabel,ICLabel threshold 0.70 branch n=137,0.1214923842375693,0.0339521519966755,0.0543269286685873,0.1886578398065513,0.0004854952867988,137,outputs/tables/iclabel_sensitivity/iclabel_local_posterior_exponent_fdr_summary.csv
+ICLabel + n_components_removed,ICLabel 0.70 + n_components_removed n=137,0.0920366323982945,0.02820645223084,0.0362294758424203,0.1478437889541686,0.001411260865936,137,outputs/tables/iclabel_sensitivity/iclabel_posterior_removed_component_models.csv
+ICLabel unadjusted branch,ICLabel 0.70 without n_removed n=137,0.1146220687510041,0.0297962191862402,0.0556738125571338,0.1735703249448744,0.000186572537266,137,same file; manuscript cites beta≈0.115 p=0.0002

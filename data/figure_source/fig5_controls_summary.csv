@@ -1,0 +1,9 @@
+analysis,segment,effect_label,estimate,partial_cohen_d,SE,ci_low,ci_high,p,FDR_q,n,interpretation
+alpha PLV ISC,pain,group mean r,0.0206381946168691,,,,,0.97,,136,manuscript TD=ASD=0.115 p=0.970; within_group_pain asd_mean differs — see note
+envelope-adjusted Aperiodic-ISC,mentalizing,ASD minus TD mean (raw) / partial Cohen d,-0.1000012182456758,0.0198738494194047,,,,0.0068629108122907,0.0117649899639269,136,partial Cohen d=0.020; source=classic_isc/aperiodic_envelope_partial_analysis.csv
+envelope-adjusted Aperiodic-ISC,pain,ASD minus TD mean (raw) / partial Cohen d,-0.1357864362395759,-0.7711050090295632,,,,5.531692828749576e-05,0.0001327606278899,136,partial Cohen d=-0.771; source=classic_isc/aperiodic_envelope_partial_analysis.csv
+envelope-adjusted Aperiodic-ISC,neutral,ASD minus TD mean (raw) / partial Cohen d,-0.1878440434895791,-0.7510337298282718,,,,2.256801914334198e-06,2.097707798449139e-05,136,partial Cohen d=-0.751; source=classic_isc/aperiodic_envelope_partial_analysis.csv
+delta exponent,mental,Cohen d (ASD delta > TD),0.7080173195913233,,,,,0.001116021647318,0.001116021647318,104,strict_movie_analysis_qc
+delta exponent,pain,Cohen d (ASD delta > TD),0.7292113128266167,,,,,0.000841736073558,0.001116021647318,104,strict_movie_analysis_qc
+delta exponent,neutral,Cohen d (ASD delta > TD),0.7675274339616488,,,,,0.0004789417031942,0.001116021647318,104,strict_movie_analysis_qc
+gaze sensitivity,mental,group test,,,,,,0.5750646737869682,,65,non-significant gaze proportion differences

@@ -1,0 +1,109 @@
+project:
+  name: "asd_eeg_movie_task_aperiodic_study"
+  random_seed: 42
+
+paths:
+  # ---------------------------------------------------------------------------
+  # PATH PLACEHOLDERS (relative to repository root; raw EEG / HBN BIDS not shipped)
+  # To use local data, either:
+  #   (1) place files under the relative folders below, or
+  #   (2) replace with your own absolute paths LOCALLY (do not commit them), e.g.
+  #         raw_data: "/PATH/TO/YOUR/RAW_EEG"
+  #         bids_root: "/PATH/TO/HBN_BIDS"
+  # See config/README_PATHS.md
+  # ---------------------------------------------------------------------------
+  raw_data: "data/raw"  # PLACEHOLDER: private raw EEG root (not in this bundle)
+  participants_file: "data/participants/participants_task_movie.csv"  # PLACEHOLDER: de-identified participant table
+  derivatives_root: "derivatives_task_movie"  # created at runtime / optional local intermediates
+  outputs_root: "outputs_task_movie"  # analysis tables & figures
+  logs_dir: "derivatives_task_movie/logs"  # log directory
+
+eeg:
+  system: "EGI HydroCel GSN-64 1.0"
+  default_format: "mff"
+  montage: "GSN-HydroCel-64_1.0"
+  channel_naming: "E"
+  original_sfreq_hz: 500
+  recording_duration_sec: 300
+  task_condition: "movie_watching_naturalistic"
+  movie_start_marker: "VID+"
+  movie_crop_duration_sec: 300
+  original_reference: "Cz"
+  exclude_channels: ["VREF", "Cz", "E65"]
+  keep_channels_eeg: "E1-E64"
+  sampling_rate_target: 250
+
+filter:
+  highpass_hz: 0.5
+  lowpass_hz: 45.0
+  notch_hz: 50.0
+  notch_enabled: true
+
+reference:
+  method: "average"
+
+epochs:
+  duration_sec: 2.0
+  overlap_sec: 0.0
+  min_usable_epochs: 50
+  reject_amplitude_uv: 500.0
+
+ica:
+  n_components: 30
+  method: "fastica"
+  random_state: 42
+  manual_review: false
+  ica_labels_dir: "derivatives_task_movie/preprocessed/ica_labels"  # optional manual ICA exclusion labels
+
+psd:
+  freq_min_hz: 1.0
+  freq_max_hz: 40.0
+  welch:
+    n_fft: 500
+    n_overlap: 250
+    window: "hamming"
+    fmin: 1.0
+    fmax: 40.0
+  sliding_window:
+    enabled: true
+    window_sec: 2.0
+    step_sec: 0.5
+
+specparam:
+  freq_range: [1.0, 40.0]
+  peak_width_limits: [1.0, 8.0]
+  max_n_peaks: 6
+  min_peak_height: 0.1
+  peak_threshold: 2.0
+  aperiodic_mode: "fixed"
+  verbose: false
+  dynamic:
+    fit_mode: "roi_mean"  # global_mean | roi_mean | channel
+    target_channels: ["E33", "E36", "E37", "E38"]
+
+fit_quality:
+  min_r_squared: 0.80
+  exponent_min: 0.0
+  exponent_max: 5.0
+  fit_error_top_percentile: 5.0
+  subject_invalid_channel_ratio_max: 0.30
+
+bands:
+  theta: [4.0, 7.0]
+  alpha: [8.0, 13.0]
+  beta: [13.0, 30.0]
+  low_gamma: [30.0, 40.0]
+
+covariates:
+  - age_months
+  - sex
+  - IQ_total
+  - usable_epochs
+
+groups:
+  asd_label: "ASD"
+  td_label: "TD"
+
+processing:
+  n_jobs: -1
+  overwrite: false

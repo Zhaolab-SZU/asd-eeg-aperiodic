@@ -1,0 +1,6 @@
+outcome,model,term,estimate,se,ci_low,ci_high,p,n
+alpha_cf,global IAF group effect,C(group)[T.TD],0.3218791014779678,0.4491592153088957,-0.566664968487977,1.2104231714439126,0.4748806682138967,138
+alpha_cf,global IAF group x age,C(group)[T.TD]:age_months,-0.0052926030721616,0.0051379510793453,-0.0154566959099046,0.0048714897655813,0.3048612252536555,138
+posterior_alpha_cf,posterior IAF group x age,C(group)[T.TD]:age_months,-0.0027325627164846,0.0060491225278028,-0.0147017851292155,0.0092366596962462,0.6522288854751699,135
+posterior_exponent,posterior exponent group x age adjusted for posterior IAF,C(group)[T.TD]:age_months,0.0049751814965774,0.0014286921942505,0.0021478416448952,0.0078025213482595,0.0006838930854137,135
+posterior_exponent_deviation_z,exponent-deviation vs IAF-deviation correlation,Spearman_rho,-0.1727657324167107,,,,0.1830359072305921,61

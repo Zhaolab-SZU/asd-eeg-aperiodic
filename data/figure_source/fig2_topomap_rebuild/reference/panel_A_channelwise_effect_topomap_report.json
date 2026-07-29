@@ -1,0 +1,54 @@
+{
+  "input_data": "D:\\asd_eeg_aperiodic_study\\outputs\\figure_source_data\\fig2_channel_level.csv",
+  "load_mode": "existing_csv",
+  "model_formula": "aperiodic_exponent ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs",
+  "group_coding": "TD \u2212 ASD (positive \u03b2: TD > ASD, ASD exponent lower / flatter)",
+  "panel_label": "A",
+  "panel_style": "fig2_main_panel_A",
+  "annotation_style": "external_straight_callout_labels",
+  "suggested_caption": "Only E33, E36, E37, and E38 survived whole-scalp FDR correction.",
+  "n_channels": 64,
+  "n_fdr_significant": 4,
+  "fdr_channels": [
+    "E33",
+    "E36",
+    "E37",
+    "E38"
+  ],
+  "vlim": 0.15,
+  "colormap": "reference_tmap_cbar",
+  "colormap_source": "pixel_extract_reference_delta_t_colorbar",
+  "posterior_stats": [
+    {
+      "channel": "E33",
+      "beta_TD_minus_ASD": 0.1069691699564322,
+      "p": 0.0007939043608607,
+      "q": 0.0254049395475442
+    },
+    {
+      "channel": "E36",
+      "beta_TD_minus_ASD": 0.1169124549715797,
+      "p": 0.0016538100405018,
+      "q": 0.0352812808640399
+    },
+    {
+      "channel": "E37",
+      "beta_TD_minus_ASD": 0.1705393422955826,
+      "p": 0.002250840490471,
+      "q": 0.0360134478475373
+    },
+    {
+      "channel": "E38",
+      "beta_TD_minus_ASD": 0.1343483593579044,
+      "p": 0.0001180729739147,
+      "q": 0.0075566703305446
+    }
+  ],
+  "outputs": {
+    "png": "D:\\asd_eeg_aperiodic_study\\working\\final_figures\\figure2_spatial_robustness\\panel_A_channelwise_effect_topomap.png",
+    "tiff": "D:\\asd_eeg_aperiodic_study\\working\\final_figures\\figure2_spatial_robustness\\panel_A_channelwise_effect_topomap.tiff",
+    "pdf": "D:\\asd_eeg_aperiodic_study\\working\\final_figures\\figure2_spatial_robustness\\panel_A_channelwise_effect_topomap.pdf",
+    "svg": "D:\\asd_eeg_aperiodic_study\\working\\final_figures\\figure2_spatial_robustness\\panel_A_channelwise_effect_topomap.svg",
+    "source_csv": "D:\\asd_eeg_aperiodic_study\\figure_source_data\\fig2a_channelwise_topomap_source.csv"
+  }
+}

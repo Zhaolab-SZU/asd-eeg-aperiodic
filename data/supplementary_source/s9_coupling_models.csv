@@ -1,0 +1,3 @@
+cohort,model,interaction_beta,se,ci_low,ci_high,raw_p,fdr_p,n_total,n_asd,n_td
+overlapping,rest_x_group_x_neutral,0.3156239796975752,0.1239154853774571,,,0.0120753164800685,0.0362259494402056,133,,
+dual_paradigm_matched,rest_x_group_x_neutral,0.0635617771059739,0.234792031983329,,,0.7875391806526295,,68,,

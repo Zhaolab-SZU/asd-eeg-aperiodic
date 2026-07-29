@@ -1,0 +1,6 @@
+roi,contrast,beta_TD_minus_ASD,se,ci_low,ci_high,p,n_subjects,reference_roi,model
+central,group_x_region_interaction,0.0261796658993146,0.0337813930033241,-0.040030647734794,0.0923899795334233,0.4383556417767648,138,central,exponent ~ C(group)*C(roi) + age + sex + IQ + usable_epochs; subject RE
+frontal,group_x_region_interaction,0.0829162265635562,0.0244901982286318,0.0349163200611912,0.1309161330659211,0.0007099946253885,138,central,exponent ~ C(group)*C(roi) + age + sex + IQ + usable_epochs; subject RE
+temporal,group_x_region_interaction,0.0559905733592801,0.0243341505520292,0.0082965146829272,0.103684632035633,0.0213969905552989,138,central,exponent ~ C(group)*C(roi) + age + sex + IQ + usable_epochs; subject RE
+parietal,group_x_region_interaction,0.0461971943632308,0.0243341505520292,-0.0014968643131219,0.0938912530395837,0.0576366864216689,138,central,exponent ~ C(group)*C(roi) + age + sex + IQ + usable_epochs; subject RE
+occipital,group_x_region_interaction,0.0814252260061786,0.0243341505520292,0.0337311673298258,0.1291192846825315,0.0008194802865448,138,central,exponent ~ C(group)*C(roi) + age + sex + IQ + usable_epochs; subject RE
