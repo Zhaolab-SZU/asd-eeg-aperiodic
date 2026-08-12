@@ -22,15 +22,17 @@ from src.stats_utils import (
 
 logger = logging.getLogger(__name__)
 
+# Align with primary posterior OLS covariates (no mean_r_squared).
 FORMULA_GROUP = (
-    "{outcome} ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs + mean_r_squared"
+    "{outcome} ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs"
 )
 FORMULA_AGE_INT = (
-    "{outcome} ~ C(group) * age_months + C(sex) + IQ_total + usable_epochs + mean_r_squared"
+    "{outcome} ~ C(group) * age_months + C(sex) + IQ_total + usable_epochs"
 )
 FORMULA_REGION = (
-    "exponent ~ C(group) * C(region) + age_months + C(sex) + IQ_total + usable_epochs + mean_r_squared"
+    "exponent ~ C(group) * C(region) + age_months + C(sex) + IQ_total + usable_epochs"
 )
+COVARIATES = ["age_months", "sex", "IQ_total", "usable_epochs"]
 ADOS_OUTCOMES = ["ADOS_total", "ADOS_SA", "ADOS_RRB"]
 
 
@@ -49,7 +51,6 @@ def load_frontal_comparison_cohort(project_root: Path) -> pd.DataFrame:
     normative["subject_id"] = normative["subject_id"].astype(str)
     keep = [
         "subject_id",
-        "mean_r_squared",
         "ADOS_total",
         "ADOS_SA",
         "ADOS_RRB",
@@ -86,7 +87,7 @@ def run_region_group_models(df: pd.DataFrame) -> pd.DataFrame:
         ("posterior_exponent", "posterior"),
     ]:
         formula = FORMULA_GROUP.format(outcome=outcome)
-        need = [outcome, "group", "age_months", "sex", "IQ_total", "usable_epochs", "mean_r_squared"]
+        need = [outcome, "group", *COVARIATES]
         sub = df.dropna(subset=need).copy()
         res = run_ols(formula, sub)
         beta, p, term = _group_beta_td_minus_asd(res)
@@ -133,11 +134,7 @@ def run_frontal_posterior_mixed(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Data
             [
                 "subject_id",
                 "group",
-                "age_months",
-                "sex",
-                "IQ_total",
-                "usable_epochs",
-                "mean_r_squared",
+                *COVARIATES,
                 col,
             ]
         ].copy()
@@ -150,11 +147,7 @@ def run_frontal_posterior_mixed(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Data
         "group",
         "region",
         "subject_id",
-        "age_months",
-        "sex",
-        "IQ_total",
-        "usable_epochs",
-        "mean_r_squared",
+        *COVARIATES,
     ]
     sub = long_df.dropna(subset=need).copy()
     # Keep only subjects with both regions (balanced repeated measures)
@@ -212,7 +205,7 @@ def run_developmental_models(df: pd.DataFrame) -> pd.DataFrame:
         ("posterior_exponent", "posterior"),
     ]:
         formula = FORMULA_AGE_INT.format(outcome=outcome)
-        need = [outcome, "group", "age_months", "sex", "IQ_total", "usable_epochs", "mean_r_squared"]
+        need = [outcome, "group", *COVARIATES]
         sub = df.dropna(subset=need).copy()
         res = run_ols(formula, sub)
         # Interaction term
@@ -462,7 +455,7 @@ def write_frontal_comparison_report(
     text = f"""# Supplementary frontal comparison analysis
 
 ## 1. Frontal group effect (same covariates as posterior)
-Model: `exponent ~ group + age + sex + FSIQ + usable_epochs + mean_r_squared`
+Model: `exponent ~ group + age + sex + FSIQ + usable_epochs` (aligned with primary posterior OLS; no mean_r_squared)
 
 - Frontal: β(TD−ASD)={fg['beta_td_minus_asd']:.4f}, p={fg['p']:.4g}, FDR q={fg['fdr_q']:.4g}, n={int(fg['n'])}
 - Posterior: β(TD−ASD)={pg['beta_td_minus_asd']:.4f}, p={pg['p']:.4g}, FDR q={pg['fdr_q']:.4g}, n={int(pg['n'])}

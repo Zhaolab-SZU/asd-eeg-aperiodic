@@ -1,3 +1,3 @@
 analysis,region,outcome,formula,n,n_asd,n_td,beta_td_minus_asd,se,p,ci_low,ci_high,fdr_q,fdr_significant
-region_group_ols,frontal,frontal_exponent,frontal_exponent ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs + mean_r_squared,138,61,77,0.08196297250743814,0.03806933634547692,0.03315135372859535,0.006652744186619819,0.15727320082825647,0.03315135372859535,True
-region_group_ols,posterior,posterior_exponent,posterior_exponent ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs + mean_r_squared,138,61,77,0.12045664601918782,0.03268669200689309,0.0003333543902493616,0.055794572171823334,0.18511871986655232,0.0006667087804987232,True
+region_group_ols,frontal,frontal_exponent,frontal_exponent ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs,138,61,77,0.11442964628838567,0.04531372354265403,0.01274393328003652,0.024794622226225624,0.2040646703505457,0.01274393328003652,True
+region_group_ols,posterior,posterior_exponent,posterior_exponent ~ C(group) + age_months + C(sex) + IQ_total + usable_epochs,138,61,77,0.13289970633078488,0.033765182429721645,0.00013337285837883894,0.06610883806981702,0.19969057459175274,0.0002667457167576779,True
