@@ -17,6 +17,7 @@ Do not place raw EEG or item-level clinical raw responses in this folder.
 | `table_s4b_frontal_ados_partial.csv` | S4b (ADOS partial Pearson) | same |
 | `table_s4b_frontal_vs_posterior_interaction.csv` | S4b (group × region key terms) | same |
 | `table_s4b_movie_isc_effects.csv` | S4b exploratory movie ISC (group summaries only) | same |
+| `movie_isc_covariate_sensitivity.csv` | Supplementary Table S11 post hoc movie Aperiodic-ISC covariate sensitivity | `scripts/movie/26_movie_isc_covariate_sensitivity.py` |
 | `hbn_fsiq_adjusted_isc.csv` | HBN residual-FSIQ-adjusted Aperiodic-ISC | `scripts/hbn/hbn_isc_fsiq_adjusted.py` |
 
 ## Re-export / recompute
@@ -26,6 +27,7 @@ Development repository:
 ```bash
 python scripts/28_posterior_roi_nested_split_validation.py --n-repeats 200 --n-folds 5
 python scripts/29_supplementary_frontal_comparison.py
+python scripts/movie/26_movie_isc_covariate_sensitivity.py
 python scripts/hbn/hbn_isc_fsiq_adjusted.py
 python scripts/export_statistical_summary_tables.py
 ```

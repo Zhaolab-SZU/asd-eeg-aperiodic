@@ -12,7 +12,7 @@ The analyses cover:
 - posterior-region aperiodic exponent analyses
 - naturalistic movie Aperiodic-ISC analyses
 - rest-movie coupling analyses
-- external Healthy Brain Network The Present movie replication analyses
+- external Healthy Brain Network The Present movie convergence analyses
 
 ## Repository Structure
 

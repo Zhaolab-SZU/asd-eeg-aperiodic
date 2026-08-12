@@ -45,6 +45,8 @@ Movie Aperiodic-ISC cohort,Age range months,46-121,40-121,,
 Movie Aperiodic-ISC cohort,Sex M/F,53/5,58/20,0.013,Corrected against current supplementary table; ASD movie cohort has 53 male and 5 female participants.
 Movie Aperiodic-ISC cohort,Full-scale IQ mean (SD),93.5 (17.2),112.2 (14.7),<0.001,
 Movie Aperiodic-ISC cohort,ADOS total mean (SD),14.4 (2.9),NA,,
+Movie Aperiodic-ISC cohort,ADOS social affect mean (SD),9.6 (2.0),NA,,
+Movie Aperiodic-ISC cohort,ADOS restricted/repetitive behavior mean (SD),4.9 (1.4),NA,,
 Resting + movie matched cohort,N,46,46,,
 Resting + movie matched cohort,Age months mean (SD),80.4 (13.6),82.5 (15.7),0.498,
 Resting + movie matched cohort,Age range months,46-108,40-112,,
