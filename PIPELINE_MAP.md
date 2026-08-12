@@ -41,15 +41,13 @@
 | `scripts/movie/25b_rest_movie_coupling.py` | `scripts/34_resting_to_movie_coupling.py` | Resting-to-movie coupling models |
 | `scripts/movie/25c_rest_movie_coupling_overall_isc.py` | `scripts/71_resting_to_movie_coupling_overall_isc.py` | Coupling with overall ISC |
 | `scripts/hbn/100_hbn_inventory.py` | `scripts/100_hbn_inventory.py` | HBN file inventory |
-| `scripts/hbn/hbn_preprocess_resting.py` | `scripts/101_hbn_preprocess_resting.py` | HBN resting preprocess |
 | `scripts/hbn/hbn_preprocess_present.py` | `scripts/101_hbn_preprocess_thepresent.py` | HBN The Present movie preprocess |
 | `scripts/hbn/hbn_specparam_roi.py` | `scripts/102_hbn_specparam_roi.py` | HBN ROI specparam |
-| `scripts/hbn/hbn_external_validation.py` | `scripts/103_hbn_external_validation.py` | HBN external validation entry |
+| `scripts/hbn/hbn_external_validation.py` | `scripts/103_hbn_external_validation.py` | Archived pre-2026-08 HBN resting entry; not part of the current manuscript-facing pipeline |
 | `scripts/hbn/hbn_isc_calc.py` | `scripts/113_hbn_thepresent_aperiodic_isc.py` | HBN The Present Aperiodic-ISC |
 | `scripts/hbn/hbn_isc_matched.py` | `scripts/114_hbn_thepresent_isc_matched.py` | Age/IQ/sex-matched HBN ISC |
 | `scripts/hbn/hbn_isc_matched_global.py` | `scripts/115_hbn_thepresent_isc_matched_global.py` | Matched HBN ISC global variant |
-| `scripts/hbn/hbn_rest_eyes_open_matched.py` | `scripts/143_hbn_eo_matched_external_validation.py` | HBN eyes-open matched resting convergence |
-| `scripts/hbn/hbn_eo_posterior_exponent.py` | `scripts/hbn_eo_posterior_exponent.py` | HBN EO posterior exponent helper |
+| `scripts/hbn/hbn_isc_fsiq_adjusted.py` | `scripts/hbn/hbn_isc_fsiq_adjusted.py` | HBN FSIQ-adjusted Aperiodic-ISC OLS |
 | `scripts/figures/prepare_figure_source_data.py` | `scripts/prepare_figure_source_data.py` | Assemble main-figure source CSVs |
 | `scripts/figures/export_supplementary_source_data.py` | `scripts/export_supplementary_source_data.py` | Export supplementary source tables |
 | `scripts/figures/export_s4_development_predictions_with_ci.py` | `scripts/export_s4_development_predictions_with_ci.py` | S4 development CI trajectories |
@@ -58,7 +56,7 @@
 | `scripts/figures/export_fig5_rest_movie_exponent_subjects.py` | `scripts/export_fig5_rest_movie_exponent_subjects.py` | Fig.5A rest–movie subject table |
 | `scripts/figures/validate_supplementary_source_data.py` | `scripts/validate_supplementary_source_data.py` | Validate supplementary source bundle |
 | `scripts/figures/recompute_s4_age_interaction_sensitivity.py` | `scripts/recompute_s4_age_interaction_sensitivity.py` | Recompute S4 age×group sensitivities |
-| `scripts/figures/plot_supplementary_figures.py` | `scripts/plot_supplementary_figures.py` | Plot Supp Figs S1/S4–S7 |
+| `scripts/figures/plot_supplementary_figures.py` | `scripts/plot_supplementary_figures.py` | Plot manuscript-facing Supp Figs S1/S4-S6/S8 |
 | `scripts/figures/plot_fig2a_channelwise_topomap.py` | `scripts/plot_fig2a_channelwise_topomap.py` | Fig.2A topomap |
 | `scripts/figures/plot_posterior_robustness_forest.py` | `scripts/plot_posterior_robustness_forest.py` | Fig.2B robustness forest |
 | `scripts/figures/plot_ados_posterior_partialcorr_main.py` | `scripts/64_plot_ados_posterior_partialcorr_main.py` | Fig.4 ADOS partial-correlation panels |
@@ -85,12 +83,8 @@
 | `src/classic_isc_analysis.py` | `src/classic_isc_analysis.py` | library module |
 | `src/movie_isc_partial_analysis.py` | `src/movie_isc_partial_analysis.py` | library module |
 | `src/coordination_feature_analysis.py` | `src/coordination_feature_analysis.py` | library module |
-| `src/hbn_external.py` | `src/hbn_external.py` | library module |
+| `src/hbn_external.py` | `src/hbn_external.py` | HBN path/inventory helpers; resting replication functions are archived and not manuscript-facing |
 | `src/hbn_aperiodic_isc.py` | `src/hbn_aperiodic_isc.py` | library module |
-| `src/hbn_eo_exponent.py` | `src/hbn_eo_exponent.py` | library module |
-| `src/hbn_main_matched_cohort.py` | `src/hbn_main_matched_cohort.py` | library module |
-| `src/hbn_confirmatory_replication.py` | `src/hbn_confirmatory_replication.py` | library module |
-| `src/hbn_strict_replication.py` | `src/hbn_strict_replication.py` | library module |
 | `src/hbn_spatial_stats.py` | `src/hbn_spatial_stats.py` | library module |
 | `src/artifact_defense_analysis.py` | `src/artifact_defense_analysis.py` | library module |
 | `src/robustness_utils.py` | `src/robustness_utils.py` | library module |
@@ -114,8 +108,7 @@
 | `config/config_resting_matched_postqc.yaml` | `config/config_resting_matched_postqc.yaml` | config |
 | `config/config_hbn.yaml` | `config/config_hbn_thepresent.yaml` | config |
 | `config/config_hbn_thepresent.yaml` | `config/config_hbn_thepresent.yaml` | config |
-| `config/config_hbn_resting.yaml` | `config/config_hbn_resting.yaml` | config |
-| `config/config_hbn_external.yaml` | `config/config_hbn_external.yaml` | config |
+| `config/config_hbn_external.yaml` | `config/config_hbn_external.yaml` | Archived HBN resting external-validation config; not manuscript-facing |
 | `config/roi_hbn129.yaml` | `config/roi_channels_hbn129.yaml` | config |
 | `config/roi_channels_hbn129.yaml` | `config/roi_channels_hbn129.yaml` | config |
 | `figure_source_data/` | `figure_source_data/` | figure source CSVs |
@@ -128,12 +121,11 @@
 - Jansen–Rit mechanistic branch (`96–146`, `src/jr_*`)
 - Gaze sensitivity scripts (removed from manuscript)
 - ML / classifier exploration scripts
+- HBN resting-state replication/external-validation scripts and source tables (removed from the 2026-08-12 manuscript)
 - Local tools (`.tools/`), Word backups, notebooks
 
 | `scripts/resting/10c_posterior_roi_nested_split_validation.py` | `scripts/28_posterior_roi_nested_split_validation.py` | Nested split-sample ROI validation (Supp Table S4a) |
 | `scripts/resting/10d_supplementary_frontal_comparison.py` | `scripts/29_supplementary_frontal_comparison.py` | Frontal comparison analyses (Supp Table S4b) |
-| `scripts/hbn/hbn_isc_fsiq_adjusted.py` | `scripts/hbn/hbn_isc_fsiq_adjusted.py` | HBN FSIQ-adjusted Aperiodic-ISC OLS |
 | `scripts/figures/export_statistical_summary_tables.py` | `scripts/export_statistical_summary_tables.py` | Export S4a/S4b/HBN FSIQ summary CSVs |
 | `src/posterior_roi_nested_split.py` | `src/posterior_roi_nested_split.py` | library module |
 | `src/frontal_comparison_analysis.py` | `src/frontal_comparison_analysis.py` | library module |
-

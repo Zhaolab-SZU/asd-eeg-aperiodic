@@ -1,186 +1,165 @@
+#!/usr/bin/env python3
 from __future__ import annotations
 
 from pathlib import Path
-import textwrap
 
 from PIL import Image, ImageDraw, ImageFont
 
+ROOT = Path(__file__).resolve().parents[3]
+OUT = ROOT / "outputs" / "figures" / "supplementary"
+OUT.mkdir(parents=True, exist_ok=True)
+PNG = OUT / "Supplementary_Figure_S1_cohort_flow.png"
+PDF = OUT / "Supplementary_Figure_S1_cohort_flow.pdf"
 
-OUT_DIR = Path(__file__).resolve().parents[3] / "outputs" / "figures" / "supplementary"
-OUT_DIR.mkdir(parents=True, exist_ok=True)
-
-PNG = OUT_DIR / "Supplementary_Figure_S1_cohort_flow.png"
-PDF = OUT_DIR / "Supplementary_Figure_S1_cohort_flow.pdf"
-
-W, H = 3000, 1760
-SCALE = 1
-
-RED = "#C25450"
-BLUE = "#4A6FA5"
-DARK = "#222222"
-MID = "#555555"
-LIGHT = "#D7DDE6"
-FILL = "#FFFFFF"
-PALE_RED = "#F7E8E6"
-PALE_BLUE = "#EAF0F8"
-
-FONT_DIR = Path("/System/Library/Fonts/Supplemental")
-REG = str(FONT_DIR / "Times New Roman.ttf")
-BOLD = str(FONT_DIR / "Times New Roman Bold.ttf")
+W, H = 1800, 1050
+BG = "white"
+TEXT = "#222222"
+SUBTEXT = "#333333"
+STROKE = "#555555"
+ARROW = "#5A5A5A"
+RED = "#C36B63"
+BLUE = "#6A86B6"
+PALE_RED = "#F6E8E6"
+PALE_BLUE = "#E8EEF6"
 
 
 def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(BOLD if bold else REG, size)
+    candidates = [
+        "/System/Library/Fonts/Supplemental/Times New Roman Bold.ttf" if bold else "/System/Library/Fonts/Supplemental/Times New Roman.ttf",
+        "/System/Library/Fonts/Supplemental/Arial Bold.ttf" if bold else "/System/Library/Fonts/Supplemental/Arial.ttf",
+    ]
+    for path in candidates:
+        try:
+            return ImageFont.truetype(path, size)
+        except OSError:
+            pass
+    return ImageFont.load_default()
 
 
-F_LABEL = font(68, True)
-F_PANEL = font(46, True)
-F_TITLE = font(40, True)
-F_TEXT = font(28, False)
-F_N = font(40, True)
-F_SMALL = font(29, False)
-F_TINY = font(20, False)
+F_PANEL = font(44, True)
+F_TITLE = font(31, True)
+F_NODE = font(24, True)
+F_N = font(23, True)
+F_GROUP = font(20, True)
 
 
-def text_size(draw: ImageDraw.ImageDraw, text: str, fnt: ImageFont.ImageFont):
-    b = draw.textbbox((0, 0), text, font=fnt)
-    return b[2] - b[0], b[3] - b[1]
+def center_line(draw: ImageDraw.ImageDraw, x: float, y: float, text: str, fnt, fill=TEXT) -> None:
+    bbox = draw.textbbox((0, 0), text, font=fnt)
+    draw.text((x - (bbox[2] - bbox[0]) / 2, y), text, font=fnt, fill=fill)
 
 
-def centered_text(draw, xy, text, fnt, fill=DARK, anchor="mm"):
-    draw.text(xy, text, font=fnt, fill=fill, anchor=anchor)
-
-
-def wrap_lines(text: str, chars: int) -> list[str]:
-    return textwrap.wrap(text, width=chars, break_long_words=False, break_on_hyphens=False)
-
-
-def draw_node(
+def center_multiline(
     draw: ImageDraw.ImageDraw,
     box: tuple[int, int, int, int],
-    title: str,
+    title_lines: list[str],
     n: str,
     groups: str,
-    accent: str,
-    note: str | None = None,
-    fill: str = FILL,
-):
-    x0, y0, x1, y1 = box
-    r = 16
-    draw.rounded_rectangle(box, radius=r, fill=fill, outline="#2E2E2E", width=3)
-
-    cy = y0 + 52
-    lines = wrap_lines(title, 20)
-    for line in lines:
-        centered_text(draw, ((x0 + x1) / 2, cy), line, F_TITLE, DARK)
-        cy += 44
-    cy += 4
-    centered_text(draw, ((x0 + x1) / 2, cy), n, F_N, DARK)
-    cy += 42
-    centered_text(draw, ((x0 + x1) / 2, cy), groups, F_SMALL, MID)
-    if note:
-        cy += 30
-        centered_text(draw, ((x0 + x1) / 2, cy), note, F_TINY, MID)
+) -> None:
+    x1, y1, x2, y2 = box
+    lines = [(line, F_NODE, TEXT) for line in title_lines]
+    lines.append((n, F_N, TEXT))
+    lines.append((groups, F_GROUP, SUBTEXT))
+    line_metrics = []
+    for line, fnt, _ in lines:
+        bbox = draw.textbbox((0, 0), line, font=fnt)
+        line_metrics.append((bbox, bbox[3] - bbox[1]))
+    spacing = 6
+    total_h = sum(h for _, h in line_metrics) + spacing * (len(lines) - 1)
+    y = (y1 + y2 - total_h) / 2 - 1
+    for (line, fnt, fill), (bbox, h) in zip(lines, line_metrics):
+        bbox = draw.textbbox((0, 0), line, font=fnt)
+        draw.text(((x1 + x2 - (bbox[2] - bbox[0])) / 2, y - bbox[1]), line, font=fnt, fill=fill)
+        y += h + spacing
 
 
-def arrow(draw, start, end, color="#444444", width=3):
-    x0, y0 = start
-    x1, y1 = end
-    draw.line((x0, y0, x1, y1), fill=color, width=width)
-    # arrow head
-    import math
-
-    ang = math.atan2(y1 - y0, x1 - x0)
-    length = 18
-    spread = 0.55
-    p1 = (x1 - length * math.cos(ang - spread), y1 - length * math.sin(ang - spread))
-    p2 = (x1 - length * math.cos(ang + spread), y1 - length * math.sin(ang + spread))
-    draw.polygon((end, p1, p2), fill=color)
+def node(
+    draw: ImageDraw.ImageDraw,
+    box: tuple[int, int, int, int],
+    title_lines: list[str],
+    n: str,
+    groups: str,
+    fill: str = "white",
+) -> None:
+    draw.rounded_rectangle(box, radius=10, fill=fill, outline=STROKE, width=2)
+    center_multiline(draw, box, title_lines, n, groups)
 
 
-def elbow_arrow(draw, start, end, mid_y=None, color="#444444"):
-    x0, y0 = start
-    x1, y1 = end
-    if mid_y is None:
-        mid_y = (y0 + y1) // 2
-    draw.line((x0, y0, x0, mid_y, x1, mid_y, x1, y1), fill=color, width=3)
-    arrow(draw, (x1, y1 - 2), (x1, y1), color=color, width=3)
+def arrow_head(draw: ImageDraw.ImageDraw, x: int, y: int, direction: str) -> None:
+    if direction == "down":
+        pts = [(x, y), (x - 8, y - 16), (x + 8, y - 16)]
+    elif direction == "right":
+        pts = [(x, y), (x - 14, y - 7), (x - 14, y + 7)]
+    else:
+        raise ValueError(direction)
+    draw.polygon(pts, fill=ARROW)
 
 
-def draw_section_label(draw, x, y, label, color):
-    draw.text((x, y), label, font=F_PANEL, fill=color, anchor="la")
+def down_arrow(draw: ImageDraw.ImageDraw, x: int, y1: int, y2: int) -> None:
+    draw.line((x, y1, x, y2), fill=ARROW, width=3)
+    arrow_head(draw, x, y2, "down")
 
 
-img = Image.new("RGB", (W, H), "white")
-draw = ImageDraw.Draw(img)
+def branch_down(draw: ImageDraw.ImageDraw, start: tuple[int, int], targets: list[tuple[int, int]]) -> None:
+    sx, sy = start
+    joint_y = sy + 46
+    min_x = min(x for x, _ in targets)
+    max_x = max(x for x, _ in targets)
+    draw.line((sx, sy, sx, joint_y), fill=ARROW, width=3)
+    draw.line((min_x, joint_y, max_x, joint_y), fill=ARROW, width=3)
+    for tx, ty in targets:
+        draw.line((tx, joint_y, tx, ty), fill=ARROW, width=3)
+        arrow_head(draw, tx, ty, "down")
 
-# Panel labels and headings
-draw.text((90, 70), "A", font=F_LABEL, fill=DARK)
-draw_section_label(draw, 215, 88, "PRIMARY COHORT", RED)
 
-draw.text((1725, 70), "B", font=F_LABEL, fill=DARK)
-draw_section_label(draw, 1845, 88, "EXTERNAL HBN COHORT", BLUE)
+def elbow_right(draw: ImageDraw.ImageDraw, x1: int, y1: int, x2: int, y2: int) -> None:
+    draw.line((x1, y1, x1, y2, x2, y2), fill=ARROW, width=2)
+    arrow_head(draw, x2, y2, "right")
 
-# Subtle panel divider
-draw.line((1610, 160, 1610, 1620), fill="#E8E8E8", width=3)
 
-# Primary flow
-top1 = (522, 210, 1277, 420)
-mid1 = (522, 535, 1277, 745)
-draw_node(draw, top1, "Resting EEG registration", "N = 168", "ASD = 80 | TD = 88", RED, fill=PALE_RED)
-draw_node(draw, mid1, "Primary resting spectral cohort", "N = 138", "ASD = 61 | TD = 77", RED)
-arrow(draw, ((top1[0] + top1[2]) // 2, top1[3] + 10), ((mid1[0] + mid1[2]) // 2, mid1[1] - 10))
+def main() -> None:
+    img = Image.new("RGB", (W, H), BG)
+    draw = ImageDraw.Draw(img)
 
-node_w, node_h = 410, 210
-gap_x, gap_y = 45, 64
-xA = 240
-xB = xA + node_w + gap_x
-xC = xB + node_w + gap_x
-yR1 = 930
-yR2 = yR1 + node_h + gap_y
-primary_nodes = [
-    ((xA, yR1, xA + node_w, yR1 + node_h), "Paired rest-to-movie exponent", "N = 136", "ASD = 61 | TD = 75"),
-    ((xB, yR1, xB + node_w, yR1 + node_h), "Movie Aperiodic-ISC cohort", "N = 136", "ASD = 58 | TD = 78"),
-    ((xC, yR1, xC + node_w, yR1 + node_h), "Resting + movie matched", "N = 92", "ASD = 46 | TD = 46"),
-    ((xA + 220, yR2, xA + 220 + node_w, yR2 + node_h), "IQ-balanced subset", "N = 76", "ASD = 38 | TD = 38"),
-    ((xB + 220, yR2, xB + 220 + node_w, yR2 + node_h), "Strict specparam-QC", "N = 90", "ASD = 44 | TD = 46"),
-]
+    draw.text((40, 24), "A", font=F_PANEL, fill=TEXT)
+    draw.text((118, 32), "PRIMARY COHORT", font=F_TITLE, fill=RED)
 
-bus_y = 850
-center_mid = ((mid1[0] + mid1[2]) // 2, mid1[3] + 6)
-draw.line((center_mid[0], center_mid[1], center_mid[0], bus_y), fill="#555555", width=3)
-draw.line((xA + node_w / 2, bus_y, xC + node_w / 2, bus_y), fill="#555555", width=3)
-for box, title, n, groups in primary_nodes:
-    draw_node(draw, box, title, n, groups, RED)
-    cx = (box[0] + box[2]) // 2
-    arrow(draw, (cx, bus_y), (cx, box[1] - 12), color="#555555", width=3)
+    top = (540, 90, 1260, 195)
+    primary = (540, 275, 1260, 380)
+    paired = (150, 505, 535, 625)
+    movie = (708, 505, 1093, 625)
+    matched = (1265, 505, 1650, 625)
+    iq = (420, 700, 805, 820)
+    strict = (995, 700, 1380, 820)
 
-# HBN flow
-hbn_top = (1875, 215, 2705, 425)
-draw_node(draw, hbn_top, "HBN The Present matched cohort", "N = 238", "ASD = 119 | TD = 119", BLUE, fill=PALE_BLUE)
+    node(draw, top, ["Resting EEG registration"], "N = 168", "(ASD=80, TD=88)", PALE_RED)
+    node(draw, primary, ["Primary resting spectral cohort"], "N = 138", "(ASD=61, TD=77)")
+    down_arrow(draw, 900, 195, 268)
+    branch_down(draw, (900, 380), [(342, 505), (900, 505), (1458, 505)])
+    node(draw, paired, ["Paired rest-to-movie exponent"], "N = 136", "(ASD=61, TD=75)")
+    node(draw, movie, ["Movie Aperiodic-ISC cohort"], "N = 136", "(ASD=58, TD=78)")
+    node(draw, matched, ["Resting + movie matched"], "N = 92", "(ASD=46, TD=46)")
+    down_arrow(draw, 612, 430, 700)
+    down_arrow(draw, 1188, 430, 700)
+    node(draw, iq, ["IQ-balanced subset"], "N = 76", "(ASD=38, TD=38)")
+    node(draw, strict, ["Strict specparam QC"], "N = 90", "(ASD=44, TD=46)")
 
-hnode_w, hnode_h = 610, 210
-hy1 = 625
-hy2 = hy1 + hnode_h + 75
-hy3 = hy2 + hnode_h + 70
-hbn_nodes = [
-    ((1985, hy1, 1985 + hnode_w, hy1 + hnode_h), "The Present movie Aperiodic-ISC", "N = 238", "ASD = 119 | TD = 119"),
-    ((1985, hy2, 1985 + hnode_w, hy2 + hnode_h), "Eyes-open resting subset", "N = 224", "ASD = 112 | TD = 112"),
-    ((1985, hy3, 1985 + hnode_w, hy3 + hnode_h), "Eyes-closed resting subset", "N = 230", "ASD = 115 | TD = 115"),
-]
+    draw.line((105, 845, 1695, 845), fill="#E6E6E6", width=2)
+    draw.text((40, 865), "B", font=F_PANEL, fill=TEXT)
+    draw.text((118, 873), "EXTERNAL HBN COHORT", font=F_TITLE, fill=BLUE)
 
-h_bus_x = 1835
-draw.line(((hbn_top[0] + hbn_top[2]) // 2, hbn_top[3] + 8, (hbn_top[0] + hbn_top[2]) // 2, 575), fill="#555555", width=3)
-draw.line(((hbn_top[0] + hbn_top[2]) // 2, 575, h_bus_x, 575), fill="#555555", width=3)
-for box, title, n, groups in hbn_nodes:
-    cy = (box[1] + box[3]) // 2
-    draw.line((h_bus_x, 575, h_bus_x, cy), fill="#555555", width=3)
-    arrow(draw, (h_bus_x, cy), (box[0] - 12, cy), color="#555555", width=3)
-    draw_node(draw, box, title, n, groups, BLUE)
+    hbn_top = (420, 940, 840, 1045)
+    hbn_movie = (960, 940, 1380, 1045)
+    node(draw, hbn_top, ["HBN The Present matched cohort"], "N = 238", "(ASD=119, TD=119)", PALE_BLUE)
+    node(draw, hbn_movie, ["The Present movie Aperiodic-ISC"], "N = 238", "(ASD=119, TD=119)")
+    y_mid = (hbn_top[1] + hbn_top[3]) // 2
+    draw.line((hbn_top[2], y_mid, hbn_movie[0] - 10, y_mid), fill=ARROW, width=3)
+    arrow_head(draw, hbn_movie[0] - 10, y_mid, "right")
 
-# Crop away unused white space so the figure remains legible when inserted into Word.
-img = img.crop((65, 50, 2775, 1505))
-img.save(PNG, dpi=(300, 300))
-img.save(PDF, "PDF", resolution=300.0)
-print(PNG)
-print(PDF)
+    img.save(PNG, dpi=(300, 300))
+    img.save(PDF, "PDF", resolution=300.0)
+    print(PNG)
+    print(PDF)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,64 +1,67 @@
 # asd-eeg-aperiodic
 
-Analysis code and **de-identified derived data** for posterior aperiodic EEG dynamics in autistic and typically developing children (resting-state + naturalistic movie viewing).
+Code and de-identified derived data for analyses of posterior aperiodic EEG activity in autistic and typically developing children during resting-state and naturalistic movie viewing.
 
-**Repository:** https://github.com/Zhaolab-SZU/asd-eeg-aperiodic
+## Overview
 
-This bundle supports the manuscript prepared for *Nature Human Behaviour*. A DOI-backed archive (Zenodo/OSF) will be linked here before publication.
+This repository contains the analysis scripts, configuration files, and derived source data used to generate the manuscript figures and statistical tables. Raw EEG recordings are not included.
 
-## What is included
+The analyses cover:
 
-| Path | Contents |
-|------|----------|
-| `scripts/resting/` | Resting EEG → PSD → specparam → ROI / channel models |
-| `scripts/movie/` | Partly Cloudy time-resolved aperiodic + Aperiodic-ISC + synchrony controls |
-| `scripts/hbn/` | Healthy Brain Network external analyses (code only; obtain HBN under DUA) |
-| `scripts/figures/` | Figure source export utilities + current main/supplementary plotting scripts |
-| `src/` | Shared analysis library |
-| `config/` | Relative-path YAML configs (see `config/README_PATHS.md`) |
-| `data/figure_source/` | De-identified CSVs for main Figures 1–5 |
-| `data/supplementary_source/` | De-identified CSVs for supplementary figures/tables |
-| `data/tables/` | Additional statistical summary tables (see gap list there) |
-| `figure_source_data/` | Legacy mirror of figure source tables (kept for older scripts) |
+- resting-state EEG spectral parameterization
+- posterior-region aperiodic exponent analyses
+- naturalistic movie Aperiodic-ISC analyses
+- rest-movie coupling analyses
+- external Healthy Brain Network The Present movie replication analyses
 
-## What is **not** included
+## Repository Structure
 
-- Raw EEG recordings
-- Item-level clinical instruments beyond summary ADOS totals used in analyses
-- Healthy Brain Network raw BIDS data (obtain separately under the HBN data-use agreement)
+| Path | Description |
+|------|-------------|
+| `src/` | Shared analysis code |
+| `config/` | YAML configuration files with relative paths |
+| `scripts/resting/` | Resting-state EEG analysis scripts |
+| `scripts/movie/` | Movie-viewing Aperiodic-ISC analysis scripts |
+| `scripts/hbn/` | Healthy Brain Network The Present analysis scripts |
+| `scripts/figures/` | Figure and source-data export scripts |
+| `data/figure_source/` | Source data for main figures |
+| `data/supplementary_source/` | Source data for supplementary figures and tables |
+| `data/tables/` | Statistical summary tables |
+| `figure_source_data/` | Legacy source-data mirror used by older plotting scripts |
 
-## Quick start (regenerate figures from shipped CSVs)
+## Installation
 
 ```bash
 pip install -r requirements.txt
+```
+
+## Reproducing Figures
+
+Figures can be regenerated from the shipped derived CSV files:
+
+```bash
 python scripts/figures/main/make_figure1_resting_discovery_refined.py
 python scripts/figures/supplementary/plot_supp_s8_rest_movie_coupling.py
 ```
 
-Outputs are written under `outputs/figures/` (created at runtime; gitignored).
+Generated files are written to `outputs/figures/`.
 
-## Full pipeline
+## Data Access
 
-Resting → movie → HBN scripts expect local raw/BIDS roots configured in `config/*.yaml`.  
-Replace placeholders locally; **do not commit absolute machine paths**.  
-See `PIPELINE_MAP.md` for ideal script names ↔ development filenames.
+This repository includes de-identified derived data only. It does not include:
 
-## Data / code availability (manuscript wording)
+- raw EEG recordings
+- item-level clinical instrument data
+- raw Healthy Brain Network BIDS data
 
-De-identified participant-level derived data and analysis scripts supporting the main statistical analyses and figures are provided in this repository and will be archived with a DOI before publication. Raw EEG and item-level clinical data are not publicly available; restricted access may be requested from the corresponding author subject to ethics approval and a data-use agreement.
+Healthy Brain Network data should be obtained directly from the HBN data portal under the applicable data-use agreement.
 
-## Statistical summary tables (S4a / S4b / HBN FSIQ)
+## Notes
 
-Shipped under `data/tables/` and `statistical_tables/`, with recompute scripts:
+Configuration files use paths relative to the repository root. Local raw-data paths should be set on the user's machine and should not be committed.
 
-- `scripts/resting/10c_posterior_roi_nested_split_validation.py` (S4a)
-- `scripts/resting/10d_supplementary_frontal_comparison.py` (S4b)
-- `scripts/hbn/hbn_isc_fsiq_adjusted.py`
-- `scripts/figures/export_statistical_summary_tables.py`
-
-HBN subject-level CSVs use pseudonymous IDs (`HBN_0001` …); original NDAR identifiers are not included in this public bundle.
+Earlier exploratory HBN resting-state scripts are retained for provenance, but the current external-validation analysis uses the HBN The Present movie cohort.
 
 ## License
 
-Code: MIT (`LICENSE`).  
-Derived tables: intended for open research use with the manuscript; prefer CC-BY 4.0 if depositing separately on Zenodo.
+Code is released under the MIT license. Derived tables are provided for research reuse with appropriate citation.

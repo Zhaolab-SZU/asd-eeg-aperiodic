@@ -8,6 +8,7 @@ Do not place raw EEG or item-level clinical raw responses in this folder.
 
 | File | Manuscript / SI target | Source script |
 |------|------------------------|---------------|
+| `table1_participant_characteristics.csv` | Main Table 1 participant characteristics | Current manuscript table source, locked to `Manuscript_20260812(q).docx` |
 | `table_s4a_nested_split_summary_repeats.csv` | Supplementary Table S4a (primary: 200× 70/30) | `scripts/28_posterior_roi_nested_split_validation.py` (+ `src/posterior_roi_nested_split.py`) |
 | `table_s4a_nested_split_summary_kfold.csv` | S4a (5-fold nested) | same |
 | `table_s4a_nested_split_single50.csv` | S4a (single 50/50 split) | same |

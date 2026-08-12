@@ -89,6 +89,13 @@ specparam:
   aperiodic_mode: "fixed"
   verbose: false
 
+fit_quality:
+  min_r_squared: 0.90
+  exponent_min: 0.0
+  exponent_max: 5.0
+  fit_error_top_percentile: 5.0
+  subject_invalid_channel_ratio_max: 0.20
+
 groups:
   asd_label: "ASD"
   td_label: "TD"

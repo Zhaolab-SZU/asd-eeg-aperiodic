@@ -1,10 +1,10 @@
 # Ideal release name: plot_supplementary_figures.py
 # Original path: scripts/plot_supplementary_figures.py
-# Note: Plot Supp Figs S1/S4–S7
+# Note: Plot manuscript-facing Supp Figs S1/S4-S8
 # This file is a copy for the public github_release/ bundle.
 
 #!/usr/bin/env python
-"""Plot Supplementary Figures S1, S4, S5, S6, S7 (20260713 design)."""
+"""Plot manuscript-facing Supplementary Figures S1, S4, S5, S6, and S8."""
 
 from __future__ import annotations
 
@@ -16,6 +16,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy import stats
+
+from scripts.figures.supplementary.plot_supp_s8_rest_movie_coupling import draw as draw_s8
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SUPP_DIR = PROJECT_ROOT / "figure_source_data" / "supplementary"
@@ -355,7 +357,8 @@ def plot_s6() -> None:
     save_fig(fig, "SuppFigS6_envelope_adjusted")
 
 
-def plot_s7() -> None:
+def plot_hbn_movie_reference() -> None:
+    """Archived HBN movie visual check; HBN results are manuscript Table S14/Fig. 5C."""
     subj = pd.read_csv(SUPP_DIR / "s8_hbn_movie_subjects.csv")
     summ = pd.read_csv(SUPP_DIR / "s8_hbn_movie_summary.csv")
 
@@ -405,16 +408,20 @@ def plot_s7() -> None:
     ax_c.set_ylabel("Group mean ISC (z)")
     ax_c.legend(frameon=False, fontsize=7, loc="upper right")
 
-    save_fig(fig, "SuppFigS7_hbn_external_convergence")
+    save_fig(fig, "Archived_HBN_movie_external_convergence")
+
+
+def plot_s8() -> None:
+    draw_s8()
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Plot supplementary figures S1/S4/S5/S6/S7.")
-    parser.add_argument("--fig", nargs="+", default=["S1", "S4", "S5", "S6", "S7"], help="Figures to render")
+    parser = argparse.ArgumentParser(description="Plot manuscript-facing supplementary figures.")
+    parser.add_argument("--fig", nargs="+", default=["S1", "S4", "S5", "S6", "S8"], help="Figures to render")
     args = parser.parse_args()
 
     apply_style()
-    mapping = {"S1": plot_s1, "S4": plot_s4, "S5": plot_s5, "S6": plot_s6, "S7": plot_s7}
+    mapping = {"S1": plot_s1, "S4": plot_s4, "S5": plot_s5, "S6": plot_s6, "S8": plot_s8}
     for key in args.fig:
         key = key.upper()
         if key not in mapping:

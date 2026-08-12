@@ -1,4 +1,4 @@
-"""HBN 静息 EO：非周期 exponent 被试间相关（ISC），对齐主研究 movie TD-template 流程。"""
+"""HBN The Present movie Aperiodic-ISC helpers for the manuscript-facing pipeline."""
 
 from __future__ import annotations
 
@@ -16,8 +16,6 @@ from scipy import signal
 from scipy.stats import spearmanr, ttest_ind
 
 from src.config import PROJECT_ROOT, load_roi_config
-from src.hbn_confirmatory_replication import _load_participants_qc
-from src.hbn_dimensional_replication import build_dimensional_table, build_enriched_cohort
 from src.hbn_main_matched_cohort import (
     apply_covariate_match_filters,
     greedy_match_asd_td,
@@ -830,6 +828,10 @@ def run_hbn_thepresent_matched_global_aperiodic_isc(cfg: dict[str, Any]) -> dict
 
 
 def run_hbn_aperiodic_isc(cfg: dict[str, Any], limit: int | None = None) -> dict[str, Path]:
+    """Archived EO/resting exploratory ISC entry, retained for provenance only."""
+    from src.hbn_confirmatory_replication import _load_participants_qc
+    from src.hbn_dimensional_replication import build_dimensional_table, build_enriched_cohort
+
     paths = resolve_hbn_paths(cfg)
     rep_dir = paths["derivatives_root"] / "replication" / "isc"
     fig_dir = paths["outputs_root"] / "figures"

@@ -1,0 +1,19 @@
+cohort,measure,asd,td,p_value,notes
+Primary resting-state spectral cohort,N,61,77,,
+Primary resting-state spectral cohort,Age months mean (SD),85.7 (16.9),88.8 (19.6),0.319,
+Primary resting-state spectral cohort,Age range months,47-131,40-130,,
+Primary resting-state spectral cohort,Sex M/F,56/5,49/28,,
+Primary resting-state spectral cohort,Full-scale IQ mean (SD),95.0 (15.2),113.2 (14.6),<0.001,
+Primary resting-state spectral cohort,ADOS total mean (SD),14.1 (3.1),NA,,
+Movie Aperiodic-ISC cohort,N,58,78,,
+Movie Aperiodic-ISC cohort,Age months mean (SD),83.9 (15.7),88.1 (19.9),0.192,
+Movie Aperiodic-ISC cohort,Age range months,46-121,40-121,,
+Movie Aperiodic-ISC cohort,Sex M/F,53/5,58/20,0.013,Corrected against current manuscript table; ASD movie cohort has 53 male and 5 female participants.
+Movie Aperiodic-ISC cohort,Full-scale IQ mean (SD),93.5 (17.2),112.2 (14.7),<0.001,
+Movie Aperiodic-ISC cohort,ADOS total mean (SD),14.4 (2.9),NA,,
+HBN The Present matched cohort,N,119,119,,
+HBN The Present matched cohort,Age months mean (SD),99.7 (15.2),99.1 (16.5),0.755,
+HBN The Present matched cohort,Age range months,72-131,70-129,,
+HBN The Present matched cohort,Sex M/F,18/101,18/101,,HBN The Present matched cohort is sex-matched and female-predominant in both diagnostic groups.
+HBN The Present matched cohort,Full-scale IQ mean (SD),96.0 (20.6),103.8 (15.2),0.001,
+HBN The Present matched cohort,ADOS total mean (SD),NA,NA,,

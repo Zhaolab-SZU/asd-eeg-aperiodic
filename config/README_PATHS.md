@@ -35,8 +35,7 @@ Do not commit machine-specific absolute paths.
 | `config_resting_matched*.yaml` | Matched / post-QC resting cohorts |
 | `config_task_movie*.yaml` | Partly Cloudy movie task |
 | `config_hbn.yaml` | Alias of The Present movie config |
-| `config_hbn_thepresent.yaml` | HBN The Present ISC |
-| `config_hbn_resting.yaml` | HBN resting |
-| `config_hbn_external.yaml` | HBN external replication suite |
+| `config_hbn_thepresent.yaml` | HBN The Present ISC; manuscript-facing external cohort, >=40 usable movie epochs and <=20% invalid scalp channels |
+| `config_hbn_external.yaml` | Archived HBN resting external-validation config; not part of the 2026-08-12 manuscript-facing pipeline |
 | `roi_channels.yaml` | Main-study 64-ch ROIs |
 | `roi_hbn129.yaml` | Alias of HBN 129-ch ROI map |

@@ -157,94 +157,102 @@ def _cohort_row(
 
 
 def export_s1() -> None:
-    supp = _read(_p("outputs", "tables", "manuscript0621", "supp_table_s1_participant_characteristics.csv"))
-    ados = _read(_p("outputs", "tables", "manuscript0621", "ados_primary_total_authoritative.csv"))
-    gaze = _read(_p("outputs", "tables", "gaze_sensitivity_ancova.csv"))
-
-    label_map = {
-        "Registration/effective resting": ("resting", "Registration/effective resting sample"),
-        "Primary resting-state spectral": ("resting", "Primary resting-state spectral cohort"),
-        "Resting 1:1 matched": ("resting", "Resting 1:1 matched cohort"),
-        "IQ-balanced matched": ("resting", "IQ-balanced matched cohort"),
-        "Matched strict specparam-QC": ("resting", "Matched strict specparam-QC cohort"),
-        "Movie Aperiodic-ISC": ("movie", "Movie spectral-QC / ISC cohort"),
-        "Resting-plus-movie overlapping": ("cross_context", "Rest–movie paired cohort"),
-        "Resting + movie matched": ("cross_context", "Resting + movie matched cohort"),
-        "Dual-paradigm matched": ("cross_context", "Dual-paradigm post-QC matched cohort"),
-        "HBN ThePresent matched": ("hbn", "HBN matched cohort"),
-        "HBN eyes-open matched subset": ("hbn", "HBN eyes-open matched subset"),
-    }
-
-    rows: list[dict[str, Any]] = []
-    order = 1
-    for _, r in supp.iterrows():
-        key = r["cohort"]
-        if key not in label_map:
-            continue
-        branch, label = label_map[key]
-        rows.append(
-            _cohort_row(
-                branch,
-                order,
-                label,
-                int(r["n_asd"]),
-                int(r["n_td"]),
-                "",
-                "outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv",
-            )
-        )
-        order += 1
-
-    rows.append(
-        _cohort_row(
-            "resting",
-            order,
-            "Posterior resting cohort (primary posterior exponent)",
-            61,
-            77,
-            "",
-            "figure_source_data/posterior_cluster_subject_metrics.csv",
-        )
-    )
-    order += 1
-
-    n_ados = int(ados["n"].iloc[0])
-    rows.append(
-        _cohort_row(
-            "clinical",
-            order,
-            "ADOS complete-case subset",
-            n_ados,
-            0,
-            "ASD only; complete ADOS_total + posterior exponent",
-            "outputs/tables/manuscript0621/ados_primary_total_authoritative.csv",
-        )
-    )
-    order += 1
-
-    gaze_n = int(gaze["n"].max())
-    gaze_asd = int(gaze["n_ASD"].max())
-    gaze_td = int(gaze["n_TD"].max())
-    rows.append(
-        _cohort_row(
-            "movie",
-            order,
-            "Gaze sensitivity subset",
-            gaze_asd,
-            gaze_td,
-            "Requires gaze proportion + movie ISC",
-            "outputs/tables/gaze_sensitivity_ancova.csv",
-        )
-    )
+    rows = [
+        _cohort_row("resting", 1, "Registration/effective resting sample", 80, 88, "", "Supplementary Figure S1"),
+        _cohort_row("resting", 2, "Primary resting-state spectral cohort", 61, 77, "", "Supplementary Figure S1"),
+        _cohort_row("movie", 3, "Paired rest-to-movie exponent", 61, 75, "", "Supplementary Figure S1"),
+        _cohort_row("movie", 4, "Movie Aperiodic-ISC cohort", 58, 78, "", "Supplementary Figure S1"),
+        _cohort_row("cross_context", 5, "Resting + movie matched", 46, 46, "", "Supplementary Figure S1"),
+        _cohort_row("resting", 6, "IQ-balanced subset", 38, 38, "", "Supplementary Figure S1"),
+        _cohort_row("resting", 7, "Strict specparam-QC", 44, 46, "", "Supplementary Figure S1"),
+        _cohort_row("hbn", 8, "HBN The Present matched cohort", 119, 119, "", "Supplementary Figure S1"),
+        _cohort_row("hbn", 9, "The Present movie Aperiodic-ISC", 119, 119, "", "Supplementary Figure S1"),
+    ]
 
     flow = pd.DataFrame(rows).sort_values("stage_order")
     _save(
         flow,
         "s1_cohort_flow.csv",
         "S1",
-        ["outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv"],
+        ["Supplementary_20260812(q).docx"],
         "scripts/export_supplementary_source_data.py::export_s1",
-        "Cohort flow from Table S1 plus posterior/ADOS/gaze rows",
+        "Cohort flow matching Supplementary Figure S1",
+    )
+
+    characteristics_rows = [
+        ("Registration/effective resting sample", "N", "80", "88", "", ""),
+        ("Registration/effective resting sample", "Age months mean (SD)", "85.0 (16.9)", "88.8 (19.9)", "0.184", ""),
+        ("Registration/effective resting sample", "Age range months", "46-131", "40-130", "", ""),
+        ("Registration/effective resting sample", "Sex M/F", "71/9", "58/30", "", ""),
+        ("Registration/effective resting sample", "Full-scale IQ mean (SD)", "93.4 (17.0)", "112.8 (14.3)", "<0.001", ""),
+        ("Registration/effective resting sample", "ADOS total mean (SD)", "14.6 (3.4)", "NA", "", ""),
+        ("Registration/effective resting sample", "ADOS social affect mean (SD)", "9.7 (2.2)", "NA", "", ""),
+        ("Registration/effective resting sample", "ADOS restricted/repetitive behavior mean (SD)", "5.1 (1.4)", "NA", "", ""),
+        ("Primary resting-state spectral cohort", "N", "61", "77", "", ""),
+        ("Primary resting-state spectral cohort", "Age months mean (SD)", "85.7 (16.9)", "88.8 (19.6)", "0.319", ""),
+        ("Primary resting-state spectral cohort", "Age range months", "47-131", "40-130", "", ""),
+        ("Primary resting-state spectral cohort", "Sex M/F", "56/5", "49/28", "", ""),
+        ("Primary resting-state spectral cohort", "Full-scale IQ mean (SD)", "95.0 (15.2)", "113.2 (14.6)", "<0.001", ""),
+        ("Primary resting-state spectral cohort", "ADOS total mean (SD)", "14.1 (3.1)", "NA", "", ""),
+        ("Primary resting-state spectral cohort", "ADOS social affect mean (SD)", "9.3 (2.0)", "NA", "", ""),
+        ("Primary resting-state spectral cohort", "ADOS restricted/repetitive behavior mean (SD)", "4.9 (1.3)", "NA", "", ""),
+        ("Resting 1:1 matched cohort", "N", "55", "55", "", ""),
+        ("Resting 1:1 matched cohort", "Age months mean (SD)", "84.1 (16.3)", "84.8 (17.6)", "0.823", ""),
+        ("Resting 1:1 matched cohort", "Age range months", "46-131", "46-119", "", ""),
+        ("Resting 1:1 matched cohort", "Sex M/F", "51/4", "43/12", "", "Corrected against current supplementary table."),
+        ("Resting 1:1 matched cohort", "Full-scale IQ mean (SD)", "101.3 (13.6)", "106.2 (12.3)", "0.053", ""),
+        ("Resting 1:1 matched cohort", "ADOS total mean (SD)", "14.0 (3.2)", "NA", "", ""),
+        ("Resting 1:1 matched cohort", "ADOS social affect mean (SD)", "9.4 (2.1)", "NA", "", ""),
+        ("Resting 1:1 matched cohort", "ADOS restricted/repetitive behavior mean (SD)", "4.9 (1.3)", "NA", "", ""),
+        ("IQ-balanced subset", "N", "38", "38", "", ""),
+        ("IQ-balanced subset", "Age months mean (SD)", "83.2 (13.5)", "86.6 (14.8)", "0.308", ""),
+        ("IQ-balanced subset", "Age range months", "47-108", "48-112", "", ""),
+        ("IQ-balanced subset", "Sex M/F", "34/4", "34/4", "", ""),
+        ("IQ-balanced subset", "Full-scale IQ mean (SD)", "102.9 (12.7)", "105.1 (12.5)", "0.452", ""),
+        ("IQ-balanced subset", "ADOS total mean (SD)", "14.0 (2.9)", "NA", "", ""),
+        ("IQ-balanced subset", "ADOS social affect mean (SD)", "9.2 (2.1)", "NA", "", ""),
+        ("IQ-balanced subset", "ADOS restricted/repetitive behavior mean (SD)", "4.8 (1.3)", "NA", "", ""),
+        ("Strict specparam-QC cohort", "N", "44", "46", "", ""),
+        ("Strict specparam-QC cohort", "Age months mean (SD)", "85.4 (16.3)", "84.4 (16.4)", "0.788", ""),
+        ("Strict specparam-QC cohort", "Age range months", "47-131", "48-119", "", ""),
+        ("Strict specparam-QC cohort", "Sex M/F", "42/2", "35/11", "", ""),
+        ("Strict specparam-QC cohort", "Full-scale IQ mean (SD)", "101.8 (12.3)", "106.0 (12.5)", "0.109", ""),
+        ("Strict specparam-QC cohort", "ADOS total mean (SD)", "13.8 (3.2)", "NA", "", ""),
+        ("Strict specparam-QC cohort", "ADOS social affect mean (SD)", "9.2 (2.0)", "NA", "", ""),
+        ("Strict specparam-QC cohort", "ADOS restricted/repetitive behavior mean (SD)", "4.8 (1.3)", "NA", "", ""),
+        ("Movie Aperiodic-ISC cohort", "N", "58", "78", "", ""),
+        ("Movie Aperiodic-ISC cohort", "Age months mean (SD)", "83.9 (15.7)", "88.1 (19.9)", "0.192", ""),
+        ("Movie Aperiodic-ISC cohort", "Age range months", "46-121", "40-121", "", ""),
+        ("Movie Aperiodic-ISC cohort", "Sex M/F", "53/5", "58/20", "0.013", "Corrected against current supplementary table; ASD movie cohort has 53 male and 5 female participants."),
+        ("Movie Aperiodic-ISC cohort", "Full-scale IQ mean (SD)", "93.5 (17.2)", "112.2 (14.7)", "<0.001", ""),
+        ("Movie Aperiodic-ISC cohort", "ADOS total mean (SD)", "14.4 (2.9)", "NA", "", ""),
+        ("Resting + movie matched cohort", "N", "46", "46", "", ""),
+        ("Resting + movie matched cohort", "Age months mean (SD)", "80.4 (13.6)", "82.5 (15.7)", "0.498", ""),
+        ("Resting + movie matched cohort", "Age range months", "46-108", "40-112", "", ""),
+        ("Resting + movie matched cohort", "Sex M/F", "39/7", "39/7", "", "Corrected against current supplementary table."),
+        ("Resting + movie matched cohort", "Full-scale IQ mean (SD)", "102.7 (15.0)", "108.9 (14.8)", "0.05", ""),
+        ("Dual-paradigm post-QC matched cohort", "N", "34", "34", "", ""),
+        ("Dual-paradigm post-QC matched cohort", "Age months mean (SD)", "82.2 (11.9)", "86.1 (15.8)", "0.245", ""),
+        ("Dual-paradigm post-QC matched cohort", "Age range months", "47-108", "48-117", "", ""),
+        ("Dual-paradigm post-QC matched cohort", "Sex M/F", "31/3", "26/8", "", "Corrected against current supplementary table."),
+        ("Dual-paradigm post-QC matched cohort", "Full-scale IQ mean (SD)", "98.8 (14.9)", "104.9 (12.2)", "0.069", ""),
+        ("HBN The Present matched cohort", "N", "119", "119", "", ""),
+        ("HBN The Present matched cohort", "Age months mean (SD)", "99.7 (15.2)", "99.1 (16.5)", "0.755", ""),
+        ("HBN The Present matched cohort", "Age range months", "72-131", "70-129", "", ""),
+        ("HBN The Present matched cohort", "Sex M/F", "18/101", "18/101", "", "Retained as manuscript-facing value; the sex-matched HBN subset is female-predominant in both groups."),
+        ("HBN The Present matched cohort", "Full-scale IQ mean (SD)", "96.0 (20.6)", "103.8 (15.2)", "0.001", ""),
+    ]
+    characteristics = pd.DataFrame(
+        characteristics_rows,
+        columns=["cohort", "measure", "asd", "td", "p_value", "notes"],
+    )
+    _save(
+        characteristics,
+        "s1_participant_characteristics.csv",
+        "S1",
+        ["Supplementary_20260812(q).docx"],
+        "scripts/export_supplementary_source_data.py::export_s1",
+        "Supplementary Table S1 participant characteristics matching current manuscript",
     )
 
 
@@ -1196,84 +1204,6 @@ def export_s8() -> None:
             "scripts/export_supplementary_source_data.py::export_s8",
             "HBN matched movie ISC subject-level values (pseudonymous HBN_#### IDs)",
         )
-
-    ols = _read(_p("hbn_eo_tierb_bundle", "outputs", "hbn_nuclear", "external_validation", "group_ols_models.csv"))
-    pipe = _read(_p("hbn_eo_tierb_bundle", "outputs", "hbn_nuclear", "external_validation", "pipeline_sensitivity.csv"))
-    paired = _read(_p("hbn_eo_tierb_bundle", "outputs", "hbn_nuclear", "external_validation", "paired_tests.csv"))
-    rest_models = []
-    for _, r in ols.iterrows():
-        if r["term"] != "C(group, Treatment(reference='ASD'))[T.TD]":
-            continue
-        rest_models.append(
-            {
-                "eye_state": "EO",
-                "pipeline": r["pipeline"],
-                "model_type": r["model"],
-                "estimate_td_minus_asd": float(r["coef"]),
-                "se": float(r["std_err"]),
-                "ci_low": float(r["ci_low"]),
-                "ci_high": float(r["ci_high"]),
-                "p": float(r["pvalue"]),
-                "n": int(r["n_obs"]),
-                "n_pairs": np.nan,
-            }
-        )
-    for _, r in pipe.iterrows():
-        rest_models.append(
-            {
-                "eye_state": "EO",
-                "pipeline": r["pipeline"],
-                "model_type": "welch_group_comparison",
-                "estimate_td_minus_asd": float(r["mean_diff_TD_minus_ASD"]),
-                "se": np.nan,
-                "ci_low": float(r["ols_ci_low"]) if "ols_ci_low" in r else np.nan,
-                "ci_high": float(r["ols_ci_high"]) if "ols_ci_high" in r else np.nan,
-                "p": float(r["welch_p"]),
-                "n": int(r["n_asd"] + r["n_td"]),
-                "n_pairs": np.nan,
-            }
-        )
-    for _, r in paired.iterrows():
-        if r["test"] != "paired_t":
-            continue
-        rest_models.append(
-            {
-                "eye_state": "EO",
-                "pipeline": r["pipeline"],
-                "model_type": "paired_t",
-                "estimate_td_minus_asd": float(r["mean_diff_TD_minus_ASD"]),
-                "se": np.nan,
-                "ci_low": np.nan,
-                "ci_high": np.nan,
-                "p": float(r["pvalue"]),
-                "n": np.nan,
-                "n_pairs": int(r["n_pairs"]),
-            }
-        )
-    _save(
-        pd.DataFrame(rest_models),
-        "s8_hbn_resting_models.csv",
-        "S8",
-        ["hbn_eo_tierb_bundle/outputs/hbn_nuclear/external_validation/group_ols_models.csv"],
-        "scripts/export_supplementary_source_data.py::export_s8",
-        "HBN EO resting external validation models",
-    )
-
-    eo = _read(_p("hbn_eo_tierb_bundle", "outputs", "hbn_nuclear", "external_validation", "matched_eo_analysis_table.csv"))
-    eo_ok = eo.loc[eo["posterior_exponent"].notna()].copy()
-    pipeline_col = "pipeline_label" if "pipeline_label" in eo_ok.columns else "pipeline"
-    eo_out = eo_ok[
-        ["subject_id", "pair_id", "group", "posterior_exponent", "age_months", "sex", "IQ_total", pipeline_col]
-    ].rename(columns={"IQ_total": "iq", pipeline_col: "pipeline"})
-    eo_out["eye_state"] = "EO"
-    _save(
-        eo_out,
-        "s8_hbn_resting_subjects.csv",
-        "S8",
-        ["hbn_eo_tierb_bundle/outputs/hbn_nuclear/external_validation/matched_eo_analysis_table.csv"],
-        "scripts/export_supplementary_source_data.py::export_s8",
-        "HBN EO matched resting subjects",
-    )
 
 
 def export_s9() -> None:

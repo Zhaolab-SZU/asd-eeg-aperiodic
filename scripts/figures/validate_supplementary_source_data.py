@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SUP_DIR = PROJECT_ROOT / "figure_source_data" / "supplementary"
 REPORT_PATH = SUP_DIR / "source_data_validation_report.md"
 
@@ -27,6 +27,7 @@ EXPECTED_FILES: dict[str, list[str]] = {
         "exclusion_reason",
         "source_file",
     ],
+    "s1_participant_characteristics.csv": ["cohort", "measure", "asd", "td", "p_value", "notes"],
     "s2_loocv_electrode_survival.csv": [
         "electrode",
         "n_folds",
@@ -183,29 +184,6 @@ EXPECTED_FILES: dict[str, list[str]] = {
     ],
     "s8_hbn_movie_subjects.csv": ["subject_id", "group", "isc_r", "isc_z", "analysis", "cohort"],
     "s8_hbn_movie_summary.csv": ["analysis", "group", "n", "mean", "sd", "se", "ci_low", "ci_high", "welch_t", "p"],
-    "s8_hbn_resting_models.csv": [
-        "eye_state",
-        "pipeline",
-        "model_type",
-        "estimate_td_minus_asd",
-        "se",
-        "ci_low",
-        "ci_high",
-        "p",
-        "n",
-        "n_pairs",
-    ],
-    "s8_hbn_resting_subjects.csv": [
-        "subject_id",
-        "pair_id",
-        "group",
-        "eye_state",
-        "pipeline",
-        "posterior_exponent",
-        "age_months",
-        "sex",
-        "iq",
-    ],
     "s9_coupling_subjects.csv": [
         "subject_id",
         "group",
@@ -253,13 +231,21 @@ EXPECTED_FILES: dict[str, list[str]] = {
 COHORT_EXPECT = {
     "Registration/effective resting sample": (168, 80, 88),
     "Primary resting-state spectral cohort": (138, 61, 77),
-    "Posterior resting cohort (primary posterior exponent)": (138, 61, 77),
-    "ADOS complete-case subset": (60, 60, 0),
-    "Movie spectral-QC / ISC cohort": (136, 58, 78),
-    "Rest–movie paired cohort": (104, 46, 58),
-    "Dual-paradigm post-QC matched cohort": (68, 34, 34),
-    "HBN matched cohort": (238, 119, 119),
-    "HBN eyes-open matched subset": (224, 112, 112),
+    "Paired rest-to-movie exponent": (136, 61, 75),
+    "Movie Aperiodic-ISC cohort": (136, 58, 78),
+    "Resting + movie matched": (92, 46, 46),
+    "IQ-balanced subset": (76, 38, 38),
+    "Strict specparam-QC": (90, 44, 46),
+    "HBN The Present matched cohort": (238, 119, 119),
+    "The Present movie Aperiodic-ISC": (238, 119, 119),
+}
+
+SEX_EXPECT = {
+    "Resting 1:1 matched cohort": ("51/4", "43/12", ""),
+    "Movie Aperiodic-ISC cohort": ("53/5", "58/20", "0.013"),
+    "Resting + movie matched cohort": ("39/7", "39/7", ""),
+    "Dual-paradigm post-QC matched cohort": ("31/3", "26/8", ""),
+    "HBN The Present matched cohort": ("18/101", "18/101", ""),
 }
 
 
@@ -272,6 +258,54 @@ def _load(name: str) -> pd.DataFrame | None:
 
 def _check_columns(df: pd.DataFrame, required: list[str]) -> list[str]:
     return [c for c in required if c not in df.columns]
+
+
+def _parse_scalar(value: str) -> float:
+    clean = value.split("#", 1)[0].strip()
+    return float(clean) if "." in clean else int(clean)
+
+
+def _yaml_number_in_block(path: Path, block_header: str, key: str, child_indent: int = 2) -> float:
+    lines = path.read_text(encoding="utf-8").splitlines()
+    in_block = False
+    for line in lines:
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        indent = len(line) - len(line.lstrip(" "))
+        stripped = line.strip()
+        if indent == 0 and stripped == f"{block_header}:":
+            in_block = True
+            continue
+        if in_block and indent == 0:
+            break
+        if in_block and indent == child_indent and stripped.startswith(f"{key}:"):
+            return _parse_scalar(stripped.split(":", 1)[1])
+    raise ValueError(f"Could not find {block_header}.{key} in {path}")
+
+
+def _yaml_number_in_nested_block(path: Path, parent: str, child: str, key: str) -> float:
+    lines = path.read_text(encoding="utf-8").splitlines()
+    in_parent = False
+    in_child = False
+    for line in lines:
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        indent = len(line) - len(line.lstrip(" "))
+        stripped = line.strip()
+        if indent == 0 and stripped == f"{parent}:":
+            in_parent = True
+            in_child = False
+            continue
+        if in_parent and indent == 0:
+            break
+        if in_parent and indent == 2 and stripped == f"{child}:":
+            in_child = True
+            continue
+        if in_child and indent <= 2:
+            in_child = False
+        if in_child and indent == 4 and stripped.startswith(f"{key}:"):
+            return _parse_scalar(stripped.split(":", 1)[1])
+    raise ValueError(f"Could not find {parent}.{child}.{key} in {path}")
 
 
 def main() -> None:
@@ -318,7 +352,53 @@ def main() -> None:
                 f"(file {int(r['n_total'])}/{int(r['n_asd'])}/{int(r['n_td'])} vs expected {nt}/{na}/{nd})"
             )
 
-    lines.extend(["", "## 3. Key result consistency", ""])
+    lines.extend(["", "## 3. Participant-characteristics checks", ""])
+    s1_demo = _load("s1_participant_characteristics.csv")
+    if s1_demo is not None:
+        for cohort, (asd, td, p_value) in SEX_EXPECT.items():
+            row = s1_demo.loc[(s1_demo["cohort"] == cohort) & (s1_demo["measure"] == "Sex M/F")]
+            if row.empty:
+                lines.append(f"- **MISSING ROW** `{cohort}` Sex M/F")
+                all_ok = False
+                continue
+            r = row.iloc[0]
+            ok = str(r["asd"]) == asd and str(r["td"]) == td
+            if p_value:
+                ok = ok and str(r["p_value"]) == p_value
+            mark = "PASS" if ok else "MISMATCH"
+            lines.append(
+                f"- {cohort} Sex M/F: **{mark}** "
+                f"(file ASD={r['asd']}, TD={r['td']}, p={r.get('p_value', '')}; "
+                f"expected ASD={asd}, TD={td}{', p=' + p_value if p_value else ''})"
+            )
+            if not ok:
+                all_ok = False
+
+    lines.extend(["", "## 4. QC config checks", ""])
+    task_movie_path = PROJECT_ROOT / "config" / "config_task_movie.yaml"
+    hbn_movie_path = PROJECT_ROOT / "config" / "config_hbn_thepresent.yaml"
+    primary_epochs = int(_yaml_number_in_block(task_movie_path, "epochs", "min_usable_epochs"))
+    primary_bad_ratio = float(_yaml_number_in_block(task_movie_path, "fit_quality", "subject_invalid_channel_ratio_max"))
+    hbn_epochs = int(_yaml_number_in_block(hbn_movie_path, "epochs", "min_usable_epochs"))
+    hbn_main_epochs = int(_yaml_number_in_nested_block(hbn_movie_path, "hbn", "main_matched", "min_usable_epochs"))
+    hbn_bad_ratio = float(_yaml_number_in_block(hbn_movie_path, "fit_quality", "subject_invalid_channel_ratio_max"))
+    hbn_r2 = float(_yaml_number_in_block(hbn_movie_path, "fit_quality", "min_r_squared"))
+    hbn_fit_error = float(_yaml_number_in_block(hbn_movie_path, "fit_quality", "fit_error_top_percentile"))
+    checks = [
+        ("Primary movie min usable epochs", primary_epochs == 50, primary_epochs, 50),
+        ("Primary movie invalid-channel ratio", abs(primary_bad_ratio - 0.30) < 1e-12, primary_bad_ratio, 0.30),
+        ("HBN The Present min usable epochs", hbn_epochs == 40, hbn_epochs, 40),
+        ("HBN matched-cohort min usable epochs", hbn_main_epochs == 40, hbn_main_epochs, 40),
+        ("HBN The Present invalid-channel ratio", abs(hbn_bad_ratio - 0.20) < 1e-12, hbn_bad_ratio, 0.20),
+        ("HBN The Present min R2", abs(hbn_r2 - 0.90) < 1e-12, hbn_r2, 0.90),
+        ("HBN The Present fit-error top percentile", abs(hbn_fit_error - 5.0) < 1e-12, hbn_fit_error, 5.0),
+    ]
+    for label, ok, observed, expected in checks:
+        lines.append(f"- {label}: **{'PASS' if ok else 'MISMATCH'}** (file {observed}; expected {expected})")
+        if not ok:
+            all_ok = False
+
+    lines.extend(["", "## 5. Key result consistency", ""])
     s2c = _load("s2_loocv_criteria_summary.csv")
     if s2c is not None:
         all4 = s2c.loc[s2c["criterion"] == "all four electrodes"].iloc[0]
@@ -347,7 +427,7 @@ def main() -> None:
         if not (ok_strict and ok_iq):
             all_ok = False
 
-    lines.extend(["", "## 4. Gap-fill checks", ""])
+    lines.extend(["", "## 6. Gap-fill checks", ""])
     env = _load("s7_envelope_adjusted.csv")
     if env is not None:
         pain = env.loc[env["event_type"] == "pain"].iloc[0]

@@ -1,15 +1,10 @@
 analysis_branch,stage_order,stage_label,n_total,n_asd,n_td,exclusion_reason,source_file
-resting,1,Registration/effective resting sample,168,80,88,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-resting,2,Primary resting-state spectral cohort,138,61,77,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-resting,3,Resting 1:1 matched cohort,110,55,55,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-resting,4,IQ-balanced matched cohort,76,38,38,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-resting,5,Matched strict specparam-QC cohort,90,44,46,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-movie,6,Movie spectral-QC / ISC cohort,136,58,78,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-cross_context,7,Rest–movie paired cohort,104,46,58,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-cross_context,8,Resting + movie matched cohort,92,46,46,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-cross_context,9,Dual-paradigm post-QC matched cohort,68,34,34,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-hbn,10,HBN matched cohort,238,119,119,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-hbn,11,HBN eyes-open matched subset,224,112,112,,outputs/tables/manuscript0621/supp_table_s1_participant_characteristics.csv
-resting,12,Posterior resting cohort (primary posterior exponent),138,61,77,,figure_source_data/posterior_cluster_subject_metrics.csv
-clinical,13,ADOS complete-case subset,60,60,0,ASD only; complete ADOS_total + posterior exponent,outputs/tables/manuscript0621/ados_primary_total_authoritative.csv
-movie,14,Gaze sensitivity subset,62,33,29,Requires gaze proportion + movie ISC,outputs/tables/gaze_sensitivity_ancova.csv
+resting,1,Registration/effective resting sample,168,80,88,,Supplementary Figure S1
+resting,2,Primary resting-state spectral cohort,138,61,77,,Supplementary Figure S1
+movie,3,Paired rest-to-movie exponent,136,61,75,,Supplementary Figure S1
+movie,4,Movie Aperiodic-ISC cohort,136,58,78,,Supplementary Figure S1
+cross_context,5,Resting + movie matched,92,46,46,,Supplementary Figure S1
+resting,6,IQ-balanced subset,76,38,38,,Supplementary Figure S1
+resting,7,Strict specparam-QC,90,44,46,,Supplementary Figure S1
+hbn,8,HBN The Present matched cohort,238,119,119,,Supplementary Figure S1
+hbn,9,The Present movie Aperiodic-ISC,238,119,119,,Supplementary Figure S1
