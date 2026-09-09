@@ -34,16 +34,16 @@
 | `scripts/movie/20b_align_exponent_movie_labels.py` | `scripts/31_align_exponent_with_movie_labels.py` | Align resting exponents with movie labels |
 | `scripts/movie/21_time_resolved_specparam_isc.py` | `scripts/97_posterior_movie_specparam_isc.py` | Time-resolved posterior specparam + ISC pipeline |
 | `scripts/movie/22_calc_aperiodic_isc.py` | `scripts/68_compute_aperiodic_isc.py` | Film-level TD-template / within-group Aperiodic-ISC (`min_overlap=50`) |
-| `scripts/movie/23_calc_segment_isc.py` | `scripts/33_compute_segment_isc.py` | Event-segment ISC helpers (provenance only; not the primary contrast) |
+| `scripts/legacy/movie/23_calc_segment_isc.py` | `scripts/33_compute_segment_isc.py` | Event-segment ISC (provenance; not primary) |
 | `scripts/movie/24_sync_control_classic_isc.py` | `scripts/69_compute_classic_isc_controls.py` | Film-level envelope ISC / alpha PLV controls |
-| `scripts/movie/24b_envelope_partial_isc.py` | `scripts/93_aperiodic_envelope_partial_isc.py` | Envelope-adjusted Aperiodic-ISC (Supp Fig S6) |
+| `scripts/legacy/movie/24b_envelope_partial_isc.py` | `scripts/93_aperiodic_envelope_partial_isc.py` | Envelope-adjusted Aperiodic-ISC (legacy SI) |
 | `scripts/movie/25_rest_movie_state_analysis.py` | `scripts/35_rest_movie_posterior_state_analysis.py` | Rest–movie posterior exponent modulation |
-| `scripts/movie/25b_rest_movie_coupling.py` | `scripts/34_resting_to_movie_coupling.py` | Resting-to-movie coupling models |
-| `scripts/movie/25c_rest_movie_coupling_overall_isc.py` | `scripts/71_resting_to_movie_coupling_overall_isc.py` | Coupling with overall ISC |
+| `scripts/legacy/movie/25b_rest_movie_coupling.py` | `scripts/34_resting_to_movie_coupling.py` | Legacy rest–movie coupling (not manuscript-facing) |
+| `scripts/legacy/movie/25c_rest_movie_coupling_overall_isc.py` | `scripts/71_resting_to_movie_coupling_overall_isc.py` | Legacy coupling with overall ISC |
 | `scripts/hbn/100_hbn_inventory.py` | `scripts/100_hbn_inventory.py` | HBN file inventory |
 | `scripts/hbn/hbn_preprocess_present.py` | `scripts/101_hbn_preprocess_thepresent.py` | HBN The Present movie preprocess |
 | `scripts/hbn/hbn_specparam_roi.py` | `scripts/102_hbn_specparam_roi.py` | HBN ROI specparam |
-| `scripts/hbn/hbn_external_validation.py` | `scripts/103_hbn_external_validation.py` | Archived pre-2026-08 HBN resting entry; not part of the current manuscript-facing pipeline |
+| `scripts/legacy/hbn/hbn_external_validation.py` | `scripts/103_hbn_external_validation.py` | Archived HBN resting external-validation entry |
 | `scripts/hbn/hbn_isc_calc.py` | `scripts/113_hbn_thepresent_aperiodic_isc.py` | HBN The Present Aperiodic-ISC |
 | `scripts/hbn/hbn_isc_matched.py` | `scripts/114_hbn_thepresent_isc_matched.py` | Age/IQ/sex-matched HBN ISC |
 | `scripts/hbn/hbn_isc_matched_global.py` | `scripts/115_hbn_thepresent_isc_matched_global.py` | Matched HBN ISC global variant |
@@ -80,6 +80,7 @@
 | `src/posterior_roi_loocv.py` | `src/posterior_roi_loocv.py` | library module |
 | `src/aperiodic_isc.py` | `src/aperiodic_isc.py` | library module |
 | `src/aperiodic_isc_analysis.py` | `src/aperiodic_isc_analysis.py` | library module |
+| `src/permutation_p.py` | `src/permutation_p.py` | manuscript permutation *p* definitions |
 | `src/classic_isc_analysis.py` | `src/classic_isc_analysis.py` | library module |
 | `src/movie_isc_partial_analysis.py` | `src/movie_isc_partial_analysis.py` | library module |
 | `src/coordination_feature_analysis.py` | `src/coordination_feature_analysis.py` | library module |
@@ -138,9 +139,11 @@
 | `scripts/movie/24_sync_control_classic_isc.py` | `scripts/69_compute_classic_isc_controls.py` | Film-level envelope / alpha PLV |
 | `scripts/movie/25_rest_movie_state_analysis.py` | `scripts/35_rest_movie_posterior_state_analysis.py` | Primary rest–movie mean-level analysis |
 | `scripts/movie/25d_rest_movie_matched_estimator.py` | `scripts/run_rest_movie_matched_estimator.py` | Table S12 sensitivity |
+| `scripts/legacy/movie/26_movie_isc_covariate_sensitivity.py` | `scripts/26_movie_isc_covariate_sensitivity.py` | Segment-level covariate table (not Table S11) |
 | `scripts/movie/26b_partly_cloudy_isc_models.py` | `scripts/compute_partly_cloudy_isc_models.py` | Age/sex/FSIQ and data-quality ISC models |
-| `scripts/movie/27_td_template_permutation.py` | `scripts/run_td_template_permutation.py` | Reconstructed-template permutation |
-| `scripts/movie/27b_recalibrate_permutation_p.py` | `scripts/recalibrate_td_template_permutation_p.py` | Equal-tail / one-sided *p* |
+| `scripts/movie/27_td_template_permutation.py` | `scripts/run_td_template_permutation.py` | Permutation engine (writes T_obs and null; not the manuscript two-sided *p*) |
+| `scripts/movie/27b_recalibrate_permutation_p.py` | `scripts/recalibrate_td_template_permutation_p.py` | Manuscript-facing equal-tail / one-sided *p* from the saved null |
+| `src/permutation_p.py` | `src/permutation_p.py` | Equal-tail permutation *p* helpers |
 | `scripts/hbn/hbn_isc_calc.py` | `scripts/113_hbn_thepresent_aperiodic_isc.py` | HBN The Present Aperiodic-ISC |
 | `scripts/figures/main/build_main_figures.py` | `figure_revise/scripts/build_main_figures.py` | Figures 1–5 |
 | `scripts/figures/supplementary/build_si_figures.py` | `figure_revise/supplementary/scripts/build_si_figures.py` | Supplementary Figures S1–S5 |

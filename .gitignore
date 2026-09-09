@@ -15,6 +15,7 @@ data/participants/
 .Rhistory
 .venv/
 venv/
+.pytest_cache/
 
 # Local staging notes (not for public repo)
 STAGING_NOTES.md

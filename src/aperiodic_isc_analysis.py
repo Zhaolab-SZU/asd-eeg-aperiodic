@@ -42,10 +42,23 @@ def safe_corr(x: np.ndarray, y: np.ndarray, min_points: int) -> tuple[float, int
 
 
 def fisher_z(r: float) -> float:
+    """Fisher z of a single Pearson r. Subject-level ISC uses this, then averages z."""
     if pd.isna(r):
         return np.nan
     r = float(np.clip(r, -0.999999, 0.999999))
     return float(np.arctanh(r))
+
+
+def mean_fisher_z(rs: Iterable[float]) -> float:
+    """Mean of Fisher-z values (manuscript-consistent). Not z(mean r)."""
+    vals = [fisher_z(r) for r in rs]
+    return float(np.nanmean(vals)) if vals else np.nan
+
+
+def z_of_mean_r(rs: Iterable[float]) -> float:
+    """z(mean r). Descriptive only; do not treat as mean Fisher-z."""
+    arr = [float(r) for r in rs if np.isfinite(r)]
+    return fisher_z(float(np.mean(arr))) if arr else np.nan
 
 
 def build_film_timeline_keys(
@@ -274,7 +287,8 @@ def compute_pairwise_mean_isc(
                     "n_subjects": n_sub,
                     "n_pairs": len(pair_rs),
                     "mean_pairwise_r": float(np.mean(pair_rs)) if pair_rs else np.nan,
-                    "mean_pairwise_z": fisher_z(float(np.mean(pair_rs))) if pair_rs else np.nan,
+                    "mean_pairwise_z": mean_fisher_z(pair_rs) if pair_rs else np.nan,
+                    "z_of_mean_pairwise_r": z_of_mean_r(pair_rs) if pair_rs else np.nan,
                     "isc_method": "pairwise_mean",
                 }
             )
@@ -324,7 +338,8 @@ def compute_time_resolved_group_isc(
                         "concat_index": int(t_idx),
                         "center_sec": center_sec,
                         "mean_loo_r": float(np.mean(local_rs)) if local_rs else np.nan,
-                        "mean_loo_z": fisher_z(float(np.mean(local_rs))) if local_rs else np.nan,
+                        "mean_loo_z": mean_fisher_z(local_rs) if local_rs else np.nan,
+                        "z_of_mean_loo_r": z_of_mean_r(local_rs) if local_rs else np.nan,
                         "n_subjects": n_sub,
                         "local_window_bins": int(hi - lo),
                     }

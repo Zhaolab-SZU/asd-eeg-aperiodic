@@ -18,13 +18,15 @@ Nature Communications manuscript and supplementary file
 
 ## Provenance-only (not manuscript-facing)
 
-These files remain but are not the submitted primary path:
+These files remain under `scripts/legacy/` and are not the submitted primary path:
 
-- `scripts/movie/23_calc_segment_isc.py` — event-segment ISC (mentalizing / pain / neutral)
-- `scripts/movie/25b_rest_movie_coupling.py`, `25c_…` — rest–movie coupling SI from an earlier draft
-- `scripts/hbn/hbn_preprocess_resting.py`, `hbn_rest_eyes_open_matched.py`, `hbn_eo_posterior_exponent.py`
+- `scripts/legacy/movie/23_calc_segment_isc.py` — event-segment ISC (mentalizing / pain / neutral)
+- `scripts/legacy/movie/25b_rest_movie_coupling.py`, `25c_…` — rest–movie coupling SI from an earlier draft
+- `scripts/legacy/hbn/hbn_preprocess_resting.py`, `hbn_rest_eyes_open_matched.py`, `hbn_eo_posterior_exponent.py`
 - `data/supplementary_source/s7_gaze_sensitivity.csv` — gaze was removed from the manuscript
 - `scripts/figures/_archived_20260812/` — August figure scripts (segment violins, old SI numbering)
+
+Subject-level Aperiodic-ISC is `z = atanh(r)` then mean of *z*. Auxiliary pairwise / time-resolved columns `mean_*_z` now match that definition; `z_of_mean_*_r` is kept only as an audit of the old `z(mean r)` summary.
 
 ## Remaining wording / config nits (not silent changes)
 
@@ -35,7 +37,7 @@ These files remain but are not the submitted primary path:
 5. **`data/participants/`** is gitignored. Permutation covariate loading uses shipped `fig5` / `fig1` tables and only optionally reads a local participant file.
 6. **Supplementary Figure S1** uses the submitted overlap node **N = 104 (ASD=45, TD=59)** (`Same-subject ISC ∩ state`). The older 1:1 rest+movie matched N=92 row is no longer the S1 node.
 7. **`scripts/figures/plot_supplementary_figures.py`** and the August SI plotters live under `scripts/figures/_archived_20260812/`. Use `scripts/figures/main/` and `scripts/figures/supplementary/` for the submitted figures.
-8. **`src/aperiodic_isc.py`** still defaults `min_overlap=10` (legacy helper). The manuscript Partly Cloudy path is `src/aperiodic_isc_analysis.py` via `22_calc_aperiodic_isc.py` (`min_overlap_points=50`).
+8. **`src/aperiodic_isc.py`** still defaults `min_overlap=10` (legacy helper used by `21_time_resolved_specparam_isc.py`). The manuscript Partly Cloudy path is `src/aperiodic_isc_analysis.py` via `22_calc_aperiodic_isc.py` (`min_overlap_points=50`).
 
 ## What is not in this repository
 

@@ -219,7 +219,12 @@ def compute_lagged_isc(
 
 
 def isc_group_tests(isc_df: pd.DataFrame) -> pd.DataFrame:
-    """各 event_type 的 ASD vs TD Welch t 检验。"""
+    """ASD vs TD Welch tests on subject-level ``isc_z``.
+
+    ``asd_mean_z`` / ``td_mean_z`` are means of Fisher-z.
+    ``asd_mean_r`` / ``td_mean_r`` are means of raw ``isc_r`` (not tanh of mean z).
+    This helper is used by the time-resolved pipeline, not Figure 5 / Table S11.
+    """
     rows = []
     for ev, sub in isc_df.groupby("event_type"):
         asd = sub.loc[sub["group"] == "ASD", "isc_z"].dropna()

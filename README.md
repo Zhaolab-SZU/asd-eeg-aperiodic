@@ -1,95 +1,78 @@
 # asd-eeg-aperiodic
 
-Code and de-identified derived data for posterior aperiodic EEG dynamics in autistic and typically developing children during resting-state and naturalistic movie viewing.
+Code and de-identified derived tables for posterior aperiodic EEG dynamics in autistic and typically developing children (resting-state and naturalistic movie viewing).
 
 Aligned to the Nature Communications submission of **9 September 2026**.
+Tag this snapshot as **`v1.0-submitted`**.
 
-## Overview
+## Reproduce the manuscript
 
-- Resting-state spectral parameterization and a data-informed posterior exponent readout
-- Rest-to-movie modulation of the condition-averaged posterior exponent
-- Film-level Aperiodic-ISC during *Partly Cloudy* (TD-template; `min_overlap=50`)
-- Classic synchrony controls (broadband envelope ISC; within-group alpha PLV)
-- Reconstructed-template permutation inference (equal-tail two-sided *p* = 0.00020)
-- Estimator-matched rest–movie sensitivity (Table S12)
-- External HBN *The Present* Aperiodic-ISC (directionally consistent, not replication)
+Three layers. Stop at the first layer that answers your question.
 
-Raw EEG is not included.
-
-## Reproduce manuscript figures from shipped CSVs
-
-From the repository root:
+### 1. Figures from shipped CSVs (no EEG)
 
 ```bash
+python -m pip install -r requirements-ci.txt matplotlib Pillow
 python scripts/figures/main/build_main_figures.py
 python scripts/figures/supplementary/build_si_figures.py
+python -m pytest
 ```
 
-Outputs go to `outputs/figures/main/` and `outputs/figures/supplementary/`.
+Outputs: `outputs/figures/main/` and `outputs/figures/supplementary/`.
 Palette: ASD `#B22222`, TD `#000080`.
 
-Source tables live in `figure_source_data/` (mirrored under `data/figure_source/`).
+### 2. Manuscript statistics from shipped derived tables (no EEG)
 
-## Analysis scripts (need local EEG / trajectories)
+| Result | Script | Required input (shipped) | Output |
+|--------|--------|--------------------------|--------|
+| Fig. 5B Partly Cloudy Aperiodic-ISC (n=58/78, Welch *t*) | inspect CSV | `figure_source_data/fig5_partly_cloudy_aperiodic_isc_*.csv` | same CSV |
+| Permutation *p* (one-sided 9.999e-05; equal-tail 0.00020) | `scripts/movie/27b_recalibrate_permutation_p.py` | `data/supplementary_source/td_template_permutation/permutation_null.csv` | `…/p_value_recalibration/` |
+| Table S12 matched-estimator headline | inspect CSV | `data/supplementary_source/rest_movie_matched_estimator/matched_estimator_headline.csv` | F=4.52, *p*=0.035 |
+| HBN The Present ISC (Fig. 5B / S5) | inspect CSV | `figure_source_data/fig5_the_present_aperiodic_isc*.csv` | same CSV |
 
-Run from the **repository root** so `config/` and `src/` resolve.
+`27_td_template_permutation.py` is the permutation **engine** (rebuilds the TD template under label shuffles; needs exponent trajectories). `27b_recalibrate_permutation_p.py` is the manuscript-facing **p-value implementation** applied to the saved null. Do not treat `27_`'s column `p_emp_two_sided` (`|Tb| ≥ |Tobs|`) as the paper's two-sided *p*.
+
+### 3. Full recompute (local EEG / HBN BIDS; not shipped)
 
 ```bash
+python -m pip install -r requirements.txt   # or: conda env create -f environment.yml
 # Film-level Partly Cloudy Aperiodic-ISC
 python scripts/movie/22_calc_aperiodic_isc.py --min_overlap_points 50
-
-# Classic synchrony controls
 python scripts/movie/24_sync_control_classic_isc.py --min_overlap_points 50
-
-# Covariate-adjusted ISC models
 python scripts/movie/26b_partly_cloudy_isc_models.py
-
-# TD-template permutation (slow; B=10000) then equal-tail recalibration
-python scripts/movie/27_td_template_permutation.py
+python scripts/movie/27_td_template_permutation.py   # slow; B=10000
 python scripts/movie/27b_recalibrate_permutation_p.py
-
-# Rest–movie mean-level analysis + matched-estimator sensitivity
 python scripts/movie/25_rest_movie_state_analysis.py
 python scripts/movie/25d_rest_movie_matched_estimator.py
-
-# HBN The Present
 python scripts/hbn/hbn_isc_calc.py
 ```
 
-The permutation **null CSV is shipped**, so `27b_recalibrate_permutation_p.py` can be run without EEG. Re-running `27_td_template_permutation.py` requires `specparam_exponent_timeseries_global.csv`.
+Primary permutation *p* values: one-sided TD > ASD = 9.999e-05; equal-tail two-sided = 0.00020.
 
-Primary permutation *p* values in the manuscript are:
+## What you can and cannot rerun
 
-- one-sided TD > ASD: 9.999e-05
-- equal-tail two-sided: 0.00020
+| Layer | Public files enough? | Needs restricted raw EEG / HBN BIDS |
+|-------|----------------------|-------------------------------------|
+| Build Fig. 1–5 / S1–S5 | Yes | No |
+| Recompute permutation *p* from the shipped null (`27b`) | Yes | No |
+| Re-run 10,000 reconstructed-template permutations (`27_`) | No (needs `specparam_exponent_timeseries_global.csv`) | Trajectories from movie EEG |
+| Matched-estimator rest sliding fits (`25d`) | Headline CSV yes; full refit no | Resting FIF |
+| specparam / ISC from scratch | No | Raw EEG / HBN under DUA |
 
-Do not use `|Tb| ≥ |Tobs|` as the primary two-sided *p* (the reconstructed-template null is shifted).
+Nested scripts walk upward until `src/config.py` is found.
 
-## Repository layout
+## Manuscript-facing movie / HBN scripts
 
-| Path | Description |
-|------|-------------|
-| `src/` | Shared analysis code |
-| `config/` | YAML configs (relative paths; placeholders for raw EEG / HBN BIDS) |
-| `scripts/resting/` | Resting-state pipeline |
-| `scripts/movie/` | Partly Cloudy Aperiodic-ISC, synchrony, permutation, rest–movie |
-| `scripts/hbn/` | HBN The Present movie analyses |
-| `scripts/figures/main/` | Manuscript Figures 1–5 |
-| `scripts/figures/supplementary/` | Supplementary Figures S1–S5 |
-| `scripts/figures/_archived_20260812/` | Pre-film-level plotting scripts (not manuscript-facing) |
-| `figure_source_data/` | Figure / table source CSVs |
-| `data/supplementary_source/` | SI source tables, permutation null, matched-estimator headlines |
+See `scripts/movie/README.md` and `scripts/hbn/README.md`. Event-segment ISC, older rest–movie coupling, and HBN resting pipelines live in `scripts/legacy/` and are not the submitted primary path.
 
-## Notes
+## Dependencies
 
-Nested scripts locate the repository by walking upward until `src/config.py` is found. Run them from any working directory.
+Pinned in `requirements.txt` (analysis, **specparam==2.0.0**) and `requirements-ci.txt` (tests). `environment.yml` installs the analysis pin on Python 3.11. Do not upgrade specparam without re-checking `src/specparam_utils.py`.
 
-HBN resting-state scripts remain for provenance. They are not part of the submitted manuscript-facing external analysis.
+## Fisher *z*
 
-Event-segment Aperiodic-ISC (`scripts/movie/23_calc_segment_isc.py`) is retained for provenance and is not the primary naturalistic contrast.
+Subject-level Aperiodic-ISC is `z = atanh(r)` per subject, then group tests use **mean of z**. Auxiliary pairwise / time-resolved summaries now store `mean_pairwise_z` / `mean_loo_z` as mean of *z*; `z_of_mean_*_r` is `z(mean r)` and is not used for inference.
 
-See `MANUSCRIPT_ALIGNMENT_20260909.md` for remaining script-vs-text notes.
+## License and citation
 
-## License
-
-Code is released under the MIT license. Derived tables are provided for research reuse with appropriate citation.
+MIT (`LICENSE`). Cite via `CITATION.cff` / the submitted article *Aperiodic EEG dynamics reveal reduced naturalistic temporal alignment in childhood autism*.

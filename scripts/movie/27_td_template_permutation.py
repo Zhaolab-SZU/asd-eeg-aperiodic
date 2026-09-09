@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
-"""TD-template reconstructed permutation for Partly Cloudy Aperiodic-ISC.
+"""Permutation *engine* for Partly Cloudy Aperiodic-ISC (reconstructed TD template).
 
 Each permutation reassigns diagnostic labels, rebuilds the pseudo-TD template,
 and recomputes subject-level ISC. Does not shuffle precomputed ISC values.
+
+This script writes T_obs and the null {T_b}. The column ``p_emp_two_sided``
+is the legacy count ``(|Tb| >= |Tobs|)`` and is **not** the manuscript
+two-sided *p* (the reconstructed-template null is shifted).
+
+Manuscript-facing *p* values (one-sided TD>ASD and equal-tail two-sided)
+are computed from the saved null by ``27b_recalibrate_permutation_p.py``.
 
 Does not re-run EEG / specparam, HBN, cross-fitting, or bootstrap.
 """

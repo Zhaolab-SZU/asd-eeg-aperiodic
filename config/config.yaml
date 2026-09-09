@@ -16,7 +16,7 @@ paths:
   #         bids_root: "/PATH/TO/HBN_BIDS"
   # See config/README_PATHS.md
   # ---------------------------------------------------------------------------
-  # 原始 EEG 数据目录（被试文件路径也可在 participants.csv 中指定）
+  # Raw EEG directory (subject paths may also be listed in participants.csv)
   raw_data: "data/raw"  # PLACEHOLDER: private raw EEG root (not in this bundle)
   participants_file: "data/participants/participants.csv"  # PLACEHOLDER: de-identified participant table
   derivatives_root: "derivatives"  # created at runtime / optional local intermediates
@@ -24,22 +24,22 @@ paths:
   logs_dir: "derivatives/logs"  # log directory
 
 eeg:
-  # EGI HydroCel GSN-64 1.0，NetStation .mff
+  # EGI HydroCel GSN-64 1.0, NetStation .mff
   system: "EGI HydroCel GSN-64 1.0"
   default_format: "mff"
   montage: "GSN-HydroCel-64_1.0"
-  channel_naming: "E"  # E1, E2, ... E64
+  channel_naming: "E"  # E1 … E64
   original_sfreq_hz: 500
-  recording_duration_sec: 300  # 5 分钟
-  resting_condition: "eyes_open"  # 睁眼静息
-  original_reference: "Cz"  # 采集参考（VREF / sensor 65）
-  # 剔除参考与非头皮通道（MNE 读入后 VREF 对应 NetStation 的 Cz 参考）
+  recording_duration_sec: 300
+  resting_condition: "eyes_open"
+  original_reference: "Cz"
+  # Drop reference / non-scalp channels (VREF is the NetStation Cz reference)
   exclude_channels:
     - VREF
     - Cz
     - E65
-  keep_channels_eeg: "E1-E64"  # 仅保留 64 个头皮电极
-  sampling_rate_target: 250  # Hz，预处理降采样目标
+  keep_channels_eeg: "E1-E64"
+  sampling_rate_target: 250
 
 filter:
   highpass_hz: 0.5
@@ -54,15 +54,13 @@ epochs:
   duration_sec: 2.0
   overlap_sec: 0.0
   min_usable_epochs: 60
-  reject_amplitude_uv: 500.0  # 峰峰值阈值 (µV)；EGI 儿童静息常需 500–1000，150 过严
+  reject_amplitude_uv: 500.0  # peak-to-peak µV (child EGI rest; 150 is too strict)
 
 ica:
-  n_components: 30  # 64 导 EGI 常用 20–40；勿用 0.99（易触发 PCA 单成分错误）
+  n_components: 30
   method: "fastica"
   random_state: 42
-  # 人工检查：设为 true 时在 ICA 后暂停等待人工标记（交互模式）
   manual_review: false
-  # 若已有人工标记的排除成分索引文件，放在 derivatives/preprocessed/ica_labels/
   ica_labels_dir: "derivatives/preprocessed/ica_labels"  # optional manual ICA exclusion labels
 
 psd:
@@ -88,7 +86,7 @@ fit_quality:
   min_r_squared: 0.90
   exponent_min: 0.0
   exponent_max: 5.0
-  fit_error_top_percentile: 5.0  # 全样本 fit_error 最高 5% 标记为异常
+  fit_error_top_percentile: 5.0
   subject_invalid_channel_ratio_max: 0.20
   knee_min_hz: 1.0
   knee_max_hz: 40.0
