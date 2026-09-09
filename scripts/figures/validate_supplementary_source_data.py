@@ -3,7 +3,12 @@
 # Note: Validate supplementary source bundle
 # This file is a copy for the public github_release/ bundle.
 
-"""Validate supplementary figure source-data exports against manuscript tables."""
+"""Validate supplementary source-data exports.
+
+CSV stems still use the August S1–S9 filenames. Manuscript SI figures are
+S1–S5; S1 cohort-flow counts were updated on 2026-09-09 (overlap N=104).
+This checker is not the figure builder — use scripts/figures/supplementary/.
+"""
 
 from __future__ import annotations
 
@@ -12,7 +17,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve()
+while not (PROJECT_ROOT / "src" / "config.py").is_file():
+    if PROJECT_ROOT.parent == PROJECT_ROOT:
+        raise RuntimeError("Cannot locate repository root (missing src/config.py)")
+    PROJECT_ROOT = PROJECT_ROOT.parent
 SUP_DIR = PROJECT_ROOT / "figure_source_data" / "supplementary"
 REPORT_PATH = SUP_DIR / "source_data_validation_report.md"
 
@@ -233,7 +242,7 @@ COHORT_EXPECT = {
     "Primary resting-state spectral cohort": (138, 61, 77),
     "Paired rest-to-movie exponent": (136, 61, 75),
     "Movie Aperiodic-ISC cohort": (136, 58, 78),
-    "Resting + movie matched": (92, 46, 46),
+    "Same-subject ISC ∩ state": (104, 45, 59),
     "IQ-balanced subset": (76, 38, 38),
     "Strict specparam-QC": (90, 44, 46),
     "HBN The Present matched cohort": (238, 119, 119),

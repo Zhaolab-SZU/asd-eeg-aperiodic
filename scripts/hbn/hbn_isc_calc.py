@@ -1,7 +1,5 @@
-# Ideal release name: hbn_isc_calc.py
-# Original path: scripts/113_hbn_thepresent_aperiodic_isc.py
-# Note: HBN The Present Aperiodic-ISC
-# This file is a copy for the public github_release/ bundle.
+# Public path: scripts/hbn/hbn_isc_calc.py
+# Source: scripts/113_hbn_thepresent_aperiodic_isc.py
 
 #!/usr/bin/env python
 """
@@ -22,7 +20,11 @@ import argparse
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve()
+while not (PROJECT_ROOT / "src" / "config.py").is_file():
+    if PROJECT_ROOT.parent == PROJECT_ROOT:
+        raise RuntimeError("Cannot locate repository root (missing src/config.py)")
+    PROJECT_ROOT = PROJECT_ROOT.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.config import load_config, setup_logging  # noqa: E402

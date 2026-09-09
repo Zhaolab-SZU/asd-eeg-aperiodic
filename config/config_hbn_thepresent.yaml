@@ -75,7 +75,7 @@ psd:
   freq_max_hz: 40.0
   welch:
     n_fft: 500
-    n_overlap: 250
+    n_overlap: 0  # 2-s window = 500 samples; single-segment PSD (SI Method 5)
     window: "hamming"
     fmin: 1.0
     fmax: 40.0
@@ -90,11 +90,10 @@ specparam:
   verbose: false
 
 fit_quality:
-  min_r_squared: 0.90
+  min_r_squared: 0.80  # sliding-window movie fits (SI Method 5); not a 20% invalid-channel filter
   exponent_min: 0.0
   exponent_max: 5.0
   fit_error_top_percentile: 5.0
-  subject_invalid_channel_ratio_max: 0.20
 
 groups:
   asd_label: "ASD"

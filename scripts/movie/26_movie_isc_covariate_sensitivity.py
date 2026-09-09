@@ -33,7 +33,11 @@ import statsmodels.formula.api as smf
 from scipy import stats
 from statsmodels.stats.multitest import multipletests
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve()
+while not (PROJECT_ROOT / "src" / "config.py").is_file():
+    if PROJECT_ROOT.parent == PROJECT_ROOT:
+        raise RuntimeError("Cannot locate repository root (missing src/config.py)")
+    PROJECT_ROOT = PROJECT_ROOT.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.io_utils import save_csv  # noqa: E402

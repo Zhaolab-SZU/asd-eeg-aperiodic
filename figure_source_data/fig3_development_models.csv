@@ -1,0 +1,7 @@
+analysis,estimate,SE,ci_low,ci_high,p,n,note
+posterior group×age interaction,0.004800296916049,0.0014434321376739,0.001944639058311,0.0076559547737869,0.0011469717605529,138,spectral_maturation/age_group_interaction_models.csv; per month
+ASD posterior age slope,-0.0044203229108135,,,,,138,simple_slopes_by_group.csv; manuscript p≈0.0002
+TD posterior age slope,0.0003799740052363,,,,,138,simple_slopes_by_group.csv; manuscript p≈0.83
+TD-reference ASD mean z (all),-0.6666200616615258,,-0.996103709185598,-0.3371364141374535,0.000150672979336,61,spectral_maturation/normative_deviation_tests.csv
+TD-reference ASD mean z (>72 mo),-0.8555929857378421,,,,8.914158253851292e-06,51,manuscript z≈-0.856; computed from subject-level deviation scores
+ASD deviation z ~ age (global normative file),-0.0222166224947593,0.0070236217970407,-0.0362811825424568,-0.0081520624470618,0.0025025546560226,61,normative_exponent/normative_age_association.csv uses global deviation_z; manuscript posterior slope β≈-0.025

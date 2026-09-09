@@ -1,23 +1,23 @@
-# Ideal release name: 24_sync_control_classic_isc.py
-# Original path: scripts/69_compute_classic_isc_controls.py
-# Note: Envelope ISC / alpha PLV controls
-# This file is a copy for the public github_release/ bundle.
+# Public path: scripts/movie/24_sync_control_classic_isc.py
+# Source: scripts/69_compute_classic_isc_controls.py (film-level synchrony)
 
 #!/usr/bin/env python
 """
 69_compute_classic_isc_controls.py
 --------------------------------
-Classic within-group ISC controls matched to Aperiodic-ISC:
-  1) Broadband envelope ISC (0.5–45 Hz Hilbert amplitude, Pearson LOO)
-  2) Alpha phase PLV ISC (8–13 Hz Hilbert phase, LOO PLV)
+Partly Cloudy classic synchrony controls on the continuous film timeline:
+  1) Broadband envelope ISC (TD-template; same posterior ROI / windows)
+  2) Alpha phase PLV ISC (within-group LOO)
+  3) Shared variance with Partly Cloudy Aperiodic-ISC
+  4) Envelope-adjusted Partly Cloudy Aperiodic-ISC group model
 
-Sliding window: 2 s / 0.5 s step; posterior ROI E33/E36/E37/E38.
-Outputs supplementary comparison tables and figures.
+No event-category partitioning.
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -25,20 +25,27 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import statsmodels.formula.api as smf
+from scipy import stats
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve()
+while not (PROJECT_ROOT / "src" / "config.py").is_file():
+    if PROJECT_ROOT.parent == PROJECT_ROOT:
+        raise RuntimeError("Cannot locate repository root (missing src/config.py)")
+    PROJECT_ROOT = PROJECT_ROOT.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.aperiodic_isc_analysis import (  # noqa: E402
-    EVENT_TYPES_ALL,
-    build_concat_keys,
+    FILM_PARTLY_CLOUDY,
+    FILM_TYPES_PARTLY_CLOUDY,
+    build_film_timeline_keys,
     build_subject_concat_series,
+    compute_td_template_isc,
     compute_within_group_isc,
     load_exponent_timeseries,
     summarize_group_isc_tests,
 )
 from src.classic_isc_analysis import (  # noqa: E402
-    build_control_comparison_table,
     build_subject_timeseries_table,
     compute_alpha_phase_timeseries,
     compute_envelope_timeseries,
@@ -51,49 +58,32 @@ from src.io_utils import save_csv  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Classic envelope/alpha ISC controls")
+    parser = argparse.ArgumentParser(description="Partly Cloudy classic ISC controls")
     parser.add_argument("--config", type=str, default="config/config_task_movie.yaml")
-    parser.add_argument("--events_csv", type=str, default="data/movie_events.csv")
-    parser.add_argument("--min_overlap_points", type=int, default=10)
+    parser.add_argument("--min_overlap_points", type=int, default=50)
     parser.add_argument("--overwrite-timeseries", action="store_true")
     return parser.parse_args()
 
 
-def _plot_pain_comparison(comp: pd.DataFrame, out_path: Path) -> None:
-    pain = comp[comp["event_type"] == "pain"].copy()
-    if pain.empty:
+def _plot_controls(comp: pd.DataFrame, out_path: Path) -> None:
+    if comp.empty:
         return
-    fig, ax = plt.subplots(figsize=(7.5, 4.5))
-    x = range(len(pain))
+    fig, ax = plt.subplots(figsize=(8.0, 4.8))
+    x = np.arange(len(comp))
     width = 0.35
-    ax.bar([i - width / 2 for i in x], pain["td_effect"], width, label="TD", color="#1B9E77")
-    ax.bar([i + width / 2 for i in x], pain["asd_effect"], width, label="ASD", color="#D95F02")
-    ax.set_xticks(list(x))
-    ax.set_xticklabels(pain["isc_type"], rotation=15, ha="right")
-    ax.set_ylabel("Within-group synchrony (r or PLV)")
-    ax.set_title("Pain segment: Aperiodic-ISC vs classic controls")
-    for i, row in pain.iterrows():
-        idx = list(pain.index).index(i)
+    ax.bar(x - width / 2, comp["td_effect"], width, label="TD", color="#1B9E77")
+    ax.bar(x + width / 2, comp["asd_effect"], width, label="ASD", color="#D95F02")
+    ax.set_xticks(x)
+    ax.set_xticklabels(comp["isc_type"], rotation=15, ha="right")
+    ax.set_ylabel("Synchrony (r or PLV)")
+    ax.set_title("Partly Cloudy synchrony controls")
+    for i, row in comp.iterrows():
+        idx = list(comp.index).index(i)
         p_txt = "NA" if pd.isna(row["p_value"]) else f"p={row['p_value']:.3g}"
         ax.text(idx, max(row["td_effect"], row["asd_effect"]) + 0.01, p_txt, ha="center", fontsize=8)
     ax.legend(frameon=False)
     fig.tight_layout()
-    fig.savefig(out_path.with_suffix(".png"), dpi=180)
-    fig.savefig(out_path.with_suffix(".pdf"))
-    plt.close(fig)
-
-
-def _plot_box_by_event(isc_df: pd.DataFrame, title: str, ylabel: str, out_path: Path, value_col: str = "isc_z") -> None:
-    fig, axes = plt.subplots(1, 3, figsize=(10.5, 4))
-    for ax, ev in zip(axes, EVENT_TYPES_ALL):
-        d = isc_df[isc_df["event_type"] == ev]
-        sns.boxplot(data=d, x="group", y=value_col, order=["ASD", "TD"], ax=ax)
-        ax.set_title(ev.capitalize())
-        ax.set_xlabel("")
-        if ax is axes[0]:
-            ax.set_ylabel(ylabel)
-    fig.suptitle(title, y=1.02)
-    fig.tight_layout()
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_path.with_suffix(".png"), dpi=180)
     fig.savefig(out_path.with_suffix(".pdf"))
     plt.close(fig)
@@ -101,16 +91,20 @@ def _plot_box_by_event(isc_df: pd.DataFrame, title: str, ylabel: str, out_path: 
 
 def main() -> None:
     args = parse_args()
-    cfg = load_config(Path(args.config))
-    log = setup_logging(cfg, name="classic_isc_controls")
+    cfg_path = Path(args.config)
+    if not cfg_path.is_absolute():
+        cfg_path = PROJECT_ROOT / cfg_path
+    cfg = load_config(cfg_path)
+    log = setup_logging(cfg, name="partly_cloudy_synchrony")
 
     deriv = Path(cfg["paths"]["derivatives_root"])
     out_root = Path(cfg["paths"]["outputs_root"])
     preproc_dir = deriv / "preprocessed"
-    stats_dir = deriv / "stats" / "classic_isc"
-    fig_dir = out_root / "figures" / "classic_isc"
-    stats_dir.mkdir(parents=True, exist_ok=True)
-    fig_dir.mkdir(parents=True, exist_ok=True)
+    stats_dir = deriv / "stats" / "partly_cloudy_synchrony"
+    table_dir = PROJECT_ROOT / "outputs" / "tables" / "partly_cloudy_synchrony"
+    fig_dir = out_root / "figures" / "partly_cloudy_synchrony"
+    for d in (stats_dir, table_dir, fig_dir):
+        d.mkdir(parents=True, exist_ok=True)
 
     sw = cfg.get("psd", {}).get("sliding_window", {})
     window_sec = float(sw.get("window_sec", 2.0))
@@ -124,10 +118,10 @@ def main() -> None:
         movie_qc_path,
     )
     participants = ts_ref[["subject_id", "group"]].drop_duplicates().reset_index(drop=True)
-    log.info("Classic ISC cohort: %d subjects", len(participants))
+    log.info("Partly Cloudy synchrony cohort: %d subjects", len(participants))
 
-    env_ts_path = stats_dir / "envelope_timeseries_posterior.csv"
-    alpha_ts_path = stats_dir / "alpha_phase_timeseries_posterior.csv"
+    env_ts_path = stats_dir / "partly_cloudy_envelope_timeseries_posterior.csv"
+    alpha_ts_path = stats_dir / "partly_cloudy_alpha_phase_timeseries_posterior.csv"
 
     if args.overwrite_timeseries or not env_ts_path.exists():
         log.info("Computing broadband envelope time series...")
@@ -147,9 +141,13 @@ def main() -> None:
     else:
         alpha_ts = pd.read_csv(alpha_ts_path)
 
-    events = pd.read_csv(PROJECT_ROOT / args.events_csv)
-    ts_bins = np.sort(env_ts["center_sec"].unique()) if len(env_ts) else np.array([])
-    concat_keys = build_concat_keys(ts_bins=ts_bins, events=events)
+    if env_ts.empty:
+        raise RuntimeError(
+            "[ANALYSIS BLOCKED: empty envelope timeseries — check preprocessed FIF availability]"
+        )
+
+    ts_bins = np.sort(env_ts["center_sec"].unique())
+    concat_keys = build_film_timeline_keys(ts_bins, film_id=FILM_PARTLY_CLOUDY)
 
     env_concat = build_subject_concat_series(
         env_ts.rename(columns={"signal_mean": "exponent_mean"}),
@@ -160,63 +158,141 @@ def main() -> None:
         keys_df=concat_keys,
     ).rename(columns={"exponent_mean": "signal_mean"})
 
-    envelope_isc = compute_within_group_isc(
-        env_concat,
+    # Envelope: TD-template (aligned with primary Aperiodic-ISC)
+    envelope_isc = compute_td_template_isc(
+        subject_concat=env_concat,
         min_overlap_points=args.min_overlap_points,
-        event_types=EVENT_TYPES_ALL,
+        event_types=FILM_TYPES_PARTLY_CLOUDY,
         value_col="signal_mean",
     )
-    envelope_isc["isc_method"] = "within_group_envelope"
+    envelope_isc = envelope_isc[np.isfinite(envelope_isc["isc_z"])].copy()
+    envelope_isc["isc_method"] = "td_template_envelope"
+
     alpha_plv = compute_within_group_alpha_plv(
         alpha_concat,
         min_overlap_points=args.min_overlap_points,
-        event_types=EVENT_TYPES_ALL,
+        event_types=FILM_TYPES_PARTLY_CLOUDY,
         phase_col="signal_mean",
     )
+    alpha_plv = alpha_plv[np.isfinite(alpha_plv["isc_r"])].copy()
 
-    envelope_stats = summarize_group_envelope_tests(envelope_isc, EVENT_TYPES_ALL)
-    alpha_stats = summarize_group_plv_tests(alpha_plv, EVENT_TYPES_ALL)
+    envelope_stats = summarize_group_envelope_tests(envelope_isc, FILM_TYPES_PARTLY_CLOUDY)
+    alpha_stats = summarize_group_plv_tests(alpha_plv, FILM_TYPES_PARTLY_CLOUDY)
 
-    aperiodic_path = deriv / "stats" / "aperiodic_isc" / "aperiodic_isc_within_group_subject_values.csv"
-    if aperiodic_path.exists():
-        aperiodic_isc = pd.read_csv(aperiodic_path)
-        aperiodic_stats = summarize_group_isc_tests(aperiodic_isc, EVENT_TYPES_ALL)
+    aperiodic_path = (
+        deriv / "stats" / "partly_cloudy_isc" / "partly_cloudy_aperiodic_isc_subject_level.csv"
+    )
+    if not aperiodic_path.exists():
+        raise FileNotFoundError(
+            f"[ANALYSIS BLOCKED: missing {aperiodic_path}; run 68_compute_aperiodic_isc.py first]"
+        )
+    aperiodic_isc = pd.read_csv(aperiodic_path)
+    aperiodic_isc["subject_id"] = aperiodic_isc["subject_id"].astype(str)
+    aperiodic_stats = summarize_group_isc_tests(aperiodic_isc, FILM_TYPES_PARTLY_CLOUDY)
+
+    # Shared variance / envelope-adjusted model
+    merged = aperiodic_isc[["subject_id", "group", "isc_z"]].rename(
+        columns={"isc_z": "aperiodic_isc_z"}
+    )
+    merged = merged.merge(
+        envelope_isc[["subject_id", "group", "isc_z"]].rename(columns={"isc_z": "envelope_isc_z"}),
+        on=["subject_id", "group"],
+        how="inner",
+    )
+    if len(merged) >= 10:
+        r_shared, p_shared = stats.pearsonr(merged["aperiodic_isc_z"], merged["envelope_isc_z"])
+        shared_var = float(r_shared**2)
+        ols = smf.ols(
+            "aperiodic_isc_z ~ C(group, Treatment(reference='ASD')) + envelope_isc_z",
+            data=merged,
+        ).fit(cov_type="HC3")
+        key = [k for k in ols.params.index if "group" in k and "TD" in k][0]
+        adj = {
+            "n_overlap_subjects": int(len(merged)),
+            "pearson_r_aperiodic_vs_envelope": float(r_shared),
+            "shared_variance_r2": shared_var,
+            "pearson_p": float(p_shared),
+            "envelope_adjusted_beta_td_minus_asd": float(ols.params[key]),
+            "envelope_adjusted_se": float(ols.bse[key]),
+            "envelope_adjusted_p": float(ols.pvalues[key]),
+            "envelope_adjusted_ci95_low": float(ols.conf_int().loc[key, 0]),
+            "envelope_adjusted_ci95_high": float(ols.conf_int().loc[key, 1]),
+        }
     else:
-        log.warning("Aperiodic-ISC file missing; comparison table will omit aperiodic rows.")
-        aperiodic_stats = pd.DataFrame()
+        adj = {
+            "n_overlap_subjects": int(len(merged)),
+            "note": "[ANALYSIS BLOCKED: insufficient overlapping subjects for envelope adjustment]",
+        }
 
-    comparison = build_control_comparison_table(aperiodic_stats, envelope_stats, alpha_stats)
+    comparison_rows = []
+    if len(aperiodic_stats):
+        r = aperiodic_stats.iloc[0]
+        comparison_rows.append(
+            {
+                "film_id": FILM_PARTLY_CLOUDY,
+                "isc_type": "Partly Cloudy Aperiodic-ISC",
+                "n_asd": r["n_asd"],
+                "n_td": r["n_td"],
+                "asd_effect": r["asd_mean_r"],
+                "td_effect": r["td_mean_r"],
+                "p_value": r["p_value"],
+            }
+        )
+    if len(envelope_stats):
+        r = envelope_stats.iloc[0]
+        comparison_rows.append(
+            {
+                "film_id": FILM_PARTLY_CLOUDY,
+                "isc_type": "Partly Cloudy broadband envelope ISC",
+                "n_asd": r["n_asd"],
+                "n_td": r["n_td"],
+                "asd_effect": r["asd_mean_r"],
+                "td_effect": r["td_mean_r"],
+                "p_value": r["p_value"],
+            }
+        )
+    if len(alpha_stats):
+        r = alpha_stats.iloc[0]
+        comparison_rows.append(
+            {
+                "film_id": FILM_PARTLY_CLOUDY,
+                "isc_type": "Partly Cloudy alpha PLV ISC",
+                "n_asd": r["n_asd"],
+                "n_td": r["n_td"],
+                "asd_effect": r["asd_mean_plv"],
+                "td_effect": r["td_mean_plv"],
+                "p_value": r["p_value"],
+            }
+        )
+    comparison = pd.DataFrame(comparison_rows)
 
-    save_csv(env_concat, stats_dir / "envelope_subject_concat_timeseries.csv")
-    save_csv(alpha_concat, stats_dir / "alpha_phase_subject_concat_timeseries.csv")
-    save_csv(envelope_isc, stats_dir / "envelope_within_group_subject_values.csv")
-    save_csv(envelope_stats, stats_dir / "envelope_within_group_stats.csv")
-    save_csv(alpha_plv, stats_dir / "alpha_plv_within_group_subject_values.csv")
-    save_csv(alpha_stats, stats_dir / "alpha_plv_within_group_stats.csv")
-    save_csv(comparison, stats_dir / "classic_vs_aperiodic_within_group_comparison.csv")
-
-    _plot_box_by_event(
-        envelope_isc,
-        "Within-group broadband envelope ISC (0.5–45 Hz)",
-        "Envelope ISC (Fisher z)",
-        fig_dir / "fig_envelope_within_group_isc",
+    save_csv(envelope_isc, stats_dir / "partly_cloudy_envelope_isc.csv")
+    save_csv(envelope_stats, stats_dir / "partly_cloudy_envelope_isc_group_stats.csv")
+    save_csv(alpha_plv, stats_dir / "partly_cloudy_alpha_plv_isc.csv")
+    save_csv(alpha_stats, stats_dir / "partly_cloudy_alpha_plv_isc_group_stats.csv")
+    save_csv(comparison, stats_dir / "partly_cloudy_synchrony_controls.csv")
+    save_csv(merged, stats_dir / "partly_cloudy_aperiodic_vs_envelope_subject.csv")
+    (stats_dir / "partly_cloudy_envelope_adjusted_summary.json").write_text(
+        json.dumps(adj, indent=2), encoding="utf-8"
     )
-    _plot_box_by_event(
-        alpha_plv,
-        "Within-group alpha phase PLV (8–13 Hz, LOO)",
-        "Alpha PLV",
-        fig_dir / "fig_alpha_plv_within_group",
-        value_col="isc_r",
-    )
-    _plot_pain_comparison(comparison, fig_dir / "fig_pain_aperiodic_vs_classic_controls")
 
-    log.info("Comparison table: %s", stats_dir / "classic_vs_aperiodic_within_group_comparison.csv")
-    print("\n=== Within-group ISC controls vs Aperiodic-ISC ===")
+    for name in (
+        "partly_cloudy_envelope_isc.csv",
+        "partly_cloudy_alpha_plv_isc.csv",
+        "partly_cloudy_synchrony_controls.csv",
+    ):
+        save_csv(pd.read_csv(stats_dir / name), table_dir / name)
+    (table_dir / "partly_cloudy_envelope_adjusted_summary.json").write_text(
+        json.dumps(adj, indent=2), encoding="utf-8"
+    )
+
+    _plot_controls(comparison, fig_dir / "fig_partly_cloudy_synchrony_controls")
+
+    print("\n=== Partly Cloudy synchrony controls ===")
     print(comparison.to_string(index=False))
-    pain = comparison[comparison["event_type"] == "pain"]
-    if not pain.empty:
-        print("\n=== Pain segment summary ===")
-        print(pain.to_string(index=False))
+    print("\n=== Envelope-adjusted summary ===")
+    print(json.dumps(adj, indent=2))
+    log.info("Wrote synchrony controls to %s", stats_dir)
 
 
 if __name__ == "__main__":

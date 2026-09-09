@@ -3,7 +3,7 @@ resting,1,Registration/effective resting sample,168,80,88,,Supplementary Figure 
 resting,2,Primary resting-state spectral cohort,138,61,77,,Supplementary Figure S1
 movie,3,Paired rest-to-movie exponent,136,61,75,,Supplementary Figure S1
 movie,4,Movie Aperiodic-ISC cohort,136,58,78,,Supplementary Figure S1
-cross_context,5,Resting + movie matched,92,46,46,,Supplementary Figure S1
+cross_context,5,Same-subject ISC ∩ state,104,45,59,,Supplementary Figure S1
 resting,6,IQ-balanced subset,76,38,38,,Supplementary Figure S1
 resting,7,Strict specparam-QC,90,44,46,,Supplementary Figure S1
 hbn,8,HBN The Present matched cohort,238,119,119,,Supplementary Figure S1

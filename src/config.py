@@ -40,6 +40,11 @@ def load_config(config_path: Path | None = None) -> dict[str, Any]:
     """加载主配置 config.yaml。"""
     if config_path is None:
         config_path = PROJECT_ROOT / "config" / "config.yaml"
+    config_path = Path(config_path)
+    if not config_path.is_absolute():
+        candidate = PROJECT_ROOT / config_path
+        if candidate.exists() or not config_path.exists():
+            config_path = candidate
     cfg = load_yaml(config_path)
     # 将相对路径解析为绝对路径
     paths = cfg.get("paths", {})

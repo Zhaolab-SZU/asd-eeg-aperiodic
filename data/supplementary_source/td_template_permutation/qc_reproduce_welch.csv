@@ -1,0 +1,2 @@
+n_asd_recomputed,n_td_recomputed,n_asd_gold,n_td_gold,asd_mean_z_recomputed,td_mean_z_recomputed,asd_mean_z_gold,td_mean_z_gold,abs_diff_asd_mean_z,abs_diff_td_mean_z,t_recomputed,t_gold,abs_diff_t,p_recomputed,p_gold,max_abs_subject_z_diff,n_subjects_merged,passed_mean_z_tol,passed_t_tol,passed
+58,78,58,78,0.058281639468844175,0.11335534389868683,0.0582816394688441,0.1133553438986868,7.632783294297951e-17,2.7755575615628914e-17,-5.5756125733008375,-5.5756125733008375,0.0,1.9477003661847364e-07,1.947700366184737e-07,9.71445146547012e-17,136,True,True,True

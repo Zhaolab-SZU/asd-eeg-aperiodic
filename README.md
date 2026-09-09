@@ -1,66 +1,94 @@
 # asd-eeg-aperiodic
 
-Code and de-identified derived data for analyses of posterior aperiodic EEG activity in autistic and typically developing children during resting-state and naturalistic movie viewing.
+Code and de-identified derived data for posterior aperiodic EEG dynamics in autistic and typically developing children during resting-state and naturalistic movie viewing.
+
+Aligned to the Nature Communications submission of **9 September 2026**.
 
 ## Overview
 
-This repository contains the analysis scripts, configuration files, and derived source data used to generate the manuscript figures and statistical tables. Raw EEG recordings are not included.
+- Resting-state spectral parameterization and a data-informed posterior exponent readout
+- Rest-to-movie modulation of the condition-averaged posterior exponent
+- Film-level Aperiodic-ISC during *Partly Cloudy* (TD-template; `min_overlap=50`)
+- Classic synchrony controls (broadband envelope ISC; within-group alpha PLV)
+- Reconstructed-template permutation inference (equal-tail two-sided *p* = 0.00020)
+- Estimator-matched rest–movie sensitivity (Table S12)
+- External HBN *The Present* Aperiodic-ISC (directionally consistent, not replication)
 
-The analyses cover:
+Raw EEG is not included.
 
-- resting-state EEG spectral parameterization
-- posterior-region aperiodic exponent analyses
-- naturalistic movie Aperiodic-ISC analyses
-- rest-movie coupling analyses
-- external Healthy Brain Network The Present movie convergence analyses
+## Reproduce manuscript figures from shipped CSVs
 
-## Repository Structure
+From the repository root:
+
+```bash
+python scripts/figures/main/build_main_figures.py
+python scripts/figures/supplementary/build_si_figures.py
+```
+
+Outputs go to `outputs/figures/main/` and `outputs/figures/supplementary/`.
+Palette: ASD `#B22222`, TD `#000080`.
+
+Source tables live in `figure_source_data/` (mirrored under `data/figure_source/`).
+
+## Analysis scripts (need local EEG / trajectories)
+
+Run from the **repository root** so `config/` and `src/` resolve.
+
+```bash
+# Film-level Partly Cloudy Aperiodic-ISC
+python scripts/movie/22_calc_aperiodic_isc.py --min_overlap_points 50
+
+# Classic synchrony controls
+python scripts/movie/24_sync_control_classic_isc.py --min_overlap_points 50
+
+# Covariate-adjusted ISC models
+python scripts/movie/26b_partly_cloudy_isc_models.py
+
+# TD-template permutation (slow; B=10000) then equal-tail recalibration
+python scripts/movie/27_td_template_permutation.py
+python scripts/movie/27b_recalibrate_permutation_p.py
+
+# Rest–movie mean-level analysis + matched-estimator sensitivity
+python scripts/movie/25_rest_movie_state_analysis.py
+python scripts/movie/25d_rest_movie_matched_estimator.py
+
+# HBN The Present
+python scripts/hbn/hbn_isc_calc.py
+```
+
+The permutation **null CSV is shipped**, so `27b_recalibrate_permutation_p.py` can be run without EEG. Re-running `27_td_template_permutation.py` requires `specparam_exponent_timeseries_global.csv`.
+
+Primary permutation *p* values in the manuscript are:
+
+- one-sided TD > ASD: 9.999e-05
+- equal-tail two-sided: 0.00020
+
+Do not use `|Tb| ≥ |Tobs|` as the primary two-sided *p* (the reconstructed-template null is shifted).
+
+## Repository layout
 
 | Path | Description |
 |------|-------------|
 | `src/` | Shared analysis code |
-| `config/` | YAML configuration files with relative paths |
-| `scripts/resting/` | Resting-state EEG analysis scripts |
-| `scripts/movie/` | Movie-viewing Aperiodic-ISC analysis scripts |
-| `scripts/hbn/` | Healthy Brain Network The Present analysis scripts |
-| `scripts/figures/` | Figure and source-data export scripts |
-| `data/figure_source/` | Source data for main figures |
-| `data/supplementary_source/` | Source data for supplementary figures and tables |
-| `data/tables/` | Statistical summary tables |
-| `figure_source_data/` | Legacy source-data mirror used by older plotting scripts |
-
-## Installation
-
-```bash
-pip install -r requirements.txt
-```
-
-## Reproducing Figures
-
-Figures can be regenerated from the shipped derived CSV files:
-
-```bash
-python scripts/figures/main/make_figure1_resting_discovery_refined.py
-python scripts/figures/supplementary/plot_supp_s8_rest_movie_coupling.py
-```
-
-Generated files are written to `outputs/figures/`.
-
-## Data Access
-
-This repository includes de-identified derived data only. It does not include:
-
-- raw EEG recordings
-- item-level clinical instrument data
-- raw Healthy Brain Network BIDS data
-
-Healthy Brain Network data should be obtained directly from the HBN data portal under the applicable data-use agreement.
+| `config/` | YAML configs (relative paths; placeholders for raw EEG / HBN BIDS) |
+| `scripts/resting/` | Resting-state pipeline |
+| `scripts/movie/` | Partly Cloudy Aperiodic-ISC, synchrony, permutation, rest–movie |
+| `scripts/hbn/` | HBN The Present movie analyses |
+| `scripts/figures/main/` | Manuscript Figures 1–5 |
+| `scripts/figures/supplementary/` | Supplementary Figures S1–S5 |
+| `scripts/figures/_archived_20260812/` | Pre-film-level plotting scripts (not manuscript-facing) |
+| `figure_source_data/` | Figure / table source CSVs |
+| `data/supplementary_source/` | SI source tables, permutation null, matched-estimator headlines |
 
 ## Notes
 
-Configuration files use paths relative to the repository root. Local raw-data paths should be set on the user's machine and should not be committed.
+Nested scripts locate the repository by walking upward until `src/config.py` is found. Run them from any working directory.
 
-Earlier exploratory HBN resting-state scripts are retained for provenance, but the current external-validation analysis uses the HBN The Present movie cohort.
+HBN resting-state scripts remain for provenance. They are not part of the submitted manuscript-facing external analysis.
+
+Event-segment Aperiodic-ISC (`scripts/movie/23_calc_segment_isc.py`) is retained for provenance and is not the primary naturalistic contrast.
+
+See `MANUSCRIPT_ALIGNMENT_20260909.md` for remaining script-vs-text notes.
 
 ## License
 

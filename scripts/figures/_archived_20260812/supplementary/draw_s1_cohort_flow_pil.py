@@ -5,7 +5,11 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve()
+while not (ROOT / "src" / "config.py").is_file():
+    if ROOT.parent == ROOT:
+        raise RuntimeError("Cannot locate repository root (missing src/config.py)")
+    ROOT = ROOT.parent
 OUT = ROOT / "outputs" / "figures" / "supplementary"
 OUT.mkdir(parents=True, exist_ok=True)
 PNG = OUT / "Supplementary_Figure_S1_cohort_flow.png"

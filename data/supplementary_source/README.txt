@@ -1,3 +1,8 @@
+NOTE (2026-09-09): CSV stems keep the August S1–S9 filenames.
+Manuscript SI figures are S1–S5. s1_cohort_flow.csv stage 5 is now
+Same-subject ISC ∩ state, N=104 (ASD=45, TD=59), matching Supplementary Figure S1.
+Build SI figures with scripts/figures/supplementary/build_si_figures.py.
+
 Supplementary Figures S1-S9 source data bundle
 Generated: 2026-08-12 (manuscript-aligned refresh)
 

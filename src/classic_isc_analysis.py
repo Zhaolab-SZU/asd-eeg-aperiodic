@@ -12,7 +12,9 @@ from scipy.signal import hilbert
 from scipy.stats import ttest_ind
 
 from src.aperiodic_isc_analysis import (
-    EVENT_TYPES_ALL,
+    FILM_TYPES_PARTLY_CLOUDY,
+    EVENT_TYPES_ALL,  # alias of FILM_TYPES_PARTLY_CLOUDY
+    build_film_timeline_keys,
     build_concat_keys,
     build_subject_concat_series,
     compute_within_group_isc,

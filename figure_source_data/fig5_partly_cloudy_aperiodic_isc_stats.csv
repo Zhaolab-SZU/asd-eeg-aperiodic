@@ -1,0 +1,2 @@
+event_type,film_id,n_asd,n_td,asd_mean_z,td_mean_z,asd_mean_r,td_mean_r,mean_diff_asd_minus_td_z,mean_diff_td_minus_asd_z,cohen_d_td_minus_asd,t_stat,p_value
+partly_cloudy,partly_cloudy,58,78,0.0582816394688441,0.1133553438986868,0.0582157396289364,0.1128723091000725,-0.0550737044298426,0.0550737044298426,1.0023057169789586,-5.5756125733008375,1.9477003661847367e-07

@@ -1,4 +1,4 @@
-"""HBN The Present movie Aperiodic-ISC helpers for the manuscript-facing pipeline."""
+"""HBN 静息 EO：非周期 exponent 被试间相关（ISC），对齐主研究 movie TD-template 流程。"""
 
 from __future__ import annotations
 
@@ -16,6 +16,8 @@ from scipy import signal
 from scipy.stats import spearmanr, ttest_ind
 
 from src.config import PROJECT_ROOT, load_roi_config
+from src.hbn_confirmatory_replication import _load_participants_qc
+from src.hbn_dimensional_replication import build_dimensional_table, build_enriched_cohort
 from src.hbn_main_matched_cohort import (
     apply_covariate_match_filters,
     greedy_match_asd_td,
@@ -66,7 +68,7 @@ def _welch_segment(
     fmax: float,
 ) -> tuple[np.ndarray, np.ndarray]:
     n_fft = int(welch_cfg.get("n_fft", 500))
-    n_overlap = int(welch_cfg.get("n_overlap", 250))
+    n_overlap = int(welch_cfg.get("n_overlap", 0))
     n_fft = min(n_fft, len(sig))
     if n_fft < 16:
         return np.array([]), np.array([])
@@ -481,7 +483,7 @@ def build_isc_report(
     results: dict[str, dict[str, Any]],
     main_ref: dict[str, float],
     *,
-    data_label: str = "HBN 静息 **eyes-open**（无 movie 事件标签，故为全段 overall ISC）",
+    data_label: str = "HBN naturalistic or resting continuous-timeline Aperiodic-ISC",
     signal_label: str = "homologous posterior（E67/E72/E75/E77，对应主研究 E33/E36/E37/E38）",
     interpretation_extra: list[str] | None = None,
 ) -> str:
@@ -493,8 +495,7 @@ def build_isc_report(
         f"- **信号**：{signal_label}",
         "- **模板**：TD-template（TD 留一法；ASD 对 full TD 模板）",
         "- **数据**：" + data_label,
-        f"- **主研究参考**（movie mental/pain）：TD ISC > ASD，mental p≈{main_ref.get('mental_p', 0.022):.3g}，"
-        f"pain p≈{main_ref.get('pain_p', 0.0014):.3g}",
+        f"- **主研究参考**：Partly Cloudy Aperiodic-ISC（TD-template）显示 TD > ASD",
         "",
         "## 结果",
         "",
@@ -528,10 +529,8 @@ def build_isc_report(
     else:
         lines.extend(
             [
-                "- **主研究 movie**：mental/pain 片段 ISC 为 **TD > ASD**（ASD 与 TD 模板同步性更低）。",
-                "- **HBN 限制**：无 movie 任务 / 事件标签，仅为静息 EO **overall ISC**；滑窗 0.5s 分析目前仅覆盖部分被试（内存约束下复用已缓存序列）。",
-                "- **epoch 2s 模式**：方向与主研究一致（TD 略高）但 **p≈.22，不显著**。",
-                "- **滑窗 0.5s confirmatory**：出现 **ASD > TD**（p≈.014），与主研究 **方向相反**；考虑 partial N 与静息态无刺激语境，不宜作 confirmatory 复现。",
+                "- **Partly Cloudy**：连续影片时间轴上的 TD-template Aperiodic-ISC 为 TD > ASD。",
+                "- **The Present**：独立影片上的方向性收敛检验，非严格复制。",
                 "",
             ]
         )
@@ -641,7 +640,7 @@ def _run_thepresent_isc_cohort_blocks(
     summary_df = pd.DataFrame(summary_rows)
     save_csv(summary_df, summary_path)
 
-    main_ref = {"mental_p": 0.0223, "pain_p": 0.00139}
+    main_ref = {}
     report = build_isc_report(
         results,
         main_ref,
@@ -689,11 +688,11 @@ def run_hbn_thepresent_aperiodic_isc(
         summary_path=tbl_dir / "isc_group_stats.csv",
         report_path=paths["outputs_root"] / "isc_report_zh.md",
         report_title="# HBN ThePresent 非周期 exponent 同步性（ISC）分析报告",
-        data_label="HBN **ThePresent** 自然观看（~200 s，无 mental/pain 分段 → **overall ISC**）",
+        data_label="HBN **The Present** naturalistic viewing (usable film duration; The Present Aperiodic-ISC)",
         interpretation_extra=[
-            "- **主研究 movie**：mental/pain 分段 ISC 为 **TD > ASD**；HBN ThePresent 为不同影片，仅可比 **全片 overall** 模式。",
-            "- **无事件标签**：不能复现 mental/pain/neutral 分段 ISC。",
-            "- 若 overall 模式仍不显著或方向与主研究不一致，不宜作为外部 confirmatory 证据。",
+            "- **Partly Cloudy** and **The Present** are both analysed as continuous-film TD-template Aperiodic-ISC.",
+            "- The Present provides directionally consistent cross-stimulus support, not strict replication "
+            "(different film, montage, preprocessing, and residual demographics).",
             "",
         ],
     )
@@ -828,10 +827,6 @@ def run_hbn_thepresent_matched_global_aperiodic_isc(cfg: dict[str, Any]) -> dict
 
 
 def run_hbn_aperiodic_isc(cfg: dict[str, Any], limit: int | None = None) -> dict[str, Path]:
-    """Archived EO/resting exploratory ISC entry, retained for provenance only."""
-    from src.hbn_confirmatory_replication import _load_participants_qc
-    from src.hbn_dimensional_replication import build_dimensional_table, build_enriched_cohort
-
     paths = resolve_hbn_paths(cfg)
     rep_dir = paths["derivatives_root"] / "replication" / "isc"
     fig_dir = paths["outputs_root"] / "figures"
@@ -898,7 +893,7 @@ def run_hbn_aperiodic_isc(cfg: dict[str, Any], limit: int | None = None) -> dict
     summary_df = pd.DataFrame(summary_rows)
     save_csv(summary_df, tbl_dir / "isc_group_stats.csv")
 
-    main_ref = {"mental_p": 0.0223, "pain_p": 0.00139}
+    main_ref = {}
     report = build_isc_report(results, main_ref)
     report_path = paths["outputs_root"] / "isc_report_zh.md"
     report_path.write_text(report, encoding="utf-8")

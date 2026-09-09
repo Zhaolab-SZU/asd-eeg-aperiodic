@@ -33,9 +33,9 @@
 | `scripts/movie/20_movie_prepare_participants.py` | `scripts/31_prepare_movie_participants.py` | Movie participant preparation |
 | `scripts/movie/20b_align_exponent_movie_labels.py` | `scripts/31_align_exponent_with_movie_labels.py` | Align resting exponents with movie labels |
 | `scripts/movie/21_time_resolved_specparam_isc.py` | `scripts/97_posterior_movie_specparam_isc.py` | Time-resolved posterior specparam + ISC pipeline |
-| `scripts/movie/22_calc_aperiodic_isc.py` | `scripts/68_compute_aperiodic_isc.py` | TD-template and within-group Aperiodic-ISC |
-| `scripts/movie/23_calc_segment_isc.py` | `scripts/33_compute_segment_isc.py` | Segment-level ISC helpers |
-| `scripts/movie/24_sync_control_classic_isc.py` | `scripts/69_compute_classic_isc_controls.py` | Envelope ISC / alpha PLV controls |
+| `scripts/movie/22_calc_aperiodic_isc.py` | `scripts/68_compute_aperiodic_isc.py` | Film-level TD-template / within-group Aperiodic-ISC (`min_overlap=50`) |
+| `scripts/movie/23_calc_segment_isc.py` | `scripts/33_compute_segment_isc.py` | Event-segment ISC helpers (provenance only; not the primary contrast) |
+| `scripts/movie/24_sync_control_classic_isc.py` | `scripts/69_compute_classic_isc_controls.py` | Film-level envelope ISC / alpha PLV controls |
 | `scripts/movie/24b_envelope_partial_isc.py` | `scripts/93_aperiodic_envelope_partial_isc.py` | Envelope-adjusted Aperiodic-ISC (Supp Fig S6) |
 | `scripts/movie/25_rest_movie_state_analysis.py` | `scripts/35_rest_movie_posterior_state_analysis.py` | Rest–movie posterior exponent modulation |
 | `scripts/movie/25b_rest_movie_coupling.py` | `scripts/34_resting_to_movie_coupling.py` | Resting-to-movie coupling models |
@@ -51,12 +51,12 @@
 | `scripts/figures/prepare_figure_source_data.py` | `scripts/prepare_figure_source_data.py` | Assemble main-figure source CSVs |
 | `scripts/figures/export_supplementary_source_data.py` | `scripts/export_supplementary_source_data.py` | Export supplementary source tables |
 | `scripts/figures/export_s4_development_predictions_with_ci.py` | `scripts/export_s4_development_predictions_with_ci.py` | S4 development CI trajectories |
-| `scripts/figures/export_s6_isc_subject_level.py` | `scripts/export_s6_isc_subject_level.py` | S6 subject-level ISC |
-| `scripts/figures/export_s7_synchrony_subject_level.py` | `scripts/export_s7_synchrony_subject_level.py` | S7 synchrony subject-level |
+| `scripts/figures/export_s6_isc_subject_level.py` | `scripts/export_s6_isc_subject_level.py` | Historical segment-ISC export (CSV stem `s6_*`; not SI Figure S6) |
+| `scripts/figures/export_s7_synchrony_subject_level.py` | `scripts/export_s7_synchrony_subject_level.py` | Historical synchrony export (CSV stem `s7_*`; manuscript SI Figure S4 is film-level) |
 | `scripts/figures/export_fig5_rest_movie_exponent_subjects.py` | `scripts/export_fig5_rest_movie_exponent_subjects.py` | Fig.5A rest–movie subject table |
 | `scripts/figures/validate_supplementary_source_data.py` | `scripts/validate_supplementary_source_data.py` | Validate supplementary source bundle |
 | `scripts/figures/recompute_s4_age_interaction_sensitivity.py` | `scripts/recompute_s4_age_interaction_sensitivity.py` | Recompute S4 age×group sensitivities |
-| `scripts/figures/plot_supplementary_figures.py` | `scripts/plot_supplementary_figures.py` | Plot manuscript-facing Supp Figs S1/S4-S6/S8 |
+| `scripts/figures/_archived_20260812/plot_supplementary_figures.py` | `scripts/plot_supplementary_figures.py` | Pre-film-level SI builder (S1/S4–S8 numbering); not manuscript-facing |
 | `scripts/figures/plot_fig2a_channelwise_topomap.py` | `scripts/plot_fig2a_channelwise_topomap.py` | Fig.2A topomap |
 | `scripts/figures/plot_posterior_robustness_forest.py` | `scripts/plot_posterior_robustness_forest.py` | Fig.2B robustness forest |
 | `scripts/figures/plot_ados_posterior_partialcorr_main.py` | `scripts/64_plot_ados_posterior_partialcorr_main.py` | Fig.4 ADOS partial-correlation panels |
@@ -121,7 +121,7 @@
 - Jansen–Rit mechanistic branch (`96–146`, `src/jr_*`)
 - Gaze sensitivity scripts (removed from manuscript)
 - ML / classifier exploration scripts
-- HBN resting-state replication/external-validation scripts and source tables (removed from the 2026-08-12 manuscript)
+- HBN resting-state replication/external-validation scripts and source tables (removed from the manuscript-facing external analysis)
 - Local tools (`.tools/`), Word backups, notebooks
 
 | `scripts/resting/10c_posterior_roi_nested_split_validation.py` | `scripts/28_posterior_roi_nested_split_validation.py` | Nested split-sample ROI validation (Supp Table S4a) |
@@ -129,3 +129,18 @@
 | `scripts/figures/export_statistical_summary_tables.py` | `scripts/export_statistical_summary_tables.py` | Export S4a/S4b/HBN FSIQ summary CSVs |
 | `src/posterior_roi_nested_split.py` | `src/posterior_roi_nested_split.py` | library module |
 | `src/frontal_comparison_analysis.py` | `src/frontal_comparison_analysis.py` | library module |
+
+## 2026-09-09 film-level addendum
+
+| Bundle path | Original lab path | Note |
+|-------------|-------------------|------|
+| `scripts/movie/22_calc_aperiodic_isc.py` | `scripts/68_compute_aperiodic_isc.py` | Film-level Partly Cloudy Aperiodic-ISC; `min_overlap=50` |
+| `scripts/movie/24_sync_control_classic_isc.py` | `scripts/69_compute_classic_isc_controls.py` | Film-level envelope / alpha PLV |
+| `scripts/movie/25_rest_movie_state_analysis.py` | `scripts/35_rest_movie_posterior_state_analysis.py` | Primary rest–movie mean-level analysis |
+| `scripts/movie/25d_rest_movie_matched_estimator.py` | `scripts/run_rest_movie_matched_estimator.py` | Table S12 sensitivity |
+| `scripts/movie/26b_partly_cloudy_isc_models.py` | `scripts/compute_partly_cloudy_isc_models.py` | Age/sex/FSIQ and data-quality ISC models |
+| `scripts/movie/27_td_template_permutation.py` | `scripts/run_td_template_permutation.py` | Reconstructed-template permutation |
+| `scripts/movie/27b_recalibrate_permutation_p.py` | `scripts/recalibrate_td_template_permutation_p.py` | Equal-tail / one-sided *p* |
+| `scripts/hbn/hbn_isc_calc.py` | `scripts/113_hbn_thepresent_aperiodic_isc.py` | HBN The Present Aperiodic-ISC |
+| `scripts/figures/main/build_main_figures.py` | `figure_revise/scripts/build_main_figures.py` | Figures 1–5 |
+| `scripts/figures/supplementary/build_si_figures.py` | `figure_revise/supplementary/scripts/build_si_figures.py` | Supplementary Figures S1–S5 |

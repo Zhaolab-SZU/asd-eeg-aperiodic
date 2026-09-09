@@ -1,0 +1,4 @@
+film_id,isc_type,n_asd,n_td,asd_effect,td_effect,p_value
+partly_cloudy,Partly Cloudy Aperiodic-ISC,58,78,0.0582157396289363,0.1128723091000724,1.947700366184748e-07
+partly_cloudy,Partly Cloudy broadband envelope ISC,58,78,0.1735436088008337,0.3054384256330483,0.001004358741366
+partly_cloudy,Partly Cloudy alpha PLV ISC,58,78,0.0443910360325907,0.0485765267889089,0.3694332763024419

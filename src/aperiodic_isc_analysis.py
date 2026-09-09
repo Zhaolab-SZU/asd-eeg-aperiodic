@@ -1,4 +1,8 @@
-"""Time-resolved aperiodic exponent inter-subject correlation (Aperiodic-ISC)."""
+"""Time-resolved aperiodic exponent inter-subject correlation (Aperiodic-ISC).
+
+Film-continuous timelines only. Invalid Partly Cloudy mental/pain/neutral
+event segmentation has been removed from the active API.
+"""
 
 from __future__ import annotations
 
@@ -9,8 +13,14 @@ import numpy as np
 import pandas as pd
 from scipy.stats import ttest_ind
 
-EVENT_TYPES_BASE = ("mental", "pain")
-EVENT_TYPES_ALL = ("mental", "pain", "neutral")
+# Film labels used in the event_type / film_id column of ISC tables.
+FILM_PARTLY_CLOUDY = "partly_cloudy"
+FILM_THE_PRESENT = "the_present"
+FILM_TYPES_PARTLY_CLOUDY = (FILM_PARTLY_CLOUDY,)
+
+# Backward-compatible aliases for residual callers during migration.
+EVENT_TYPES_ALL = FILM_TYPES_PARTLY_CLOUDY
+EVENT_TYPES_BASE = ()
 
 
 def required_cols(df: pd.DataFrame, cols: set[str], name: str) -> None:
@@ -38,47 +48,30 @@ def fisher_z(r: float) -> float:
     return float(np.arctanh(r))
 
 
-def build_concat_keys(ts_bins: np.ndarray, events: pd.DataFrame) -> pd.DataFrame:
-    rows = []
-    events = events.copy()
-    events["event_type"] = events["event_type"].astype(str).str.strip().str.lower()
-    events = events[events["event_type"].isin(EVENT_TYPES_BASE)].copy()
-    events["start"] = pd.to_numeric(events["onset_sec"], errors="coerce")
-    events["end"] = pd.to_numeric(events["onset_sec"], errors="coerce") + pd.to_numeric(
-        events["duration_sec"], errors="coerce"
-    )
-    events = events.dropna(subset=["start", "end"]).sort_values("start").reset_index(drop=True)
-
-    for b in np.sort(np.unique(np.round(ts_bins, 6))):
-        labels = []
-        for _, ev in events.iterrows():
-            if float(ev["start"]) <= float(b) < float(ev["end"]):
-                labels.append(str(ev["event_type"]))
-        if "mental" in labels:
-            event_type = "mental"
-        elif "pain" in labels:
-            event_type = "pain"
-        else:
-            event_type = "neutral"
-        rows.append({"center_sec": float(b), "event_type": event_type})
-
-    out = pd.DataFrame(rows)
-    for ev in EVENT_TYPES_ALL:
-        idx = out.index[out["event_type"] == ev].to_numpy()
-        out.loc[out["event_type"] == ev, "concat_index"] = np.arange(len(idx), dtype=int)
-    out["concat_index"] = out["concat_index"].astype(int)
-    return out
-
-
-def build_concat_keys_overall(ts_bins: np.ndarray) -> pd.DataFrame:
+def build_film_timeline_keys(
+    ts_bins: np.ndarray,
+    film_id: str = FILM_PARTLY_CLOUDY,
+) -> pd.DataFrame:
+    """Continuous usable film timeline keys (no event-category partitioning)."""
     bins = np.sort(np.unique(np.round(ts_bins, 6)))
     return pd.DataFrame(
         {
             "center_sec": bins.astype(float),
-            "event_type": "overall",
+            "event_type": str(film_id),
             "concat_index": np.arange(len(bins), dtype=int),
         }
     )
+
+
+def build_concat_keys_overall(ts_bins: np.ndarray) -> pd.DataFrame:
+    """Alias retained for migration; prefer build_film_timeline_keys."""
+    return build_film_timeline_keys(ts_bins, film_id=FILM_PARTLY_CLOUDY)
+
+
+def build_concat_keys(ts_bins: np.ndarray, events: pd.DataFrame | None = None) -> pd.DataFrame:
+    """Removed event segmentation. Ignores events and returns film timeline keys."""
+    del events
+    return build_film_timeline_keys(ts_bins, film_id=FILM_PARTLY_CLOUDY)
 
 
 def load_exponent_timeseries(
@@ -347,19 +340,30 @@ def summarize_group_isc_tests(isc_df: pd.DataFrame, event_types: Iterable[str]) 
         td = sub.loc[sub["group"] == "TD", "isc_z"].dropna().to_numpy()
         if len(asd) < 2 or len(td) < 2:
             t_stat, p_val = np.nan, np.nan
+            cohen_d = np.nan
         else:
             res = ttest_ind(asd, td, equal_var=False, nan_policy="omit")
             t_stat, p_val = float(res.statistic), float(res.pvalue)
+            pooled = np.sqrt(
+                ((len(asd) - 1) * np.nanvar(asd, ddof=1) + (len(td) - 1) * np.nanvar(td, ddof=1))
+                / max(len(asd) + len(td) - 2, 1)
+            )
+            cohen_d = float((np.nanmean(td) - np.nanmean(asd)) / pooled) if pooled > 0 else np.nan
+        td_mean = float(np.nanmean(td)) if len(td) else np.nan
+        asd_mean = float(np.nanmean(asd)) if len(asd) else np.nan
         stats_rows.append(
             {
                 "event_type": ev,
+                "film_id": ev,
                 "n_asd": int(len(asd)),
                 "n_td": int(len(td)),
-                "asd_mean_z": float(np.nanmean(asd)) if len(asd) else np.nan,
-                "td_mean_z": float(np.nanmean(td)) if len(td) else np.nan,
-                "asd_mean_r": float(np.tanh(np.nanmean(asd))) if len(asd) else np.nan,
-                "td_mean_r": float(np.tanh(np.nanmean(td))) if len(td) else np.nan,
-                "mean_diff_asd_minus_td_z": float(np.nanmean(asd) - np.nanmean(td)) if len(asd) and len(td) else np.nan,
+                "asd_mean_z": asd_mean,
+                "td_mean_z": td_mean,
+                "asd_mean_r": float(np.tanh(asd_mean)) if np.isfinite(asd_mean) else np.nan,
+                "td_mean_r": float(np.tanh(td_mean)) if np.isfinite(td_mean) else np.nan,
+                "mean_diff_asd_minus_td_z": float(asd_mean - td_mean) if np.isfinite(asd_mean) and np.isfinite(td_mean) else np.nan,
+                "mean_diff_td_minus_asd_z": float(td_mean - asd_mean) if np.isfinite(asd_mean) and np.isfinite(td_mean) else np.nan,
+                "cohen_d_td_minus_asd": cohen_d,
                 "t_stat": t_stat,
                 "p_value": p_val,
             }

@@ -16,8 +16,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-
+PROJECT_ROOT = Path(__file__).resolve()
+while not (PROJECT_ROOT / "src" / "config.py").is_file():
+    if PROJECT_ROOT.parent == PROJECT_ROOT:
+        raise RuntimeError("Cannot locate repository root (missing src/config.py)")
+    PROJECT_ROOT = PROJECT_ROOT.parent
 COLOR_EARTH_RED = "#B5655D"
 COLOR_TEXT = "#333333"
 COLOR_REF_ZERO = "#C8C8C8"
