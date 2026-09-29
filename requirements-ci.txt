@@ -1,6 +1,6 @@
 # Locked for CI / number-lock tests (no EEG, no specparam).
-numpy==2.1.3
-pandas==2.2.3
-scipy==1.14.1
+numpy==2.3.3
+pandas==2.3.3
+scipy==1.16.1
 PyYAML==6.0.2
-pytest==8.3.3
+pytest==8.4.2

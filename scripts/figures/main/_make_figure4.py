@@ -1,4 +1,4 @@
-"""Figure 4 — symptom-linked posterior exponent associations (current design)."""
+"""Figure 4 — age-related resting posterior exponent analyses."""
 
 from __future__ import annotations
 
@@ -10,77 +10,114 @@ import numpy as np
 import pandas as pd
 
 from _grammar_style import (
-    ASD, DATA, INK, LABEL_ROW, LETTER_ROW, NOTE, PANEL_Y, SPINE_LW, TITLE_PAD,
-    TITLE_ROW, clean, panel, regression_ci, residualize, save,
+    ASD, DATA, INK, LABEL_GRID, LEGEND, LETTER_ROW, NOTE, PANEL_Y, REF, SPINE_LW,
+    SUPP, TICK_GRID, TITLE_GRID, TITLE_PAD, TD,
+    add_sig, box_strip, clean, draw_forest, ols_ci, panel, save,
 )
 
 
 def make_figure4():
-    subjects = pd.read_csv(DATA / "fig4_clinical_subjects.csv")
-    raw = pd.read_csv(DATA / "fig4_clinical_models.csv")
-    raw = raw[raw["note"].eq("domain_framework")].copy()
-    raw["label"] = raw["outcome"].map({
-        "ADOS total": "ADOS total",
-        "ADOS Social Affect": "Social Affect",
-        "ADOS Restricted and Repetitive Behavior": "RRB",
-    })
-    models = raw.dropna(subset=["label"]).set_index("label")
-    base_df, x_resid = residualize(subjects, "posterior_exponent")
-    base = base_df[["subject_id"]].copy()
-    base["x"] = x_resid
-    outcomes = [
-        ("ADOS total", "ADOS_total", "ADOS total residual", "a"),
-        ("Social Affect", "ADOS_SA", "Social Affect residual", "b"),
-        ("RRB", "ADOS_RRB", "RRB residual", "c"),
-    ]
-    ylims = {"ADOS total": (-9.4, 9.4), "Social Affect": (-6.2, 7.4), "RRB": (-3.4, 3.75)}
-    yticks = {"ADOS total": [-8, -4, 0, 4, 8], "Social Affect": [-5, 0, 5], "RRB": [-2, 0, 2]}
+    df = pd.read_csv(DATA / "fig3_development_subjects.csv").copy()
+    df["age_years"] = df["age_months"] / 12
+    asd = df[df.group.eq("ASD")].copy()
+    sens = pd.read_csv(SUPP / "s4_development_interactions.csv")
+    sens = sens[
+        sens["region"].eq("posterior")
+        & sens["model"].isin([
+            "Primary", "IQ-balanced matched", "Strict-QC OLS",
+            "Strict-QC robust (robust)",
+        ])
+    ].drop_duplicates("model")
+    order = ["Primary", "IQ-balanced matched", "Strict-QC OLS", "Strict-QC robust (robust)"]
+    sens["model"] = pd.Categorical(sens["model"], categories=order, ordered=True)
+    sens = sens.sort_values("model")
 
-    fig_w, fig_h = 7.65, 3.05
-    fig = plt.figure(figsize=(fig_w, fig_h), dpi=300)
-    h_ax = 0.600
-    w_ax = 1.00 * h_ax * fig_h / fig_w
-    left = 0.090
-    gap = 0.058
-    y0 = 0.235
-    axes = [
-        fig.add_axes([left + i * (w_ax + gap), y0, w_ax, h_ax])
-        for i in range(3)
+    fig_w, fig_h = 7.20, 6.20
+    fig = plt.figure(figsize=(fig_w, fig_h))
+    h_box, w_ac, left, gap = 0.352, 0.328, 0.112, 0.148
+    x_bd, w_bd, y_c = left + w_ac + gap, 0.352, 0.108
+    y_a = y_c + h_box + 0.158
+    ax_a = fig.add_axes([left, y_a, w_ac, h_box])
+    ax_b = fig.add_axes([x_bd, y_a, w_bd, h_box])
+    ax_c = fig.add_axes([left, y_c, w_ac, h_box])
+    ax_d = fig.add_axes([x_bd, y_c, w_bd, h_box])
+    for ax, lab in [(ax_a, "a"), (ax_b, "b"), (ax_c, "c"), (ax_d, "d")]:
+        panel(ax, lab, size=LETTER_ROW, y=PANEL_Y)
+
+    rng = np.random.default_rng(17)
+    for group, color, z_sc in [("ASD", ASD, 4), ("TD", TD, 3)]:
+        sub = df[df.group.eq(group)].dropna(subset=["age_years", "posterior_exponent"])
+        xg = np.linspace(3.3, 11.0, 120)
+        yhat, _, _ = ols_ci(sub.age_years, sub.posterior_exponent, xg)
+        ax_a.plot(xg, yhat, color=color, lw=1.70, solid_capstyle="round",
+                  zorder=2, label=group)
+        ax_a.scatter(
+            sub.age_years + rng.normal(0, 0.015, len(sub)),
+            sub.posterior_exponent, s=20.0, facecolor=color,
+            edgecolors="black", linewidths=0.22, alpha=1.0, zorder=z_sc,
+        )
+    ax_a.set_xlim(3.2, 11.2)
+    ax_a.set_ylim(1.05, 2.58)
+    ax_a.set_yticks([1.2, 1.6, 2.0, 2.4])
+    ax_a.set_title("Age-related variation", pad=TITLE_PAD, fontsize=TITLE_GRID)
+    ax_a.set_xlabel("Age (years)", fontsize=LABEL_GRID)
+    ax_a.set_ylabel("Posterior aperiodic exponent", fontsize=LABEL_GRID)
+    ax_a.legend(loc="upper right", fontsize=LEGEND, handlelength=1.15, borderaxespad=0.12)
+    clean(ax_a, ticksize=TICK_GRID, lw=SPINE_LW)
+
+    draw_forest(
+        ax_b, ["Primary", "IQ-balanced", "Strict QC OLS", "Strict QC robust"],
+        sens["estimate_group_by_age"].to_numpy(float),
+        sens["ci_low"].to_numpy(float), sens["ci_high"].to_numpy(float),
+        [INK] * 4, "Age × group β (per month)", (-0.0025, 0.0110),
+        xticks=[0.000, 0.004, 0.008], ticksize=TICK_GRID,
+        zero_color="#D0D0D0", zero_lw=0.90, zero_ls=(0, (3.5, 2.2)),
+        marker_size=5.6, marker_fmts=["^", "^", "o", "o"],
+        elinewidth=0.70, capsize=2.8, spine_lw=SPINE_LW, y_gap=0.68,
+    )
+    ax_b.set_ylim(-0.68, 2.72)
+    ax_b.set_title("Age × group sensitivity", pad=TITLE_PAD, fontsize=TITLE_GRID)
+
+    ax_c.scatter(
+        asd.age_years, asd.posterior_td_reference_z, s=20.0,
+        facecolor=ASD, edgecolors="black", linewidths=0.22, zorder=3,
+    )
+    xg = np.linspace(3.3, 11.0, 120)
+    yhat, _, _ = ols_ci(asd.age_years, asd.posterior_td_reference_z, xg)
+    ax_c.plot(xg, yhat, color=ASD, lw=1.70, solid_capstyle="round", zorder=2)
+    ax_c.axhline(0, color=REF, lw=0.85, ls=(0, (3.5, 2.2)), zorder=0)
+    ax_c.text(
+        0.04, 0.96, "r = −0.33\np = 0.008", transform=ax_c.transAxes,
+        ha="left", va="top", fontsize=NOTE, color=INK, fontweight="bold",
+    )
+    ax_c.set_xlim(3.2, 11.2)
+    ax_c.set_ylim(-5.70, 4.05)
+    ax_c.set_yticks([-4, -2, 0, 2])
+    ax_c.set_title("TD-reference deviation", pad=TITLE_PAD, fontsize=TITLE_GRID)
+    ax_c.set_xlabel("Age (years)", fontsize=LABEL_GRID)
+    ax_c.set_ylabel("Posterior exponent z-score", fontsize=LABEL_GRID)
+    clean(ax_c, ticksize=TICK_GRID, lw=SPINE_LW)
+
+    specs = [
+        ("younger_or_equal_72mo", "Younger ASD\nn = 10", -1),
+        ("older", "Older ASD\nn = 51", +1),
     ]
-    for ax, (label, col, ylabel, letter) in zip(axes, outcomes):
-        y_df, y_resid = residualize(subjects, col)
-        merged = base.merge(
-            pd.DataFrame({"subject_id": y_df["subject_id"], "y": y_resid}),
-            on="subject_id", how="inner",
-        )
-        stat = models.loc[label]
-        x = merged["x"].to_numpy(float)
-        y = merged["y"].to_numpy(float)
-        x_grid = np.linspace(-0.48, 0.48, 240)
-        y_hat, _ = regression_ci(x, y, x_grid)
-        ax.plot(x_grid, y_hat, color=ASD, lw=1.70, solid_capstyle="round", zorder=2)
-        ax.scatter(
-            x, y, s=20.0, facecolor=ASD, edgecolors="black",
-            linewidths=0.22, alpha=1.0, zorder=3,
-        )
-        ax.set_title(label, pad=TITLE_PAD, fontsize=TITLE_ROW)
-        ax.set_xlabel("Posterior exponent residual", fontsize=LABEL_ROW)
-        ax.set_ylabel(ylabel, fontsize=LABEL_ROW)
-        ax.set_xlim(-0.50, 0.50)
-        ax.set_xticks([-0.4, 0.0, 0.4])
-        ax.set_ylim(*ylims[label])
-        ax.set_yticks(yticks[label])
-        panel(ax, letter, x=-0.16, y=PANEL_Y, size=LETTER_ROW)
-        q = float(stat["FDR_q"])
-        q_text = f"q = {q:.3f}" if q < 0.1 else f"q = {q:.2f}"
-        ax.text(
-            0.04, 0.96,
-            f"partial r = {stat['partial_r']:.2f}\n{q_text}",
-            transform=ax.transAxes, ha="left", va="top", fontsize=NOTE,
-            fontweight="bold", color=INK,
-        )
-        clean(ax, lw=SPINE_LW)
-    save(fig, "Figure4")
+    pos, maxima = [0.82, 1.28], []
+    for (key, _label, side), x in zip(specs, pos):
+        vals = asd[asd.age_group_72mo.eq(key)].posterior_td_reference_z.dropna().to_numpy(float)
+        maxima.append(float(vals.max()))
+        box_strip(ax_d, vals, x, ASD, width=0.24, side=side)
+    ymin, ylim_top = -5.70, 4.05
+    ax_d.set_xlim(0.45, 1.55)
+    ax_d.set_ylim(ymin, ylim_top)
+    ax_d.set_yticks([-4, -2, 0, 2])
+    ax_d.set_xticks(pos, [lab for _, lab, _ in specs])
+    span = ylim_top - ymin
+    add_sig(ax_d, pos[0], pos[1], max(maxima) + 0.028 * span, 0.014 * span, "*")
+    ax_d.set_title("Exploratory age split", pad=TITLE_PAD, fontsize=TITLE_GRID)
+    ax_d.set_ylabel("Posterior exponent z-score", fontsize=LABEL_GRID)
+    clean(ax_d, ticksize=TICK_GRID, lw=SPINE_LW)
+    save(fig, "Figure4", pad_inches=0.08)
 
 
 if __name__ == "__main__":

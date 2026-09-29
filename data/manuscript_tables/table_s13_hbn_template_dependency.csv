@@ -1,0 +1,9 @@
+Analysis,ASD mean z,TD mean z,TD−ASD Δz / β,p,n (ASD/TD),Notes
+The Present sliding-window Aperiodic-ISC (primary),0.045,0.080,Δz = 0.035; |t| = 2.599,0.00994,119/119,Matched HBN; primary external estimate
+The Present non-overlapping 2-s epoch (sensitivity),0.086,0.136,Δz = 0.050; |t| = 2.380,0.0181,119/119,Temporal-parameterization sensitivity
+FSIQ-adjusted sliding-window,—,—,"β = 0.031; HC3 95% CI [0.004, 0.058]",0.0238,119/119,Residual FSIQ sensitivity
+FSIQ-adjusted non-overlapping 2-s epoch,—,—,"β = 0.039; HC3 95% CI [−0.002, 0.080]",0.0634,119/119,Residual FSIQ sensitivity
+Sliding reconstructed-template permutation,—,—,β = 0.031,equal-tail p = 0.032,119/119,"Templates rebuilt within 10,000 matched-pair label swaps"
+Strict five-fold cross-fitted sliding-window,—,—,β = 0.033,equal-tail p = 0.018,119/119,Training-only TD templates; reconstructed permutation
+Repeated cross-fit folds,—,—,median β = 0.030; 2.5th–97.5th percentile 0.025–0.036,—,119/119,"Positive direction in 100/100 frozen-seed repeats; split-instability range, not a confidence interval"
+Epoch reconstructed-template permutation,0.086,0.136,β = 0.039,equal-tail p = 0.060,119/119,Temporal-parameterization sensitivity

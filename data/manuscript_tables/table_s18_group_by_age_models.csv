@@ -1,0 +1,19 @@
+Analysis,N,Interaction β/year,95% CI,p,Interpretation
+Primary HC3 (A0),136,−0.0121,"[−0.0242, −0.00003]",0.0495,"Nominal, boundary result"
+Template-reconstruction bootstrap,"5,000 resamples",median −0.0105,"[−0.0233, 0.0019]",—,CI crossed zero
+A1 + data quality,136,−0.0122,"[−0.0246, 0.00012]",0.0523,Direction retained
+A2 + trajectory structure,136,−0.0129,"[−0.0254, −0.00053]",0.0411,Direction retained
+A3 + envelope ISC,136,−0.0144,"[−0.0269, −0.00191]",0.0239,Direction retained
+Common age support,134,−0.0137,"[−0.0261, −0.00133]",0.0299,Two TD participants outside support excluded
+Influence-excluded,126,−0.0122,"[−0.0222, −0.00213]",0.0175,Not driven by high-Cook observations
+Robust M-estimator,136,−0.0112,"[−0.0244, 0.00204]",0.0973,Not significant
+Age-overlap weighted,136,−0.0122,"[−0.0253, 0.00093]",0.0686,Not significant
+Quadratic joint interaction,136,—,—,0.116,No robust nonlinear evidence
+HBN full-sample HC3,238,−0.0020,"[−0.0236, 0.0196]",0.856,No external interaction support
+HBN matched-pair clustered covariance,238 (119 pairs),−0.0020,"[−0.0226, 0.0186]",0.849,Pair-cluster sensitivity
+HBN reconstructed-template permutation,"10,000 permutations",−0.0020,—,equal-tail 0.820,Template-corrected null result
+HBN strict five-fold cross-fitting,238,−0.0017,—,equal-tail 0.866,Training-only templates; null result
+HBN internal common-age support,230 (115 pairs),+0.0004,"[−0.0232, 0.0240]",equal-tail 0.979,Direction not retained
+HBN cross-cohort common-age support,202 (101 pairs),−0.0073,"[−0.0352, 0.0206]",equal-tail 0.590,Concordant sign but imprecise
+HBN robust M-estimator,238,−0.0051,"[−0.0257, 0.0155]",0.627,No robust-regression support
+HBN non-overlapping 2-s epochs,238,+0.0018,"[−0.0298, 0.0334]",equal-tail 0.915,Temporal parameterization reversed sign

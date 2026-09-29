@@ -1,0 +1,9 @@
+Metric,ASD,TD,Effect,Permutation p,Permutation FDR q
+Zero-lag ISC,mean z = 0.0583,mean z = 0.1134,Δz = 0.0551; d = 1.00,0.00020,Primary result
+Maximum-lag ISC,mean z = 0.1000,mean z = 0.1294,Δz = 0.0294; d = 0.72,0.00060,0.0012
+Bias-corrected maximum ISC,mean z = 0.0188,mean z = 0.0482,Δz = 0.0294,0.00060,0.0012
+Lag gain,mean z = 0.0417,mean z = 0.0161,ASD > TD,0.00040,0.0012
+Signed optimal lag,median = 0 s,median = 0 s,no difference,1.000,1.000
+Absolute optimal lag,median = 1.5 s,median = 0 s,ASD > TD,0.00220,0.0029
+Optimal-lag dispersion,MAD = 1.5 s,MAD = 0 s,ASD > TD,0.00240,0.0029
+,,,,,

@@ -1,0 +1,13 @@
+Analysis,n (ASD/TD),TD / ASD,β or Δ,95% CI,p
+Primary TD-template Aperiodic-ISC,58/78,0.113 / 0.058,Δz = 0.055; t = 5.576; d = 1.00,"[0.035, 0.075]",1.95× 10-7
+Reconstructed-template permutation,58/78,—,T_obs = −5.576,—,one-sided 9.999 × 10-5; equal-tail 0.00020
+"Age-, sex- and FSIQ-adjusted",58/78,—,β = 0.059 (SE 0.013),"[0.034, 0.084]",5.18× 10-6
+Data-quality-adjusted,58/78,—,β = 0.057 (SE 0.013),"[0.032, 0.082]",7.05× 10-6
+Alpha PLV ISC,58/78,0.049 / 0.044,—,—,0.3694
+Envelope ISC,58/78,0.305 / 0.174,—,—,0.001004
+Shared variance (r²),136,—,r² ≈ 0.037,—,0.02421
+Envelope-adjusted Aperiodic-ISC,136,—,β = 0.052,"[0.033, 0.072]",1.73× 10-7
+Exploratory Group × age interaction,58/78,—,β = −0.0121/year,"[−0.0242, −0.00003]",raw p = 0.0495; bootstrap CI crosses zero (Table S18)
+Exploratory ASD age slope,58/—,—,β = 0.0103/year,"[0.00014, 0.0204]",raw p = 0.0469; descriptive
+Exploratory TD age slope,—/78,—,β = −0.0018/year,"[−0.0084, 0.0048]",raw p = 0.591; descriptive
+Exploratory ADOS total association (ASD only),57,—,partial r = 0.022,"[−0.24, 0.28]",p = 0.90; FDR q = 0.90

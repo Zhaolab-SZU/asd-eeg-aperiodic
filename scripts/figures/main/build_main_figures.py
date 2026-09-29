@@ -35,11 +35,11 @@ def main(which=None):
         5: make_figure5,
     }
     targets = which or sorted(builders)
-    for n in targets:
-        builders[n]()
+    for number in targets:
+        builders[number]()
     print("main figures →", ROOT / "outputs" / "figures" / "main")
 
 
 if __name__ == "__main__":
-    nums = [int(a) for a in sys.argv[1:]] if len(sys.argv) > 1 else None
+    nums = [int(arg) for arg in sys.argv[1:]] if len(sys.argv) > 1 else None
     main(nums)

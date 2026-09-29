@@ -1,0 +1,10 @@
+Analysis,Estimate,SE / n,p or FDR,Interpretation
+Group x frontal,beta = 0.083; standardized beta = 0.13,SE = 0.024,p = 7 × 10-4,Regional interaction
+Group x occipital,beta = 0.081; standardized beta = 0.13,SE = 0.024,p = 8 × 10-4,Posterior-occipital interaction
+Group x temporal,beta = 0.056; standardized beta = 0.09,SE = 0.024,p = 0.021,Smaller regional interaction
+Group x parietal,beta = 0.046; standardized beta = 0.07,SE = 0.024,p = 0.058,Trend-level
+Central region group effect,beta = 0.026; standardized beta = 0.07,SE = 0.034,p = 0.438,Reference-region effect not significant
+E38,beta = 0.134,SE = 0.034; n = 137,FDR q = 0.008,FDR-significant posterior channel
+E33,beta = 0.107,SE = 0.031; n = 138,FDR q = 0.025,FDR-significant posterior channel
+E36,beta = 0.117,SE = 0.036; n = 138,FDR q = 0.035,FDR-significant posterior channel
+E37,beta = 0.171,SE = 0.055; n = 135,FDR q = 0.036,FDR-significant posterior channel

@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: If you use this software or the derived tables, please cite the article below.
 title: "asd-eeg-aperiodic: posterior aperiodic EEG dynamics in childhood autism"
-version: 1.0-submitted
-date-released: "2026-09-09"
+version: 2.0-nmh-submitted
+date-released: "2026-09-28"
 license: MIT
 repository-code: "https://github.com/Zhaolab-SZU/asd-eeg-aperiodic"
 authors:
@@ -36,4 +36,4 @@ preferred-citation:
     - family-names: Zhao
       given-names: Shuo
   year: 2026
-  notes: "Submitted to Nature Communications, 9 September 2026. Equal contribution: Yuqi Wang and Binbin Sun."
+  notes: "Submitted to Nature Mental Health, 28 September 2026. Equal contribution: Yuqi Wang and Binbin Sun."

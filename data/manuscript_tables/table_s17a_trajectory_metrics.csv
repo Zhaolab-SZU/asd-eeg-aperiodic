@@ -1,0 +1,9 @@
+Panel A metric,ASD mean,TD mean,Cohen’s d,FDR q
+Trajectory SD,0.251,0.245,−0.24,0.726
+Median absolute deviation,0.167,0.165,−0.12,0.726
+Lag-1 autocorrelation,0.365,0.345,−0.27,0.726
+"Autocorrelation decay time, s",0.716,0.679,−0.15,0.726
+RMS first difference,0.280,0.279,−0.04,0.804
+Valid-window count,539.8,544.8,0.11,0.726
+Invalid-window proportion,0.096,0.087,−0.11,0.726
+Mean movie spectral-fit R²,0.865,0.864,−0.04,0.804

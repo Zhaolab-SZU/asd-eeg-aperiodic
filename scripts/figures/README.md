@@ -1,14 +1,33 @@
-# Figure scripts
+# Manuscript figure builders
 
-Manuscript-facing builders:
+These Python/matplotlib builders are aligned to the manuscript submitted to Nature Mental Health on 28 September 2026.
+
+## Main figures
 
 ```bash
 python scripts/figures/main/build_main_figures.py
+```
+
+| Figure | Builder | Submitted content |
+|---|---|---|
+| 1 | `_make_figure1.py` | Resting posterior aperiodic activity |
+| 2 | `_make_figure2.py` | Spatial robustness |
+| 3 | `_make_figure3.py` | Partly Cloudy and HBN The Present Aperiodic-ISC |
+| 4 | `_make_figure4.py` | Age-related resting posterior exponent analyses |
+| 5 | `_make_figure5.py` | Resting posterior exponent–ADOS associations |
+
+## Supplementary figures
+
+```bash
 python scripts/figures/supplementary/build_si_figures.py
 ```
 
-Palette: ASD `#B22222`, TD `#000080`. Outputs: `outputs/figures/main/` and `outputs/figures/supplementary/`.
+| Figure | Submitted content |
+|---|---|
+| S1 | Cohort flow |
+| S2 | Developmental sensitivity |
+| S3 | Individual alpha frequency control |
+| S4 | Synchrony controls |
+| S5 | HBN The Present sliding-window and non-overlapping 2-s parameterization check |
 
-CSV search order is `figure_source_data/` → `data/figure_source/` → `figure_source_data/outputs_figure_source_data/`. Supplementary tables also fall back to `data/supplementary_source/`.
-
-`_archived_20260812/` holds the 12 August 2026 plotters (segment violins; SI numbering S1–S8). Do not use them for the submitted manuscript.
+Each builder reads shipped CSV source data and writes PNG, PDF and SVG files under `outputs/figures/`. Text remains editable in SVG/PDF. The HBN inferential corrections reported in the legend and Supplementary Tables are supplied by the v4 analysis; the plotted subject values are the de-identified source data shipped here.

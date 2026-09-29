@@ -1,0 +1,12 @@
+Analysis,Estimate,SE / n,p or FDR,Interpretation
+Frontal exponent group effect (TD−ASD),β = 0.114,SE = 0.045; n = 138,p = 0.0127; q = 0.0127,TD > ASD frontal exponent
+Posterior exponent group effect (TD−ASD),β = 0.133,SE = 0.034; n = 138,p = 0.000133; q = 0.000267,Matches primary posterior model
+Group × region (frontal vs posterior),β = −0.002,SE = 0.034; n_subjects = 138,p = 0.951,Not posterior-exclusive
+Frontal age × group,β = 0.0020 / month,SE = 0.0021; n = 138,p = 0.347; q = 0.347,No frontal developmental interaction
+Posterior age × group,β = 0.0052 / month,SE = 0.0015; n = 138,p = 0.000708; q = 0.00142,Posterior developmental interaction retained
+Frontal exponent vs ADOS_total (ASD partial r),partial r = −0.16,n = 61,p = 0.205; q = 0.258,FDR across six region × scale tests
+Frontal exponent vs ADOS_SA (ASD partial r),partial r = −0.18,n = 61,p = 0.155; q = 0.258,FDR across six region × scale tests
+Frontal exponent vs ADOS_RRB (ASD partial r),partial r = −0.16,n = 61,p = 0.215; q = 0.258,FDR across six region × scale tests
+Posterior exponent vs ADOS_total (ASD partial r),partial r = −0.32,n = 61,p = 0.0128; q = 0.0384,FDR across six region × scale tests
+Posterior exponent vs ADOS_SA (ASD partial r),partial r = −0.37,n = 61,p = 0.00369; q = 0.0221,FDR across six region × scale tests
+Posterior exponent vs ADOS_RRB (ASD partial r),partial r = −0.12,n = 61,p = 0.365; q = 0.365,FDR across six region × scale tests

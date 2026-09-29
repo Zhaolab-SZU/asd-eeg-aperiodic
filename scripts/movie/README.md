@@ -1,22 +1,28 @@
 # Movie scripts
 
-## Manuscript-facing (use these)
+## Submitted primary path
 
-| Script | Role | Needs EEG? |
-|--------|------|------------|
-| `20_movie_prepare_participants.py` | Movie cohort table | local participants file |
-| `20b_align_exponent_movie_labels.py` | Align resting exponents with movie IDs | derivatives |
-| `21_time_resolved_specparam_isc.py` | Sliding-window specparam trajectories | movie EEG |
-| `22_calc_aperiodic_isc.py` | **Primary** film-level TD-template Aperiodic-ISC (`min_overlap=50`) | trajectories |
-| `24_sync_control_classic_isc.py` | Envelope ISC + within-group alpha PLV | movie EEG |
-| `25_rest_movie_state_analysis.py` | Primary rest–movie mean-level state × group | rest+movie exponents |
-| `25d_rest_movie_matched_estimator.py` | Table S12 estimator-matched sensitivity | resting FIF |
-| `26b_partly_cloudy_isc_models.py` | Age/sex/FSIQ and data-quality ISC models | ISC + covariates |
-| `27_td_template_permutation.py` | Permutation **engine** (rebuild template; writes null) | trajectories |
-| `27b_recalibrate_permutation_p.py` | Manuscript **p-values** from the saved null | shipped null CSV |
+| Script | Role | Needs EEG/trajectories? |
+|---|---|---|
+| `20_movie_prepare_participants.py` | Movie cohort table | participant registry |
+| `20b_align_exponent_movie_labels.py` | Align resting exponents and movie IDs | derivatives |
+| `21_time_resolved_specparam_isc.py` | Sliding-window exponent trajectories | movie EEG |
+| `22_calc_aperiodic_isc.py` | Film-level TD-template Aperiodic-ISC | trajectories |
+| `24_sync_control_classic_isc.py` | Envelope ISC and alpha PLV controls | movie EEG |
+| `26b_partly_cloudy_isc_models.py` | Covariate/data-quality models | derived values |
+| `27_td_template_permutation.py` | Reconstructed-template permutation engine | trajectories |
+| `27b_recalibrate_permutation_p.py` | Equal-tail and one-sided manuscript p values | shipped null |
 
-`27_` vs `27b`: `27_` produces T_obs and {T_b}. `27b` is the paper's p-value definition (one-sided TD>ASD and equal-tail two-sided). The engine's `p_emp_two_sided` (`|Tb| ≥ |Tobs|`) is not the manuscript two-sided p.
+The permutation engine produces the observed statistic and null draws. The manuscript-facing two-sided p value is the equal-tail value computed by `27b`; the legacy absolute-statistic p value is not interchangeable with it.
 
-## Not manuscript-facing
+## Submitted secondary/exploratory analyses awaiting v6 transfer
 
-Moved to `scripts/legacy/movie/`: event-segment ISC, older rest–movie coupling, segment covariate models, envelope-partial ISC.
+| Required script | Role |
+|---|---|
+| `film_level_isc_ados_exploratory.py` | Aperiodic-ISC–ADOS analysis |
+| `aperiodic_isc_mechanism_v2.py` | Temporal-shift, lag and trajectory controls |
+| `film_level_isc_age_v3.py` | Primary-cohort Group × Age |
+
+Rest-to-movie state analyses are retained as exploratory Supplementary material and are not part of the principal main-text narrative. Event-segment ISC and older coupling analyses remain under `scripts/legacy/movie/`.
+
+See `analysis_requests/ANALYSIS_WAREHOUSE_COMPLETION_v6.md` for commands, seeds, expected outputs and numerical locks.

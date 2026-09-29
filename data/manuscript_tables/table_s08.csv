@@ -1,0 +1,12 @@
+Analysis,Estimate,p,Interpretation
+Posterior exponent age × group,"β = 0.0052/month; SE = 0.0015; 95% CI [0.0022, 0.0081]",0.0007,Primary no–R² evidence for cross-sectional age-dependent posterior divergence
+ASD posterior age slope,"-0.0048/month; 95% CI [-0.0071, -0.0024]",0.0001,Declining posterior exponent with age in ASD
+TD posterior age slope,"+0.0004/month; 95% CI [-0.0015, 0.0023]",0.666,Stable posterior exponent in TD
+Global exponent age × group,β = 0.0033/month,0.0195,Weaker directionally concordant interaction (primary no–R²)
+IQ-balanced matched age × group,β = 0.0048/month,0.046,Supported in the IQ-balanced matched cohort
+Matched strict-QC age × group (OLS),β = 0.0027/month,0.15,Directionally concordant but not significant under matched strict QC
+Matched strict-QC age × group (robust),β = 0.0027/month,0.13,Directionally concordant but not significant under matched strict QC
+"ASD TD-reference deviation, all autistic children",z = −0.667,"0.00015, two-sided",Lower-than-expected posterior exponent relative to TD age expectations
+ASD TD-reference deviation × age,β = −0.025/month,p = 0.008,Deviation became increasingly negative with age
+"ASD TD-reference deviation, >72 months",z = −0.856,"<0.001, two-sided",Older ASD subgroup shows stronger negative deviation
+Posterior age × group + mean spectral-fit R²,"β = 0.0048/month; SE = 0.0014; 95% CI [0.0019, 0.0077]",0.0011,Spectral-fit-quality sensitivity (not primary)

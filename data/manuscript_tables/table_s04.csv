@@ -1,0 +1,5 @@
+Criterion,Fold count,Percentage of folds,Interpretation
+All four posterior electrodes remained FDR-significant,125/138,90.6%,Full posterior cluster survived FDR correction in most leave-one-subject-out folds.
+At least three of the four remained significant,134/138,97.1%,Near-complete posterior localization survived FDR correction in nearly all folds.
+At least one posterior electrode remained FDR-significant,138/138,100.0%,Posterior localization was retained in every leave-one-subject-out fold.
+Uncorrected group effects were present at each posterior electrode,138/138 for each electrode,100.0%,Electrode-level uncorrected group effects did not depend on any single participant.

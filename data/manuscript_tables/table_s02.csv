@@ -1,0 +1,5 @@
+Outcome,Model,Beta (TD vs ASD),SE,95% CI,p,n
+Global exponent,Primary,0.079,0.031,"[0.018, 0.140]",0.012,138
+Global offset,Primary,0.060,0.035,"[−0.011, 0.130]",0.095,138
+Global exponent,QC-adjusted,0.058,--,--,0.022,138
+Posterior exponent,Primary covariates,0.133,0.034,"[0.066, 0.200]",< 0.001,138

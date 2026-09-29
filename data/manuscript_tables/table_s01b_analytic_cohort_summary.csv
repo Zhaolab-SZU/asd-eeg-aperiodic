@@ -1,0 +1,10 @@
+Cohort / analysis set,ASD n,TD n,Total n,Primary purpose / use in manuscript
+Resting EEG file-matched cohort,80,88,168,Initial resting EEG sample and demographic description
+Primary resting-state spectral cohort,61,77,138,Primary global and posterior aperiodic spectral inference
+Resting 1:1 matched cohort,55,55,110,Demographic sensitivity and matched developmental analyses
+IQ-balanced posterior-exponent subset,38,38,76,Matched posterior-exponent and ADOS analyses where applicable
+Matched strict specparam-QC cohort,44,46,90,Stricter spectral-parameterization QC sensitivity
+Exploratory paired rest-to-movie posterior exponent cohort,61,75,136,"Exploratory paired rest-to-movie mean-level modulation, CMI, signed contrast-change and absolute group-difference sensitivity; age-, IQ- and sex-matched subset: 36 ASD/36 TD"
+Partly Cloudy Aperiodic-ISC cohort,58,78,136,Naturalistic movie Partly Cloudy Aperiodic-ISC (movie spectral-QC cohort)
+Exploratory same-subject Partly Cloudy Aperiodic-ISC sensitivity,45,59,104,Intersection of valid film-level Aperiodic-ISC and paired rest-to-Partly Cloudy state cohort
+HBN The Present matched cohort,119,119,238,External naturalistic-viewing support analysis

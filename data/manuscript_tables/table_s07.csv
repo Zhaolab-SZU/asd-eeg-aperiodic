@@ -1,0 +1,9 @@
+Model/metric,ASD,TD,Effect/p,Interpretation
+Low-gamma power 30-40 Hz,--,--,beta = -0.075; p = 0.047,High-frequency group difference
+High-frequency power 20-40 Hz,--,--,beta = -0.071; p = 0.047,High-frequency group difference
+Global exponent + low-gamma,--,--,beta = 0.035; p = 0.118,Global effect attenuated
+Posterior exponent + low-gamma,--,--,beta = 0.102; p = 0.004,Posterior effect preserved
+ICLabel removed components,4.443,3.325,p = 0.003,ASD had more removed components
+ICLabel usable epochs after cleaning,138.820,141.857,p = 0.469,No data-quantity group difference
+ICLabel global exponent (adjusted),--,--,beta = 0.053; p = 0.119,Global effect attenuated
+ICLabel posterior exponent (adjusted),--,--,beta = 0.121; p < 0.001,Posterior effect preserved

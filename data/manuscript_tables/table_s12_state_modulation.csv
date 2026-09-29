@@ -1,0 +1,13 @@
+Analysis,State / scope,TD estimate,ASD estimate,Effect or p value,Interpretation
+Rest posterior exponent contrast,Rest (paired state cohort),mean = 1.99,mean = 1.87,TD−ASD = +0.12; p = 2.2 × 10-5,"TD > ASD at rest; n = 136 (61 ASD, 75 TD)"
+Partly Cloudy posterior exponent contrast,Partly Cloudy (paired state cohort),mean = 1.90,mean = 1.95,TD−ASD = −0.05; p = 0.237,Signed contrast reversed; absolute difference smaller descriptively
+Signed TD−ASD contrast change,Rest → Partly Cloudy,—,—,≈ 0.17,Rest contrast minus movie contrast; n = 136
+Absolute group-difference change,Rest → Partly Cloudy,—,—,≈ +0.07,Absolute difference: 0.12 → 0.05
+State × Group interaction,Paired n = 136,—,—,"F = 16.78, p = 7.2 × 10-5; partial η² = 0.111",State-dependent modulation
+"Age-, IQ- and sex-matched State × Group interaction",Matched paired subset,—,—,p = 0.005,"Significant in 72 matched pairs (36 ASD, 36 TD)"
+CMI (% change),Paired n = 136,−4.2%,+5.4%,adjusted p = 0.004,Opposite within-group changes
+Paired same-subject Partly Cloudy Aperiodic-ISC sensitivity,Film-level ISC among paired state cohort,z = 0.112,z = 0.063,p = 3.38 × 10-5,"Sensitivity only; n = 104 (45 ASD, 59 TD)"
+Matched-estimator rest TD−ASD contrast,Rest sliding mean-of-exponents,mean = 2.25,mean = 2.22,TD−ASD ≈ +0.03; p = 0.084,Sensitivity; not the primary resting estimate
+Matched-estimator signed TD−ASD contrast change,Rest → Partly Cloudy,—,—,≈ 0.087,Positive signed change; absolute difference increased 0.03 → 0.05
+Matched-estimator State × Group interaction,Paired n = 136,—,—,"F = 4.52, p = 0.035; partial η² = 0.033",Attenuated estimator-matched interaction
+Matched-estimator cluster-robust OLS State × TD,Paired n = 136,—,—,"β = −0.087 (SE = 0.042), p = 0.040",Does not establish absolute-gap narrowing

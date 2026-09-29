@@ -1,28 +1,21 @@
-# Locked analysis environment for the 9 September 2026 Nature Communications submission.
-# Python 3.10–3.12 recommended (CI uses 3.11).
-#
-# specparam 2.0 provides SpectralModel.get_params / get_metrics used in
-# src/specparam_utils.py. fooof 1.1.1 remains a supported fallback but is not
-# the pinned primary package — do not silently upgrade specparam past 2.0.x
-# without re-checking fit extraction.
-#
-# Install:
-#   pip install -r requirements.txt
-# Number-lock tests only:
-#   pip install -r requirements-ci.txt && pytest
+# Environment reported in the Nature Mental Health submission (28 September 2026).
+# Python 3.12.2 is pinned in environment.yml.
 
-numpy==2.1.3
-pandas==2.2.3
-scipy==1.14.1
-matplotlib==3.9.2
-statsmodels==0.14.4
-mne==1.8.0
-specparam==2.0.0
-pingouin==0.5.5
-PyYAML==6.0.2
-joblib==1.4.2
-tqdm==4.66.5
-scikit-learn==1.5.2
-Pillow==10.4.0
+numpy==2.3.3
+pandas==2.3.3
+scipy==1.16.1
+matplotlib==3.10.7
+statsmodels==0.14.6
+mne==1.10.1
+specparam==2.0.0rc6
+mne-icalabel==0.8.1
+mne-connectivity==0.8.1
+autoreject==0.4.4
+pingouin==0.6.1
+scikit-learn==1.7.2
 seaborn==0.13.2
-pytest==8.3.3
+PyYAML==6.0.2
+joblib==1.5.2
+tqdm==4.67.1
+Pillow==11.3.0
+pytest==8.4.2

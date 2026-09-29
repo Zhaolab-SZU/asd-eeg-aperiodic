@@ -1,0 +1,4 @@
+Estimate,Mean β (TD − ASD),P(β > 0),P(p <.05),Interpretation
+"Training-selected ROI, hold-out",0.093,94.5%,16.5%,directionally stable but attenuated
+"Training-selected ROI, in-sample",0.175,100%,99.5%,optimistic same-sample estimate
+"Fixed E33–E38 posterior, hold-out",0.137,100%,55.0%,stable fixed posterior summary

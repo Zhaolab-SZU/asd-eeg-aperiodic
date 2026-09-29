@@ -1,0 +1,6 @@
+Analysis,Sample,Estimate,p / q,Interpretation
+Posterior exponent vs ADOS total,ASD n = 61,partial r = −0.32,p = 0.013; q = 0.02,Significant total-severity association
+"Posterior exponent vs ADOS total, IQ-balanced matched subset",ASD n = 38,partial r = −0.33,p = 0.046,Association retained in IQ-balanced subset
+Posterior exponent vs ADOS Social Affect,ASD n = 61,partial r = −0.37,p = 0.004; q = 0.01,Symptom-domain association retained
+Posterior exponent vs ADOS RRB,ASD n = 61,partial r = −0.12,q = 0.36,No evidence for RRB association
+Group x region type,n = 138,beta = 0.027,p = 0.232,Posterior group effect not significantly stronger than non-posterior

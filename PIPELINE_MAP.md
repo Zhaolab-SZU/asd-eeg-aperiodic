@@ -59,7 +59,7 @@
 | `scripts/figures/_archived_20260812/plot_supplementary_figures.py` | `scripts/plot_supplementary_figures.py` | Pre-film-level SI builder (S1/S4–S8 numbering); not manuscript-facing |
 | `scripts/figures/plot_fig2a_channelwise_topomap.py` | `scripts/plot_fig2a_channelwise_topomap.py` | Fig.2A topomap |
 | `scripts/figures/plot_posterior_robustness_forest.py` | `scripts/plot_posterior_robustness_forest.py` | Fig.2B robustness forest |
-| `scripts/figures/plot_ados_posterior_partialcorr_main.py` | `scripts/64_plot_ados_posterior_partialcorr_main.py` | Fig.4 ADOS partial-correlation panels |
+| `scripts/figures/plot_ados_posterior_partialcorr_main.py` | `scripts/64_plot_ados_posterior_partialcorr_main.py` | Fig.5 ADOS partial-correlation panels |
 | `src/config.py` | `src/config.py` | library module |
 | `src/io_utils.py` | `src/io_utils.py` | library module |
 | `src/eeg_preprocessing.py` | `src/eeg_preprocessing.py` | library module |
@@ -131,14 +131,14 @@
 | `src/posterior_roi_nested_split.py` | `src/posterior_roi_nested_split.py` | library module |
 | `src/frontal_comparison_analysis.py` | `src/frontal_comparison_analysis.py` | library module |
 
-## 2026-09-09 film-level addendum
+## 2026-09-28 Nature Mental Health submission alignment
 
 | Bundle path | Original lab path | Note |
 |-------------|-------------------|------|
 | `scripts/movie/22_calc_aperiodic_isc.py` | `scripts/68_compute_aperiodic_isc.py` | Film-level Partly Cloudy Aperiodic-ISC; `min_overlap=50` |
 | `scripts/movie/24_sync_control_classic_isc.py` | `scripts/69_compute_classic_isc_controls.py` | Film-level envelope / alpha PLV |
-| `scripts/movie/25_rest_movie_state_analysis.py` | `scripts/35_rest_movie_posterior_state_analysis.py` | Primary rest–movie mean-level analysis |
-| `scripts/movie/25d_rest_movie_matched_estimator.py` | `scripts/run_rest_movie_matched_estimator.py` | Table S12 sensitivity |
+| `scripts/movie/25_rest_movie_state_analysis.py` | `scripts/35_rest_movie_posterior_state_analysis.py` | Exploratory rest–movie state analysis retained outside the main narrative |
+| `scripts/movie/25d_rest_movie_matched_estimator.py` | `scripts/run_rest_movie_matched_estimator.py` | Exploratory matched-estimator sensitivity |
 | `scripts/legacy/movie/26_movie_isc_covariate_sensitivity.py` | `scripts/26_movie_isc_covariate_sensitivity.py` | Segment-level covariate table (not Table S11) |
 | `scripts/movie/26b_partly_cloudy_isc_models.py` | `scripts/compute_partly_cloudy_isc_models.py` | Age/sex/FSIQ and data-quality ISC models |
 | `scripts/movie/27_td_template_permutation.py` | `scripts/run_td_template_permutation.py` | Permutation engine (writes T_obs and null; not the manuscript two-sided *p*) |
@@ -147,3 +147,15 @@
 | `scripts/hbn/hbn_isc_calc.py` | `scripts/113_hbn_thepresent_aperiodic_isc.py` | HBN The Present Aperiodic-ISC |
 | `scripts/figures/main/build_main_figures.py` | `figure_revise/scripts/build_main_figures.py` | Figures 1–5 |
 | `scripts/figures/supplementary/build_si_figures.py` | `figure_revise/supplementary/scripts/build_si_figures.py` | Supplementary Figures S1–S5 |
+
+The submitted manuscript additionally depends on the following analysis-workspace
+deliverables, which are tracked in
+`analysis_requests/ANALYSIS_WAREHOUSE_COMPLETION_v6.md`:
+
+| Required public path | Submitted use |
+|---|---|
+| `scripts/movie/film_level_isc_ados_exploratory.py` | Film-level Aperiodic-ISC–ADOS exploratory analysis |
+| `scripts/movie/aperiodic_isc_mechanism_v2.py` | Temporal-shift, lag and trajectory-structure analyses |
+| `scripts/movie/film_level_isc_age_v3.py` | Primary-cohort Group × Age sensitivity analysis |
+| `scripts/hbn/hbn_template_dependency_v4.py` | Reconstructed-template and strict cross-fit HBN inference |
+| `scripts/hbn/hbn_group_age_v5.py` | HBN Group × Age exploratory analysis |

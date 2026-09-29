@@ -1,0 +1,6 @@
+Analysis,Estimate,p,Interpretation
+Global IAF group effect,--,0.48,No group difference
+Global IAF age x group,beta = -0.0053,0.305,No age interaction
+Posterior IAF age x group,beta = -0.0027,0.652,No posterior IAF interaction
+Posterior exponent age x group adjusted for posterior IAF,--,0.001,Aperiodic effect preserved
+Posterior exponent deviation vs IAF deviation,rho = -0.17,0.18,Dissociated deviations
